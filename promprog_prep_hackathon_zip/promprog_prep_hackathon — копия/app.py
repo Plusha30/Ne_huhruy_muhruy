@@ -3,17 +3,17 @@ import os
 import json
 import pathlib
 
-# some global variables
-
+#global variables
 global users_base
 global products_db
 users_base = {}
 products_db = {}
 email = 'placeholder'
 base_path = pathlib.Path(__file__).parent.resolve()
+app = Flask(__name__)
+app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024
 
-# basic functions for site render
-
+#useful function for filework and etc
 def return_image(path, placeholder):
     full_path = f"{base_path}/static/images/{path}.jpg"
     if os.path.exists(full_path):
@@ -27,17 +27,22 @@ def commonkwargs():
     else:
         return {'username': 'Log in', 'userimg': return_image(f'users/{email}', 'user_placeholder'), 'desc': 'empty', 'phone': 'N/A'}
 
-#app
-
-app = Flask(__name__)
-app.secret_key = 'hackathon_key'
-app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024
-
-#routes
-
+#basic routes
 @app.route('/')
 def landing():
     return render_template('landing.html', **commonkwargs())
+
+@app.route('/pricing')
+def pricing():
+    return render_template('pricing.html', **commonkwargs())
+
+@app.route('/ultimate_dashboard')
+def ultimate_dashboard():
+    return render_template('super_dashboard.html', **commonkwargs())
+
+@app.errorhandler(404)
+def four04(name):
+    return render_template('404.html', **commonkwargs())
 
 @app.route('/dashboard')
 def dashboard():
@@ -54,6 +59,7 @@ def product_detail(id):
         return render_template('404.html', **commonkwargs())
     return render_template('product.html', id=id, product=product_data, **commonkwargs())
 
+#login-register-profile
 @app.route('/login', methods=["GET", "POST"])
 def login():
     global email
@@ -100,6 +106,8 @@ def profile():
                 users_base[email][3] = data['phone'][0]
             if (len(data['desc']) > 0):
                 users_base[email][2] = data['desc'][0]
+            with open(f"{base_path}/users_base.json", 'w', encoding='utf-8') as f:
+                f.write(json.dumps(users_base, indent=4))
         if (data['commit_type'][0] == 'update_photo'):
             if (request.files['avatar'].filename == ''):
                 if (os.path.exists(f"{base_path}/static/images/users/{email}.jpg")):
@@ -111,18 +119,7 @@ def profile():
                     photo.save(path)
     return render_template('profile.html', **commonkwargs())
 
-@app.route('/pricing')
-def pricing():
-    return render_template('pricing.html', **commonkwargs())
-
-@app.route('/ultimate-dashboard')
-def ultimate_dashboard():
-    return render_template('super_dashboard.html', **commonkwargs())
-
-@app.errorhandler(404)
-def four04(name):
-    return render_template('404.html', **commonkwargs())
-
+#collect data from files function
 def readfiles():
     global users_base
     global base_path
@@ -148,6 +145,7 @@ def readfiles():
         else:
             products_db = {}
 
+#start
 if __name__ == '__main__':
     readfiles()
     app.run(port=5237, host="127.0.0.1", debug=True)
