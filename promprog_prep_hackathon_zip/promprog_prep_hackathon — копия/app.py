@@ -2,7 +2,6 @@ from flask import Flask, render_template, request, redirect, url_for
 import os
 import json
 import pathlib
-import shutil
 
 # some global variables
 
@@ -22,11 +21,11 @@ def return_image(path, placeholder):
     else:
         return f'images/common/{placeholder}.jpg'
 
-def commonkwargs(kwargs):
+def commonkwargs():
     if (email in users_base):
-        return kwargs | {'username': users_base[email][1], 'userimg': return_image(f'users/{email}', 'user_placeholder'), 'desc': users_base[email][2], 'phone': users_base[email][3]}
+        return {'username': users_base[email][1], 'userimg': return_image(f'users/{email}', 'user_placeholder'), 'desc': users_base[email][2], 'phone': users_base[email][3]}
     else:
-        return kwargs | {'username': 'Log in', 'userimg': return_image(f'users/{email}', 'user_placeholder'), 'desc': 'empty', 'phone': 'N/A'}
+        return {'username': 'Log in', 'userimg': return_image(f'users/{email}', 'user_placeholder'), 'desc': 'empty', 'phone': 'N/A'}
 
 #app
 
@@ -38,22 +37,22 @@ app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024
 
 @app.route('/')
 def landing():
-    return render_template('landing.html', **commonkwargs({}))
+    return render_template('landing.html', **commonkwargs())
 
 @app.route('/dashboard')
 def dashboard():
-    return render_template('dashboard.html', **commonkwargs({}))
+    return render_template('dashboard.html', **commonkwargs())
 
 @app.route('/object/<int:id>')
 def object_detail(id):
-    return render_template('object.html', id=id, **commonkwargs({}))
+    return render_template('object.html', id=id, **commonkwargs())
 
 @app.route('/product/<id>')
 def product_detail(id):
     product_data = products_db.get(id)
     if not product_data:
-        return render_template('404.html', **commonkwargs({}))
-    return render_template('product.html', id=id, product=product_data, **commonkwargs({}))
+        return render_template('404.html', **commonkwargs())
+    return render_template('product.html', id=id, product=product_data, **commonkwargs())
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
@@ -68,21 +67,21 @@ def login():
             return redirect(url_for('profile'), 302)
         else:
             pass
-    return render_template('login.html', **commonkwargs({}))
+    return render_template('login.html', **commonkwargs())
 
 @app.route('/register', methods=["GET", "POST"])
 def register():
     global email
     if (email != 'placeholder'):
-        return redirect(url_for('landing'), 302)
+        return redirect(url_for('profile'), 302)
     if (request.method == 'POST'):
         data = request.form.to_dict(flat=False)
         users_base[data['email'][0]] = [data['password'][0], data['name'][0], "empty", "N/A"]
         with open(f"{base_path}/users_base.json", 'w', encoding='utf-8') as f:
             f.write(json.dumps(users_base, indent=4))
         email = data['email'][0]
-        return redirect(url_for('landing'), 302)
-    return render_template('register.html', **commonkwargs({}))
+        return redirect(url_for('profile'), 302)
+    return render_template('register.html', **commonkwargs())
 
 @app.route('/profile', methods=["GET", "POST"])
 def profile():
@@ -101,19 +100,28 @@ def profile():
                 users_base[email][3] = data['phone'][0]
             if (len(data['desc']) > 0):
                 users_base[email][2] = data['desc'][0]
-    return render_template('profile.html', **commonkwargs({}))
+        if (data['commit_type'][0] == 'update_photo'):
+            if (request.files['avatar'].filename == ''):
+                if (os.path.exists(f"{base_path}/static/images/users/{email}.jpg")):
+                    os.remove(f"{base_path}/static/images/users/{email}.jpg")
+            else:
+                photo = request.files['avatar']
+                if (photo.filename != ''):
+                    path = f"{base_path}/static/images/users/{email}.jpg"
+                    photo.save(path)
+    return render_template('profile.html', **commonkwargs())
 
 @app.route('/pricing')
 def pricing():
-    return render_template('pricing.html', **commonkwargs({}))
+    return render_template('pricing.html', **commonkwargs())
 
 @app.route('/ultimate-dashboard')
 def ultimate_dashboard():
-    return render_template('super_dashboard.html', **commonkwargs({}))
+    return render_template('super_dashboard.html', **commonkwargs())
 
 @app.errorhandler(404)
 def four04(name):
-    return render_template('404.html', **commonkwargs({}))
+    return render_template('404.html', **commonkwargs())
 
 def readfiles():
     global users_base
