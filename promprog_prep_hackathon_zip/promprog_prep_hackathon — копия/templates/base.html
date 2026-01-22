@@ -13,18 +13,6 @@
 </head>
 <body>
 
-<!-- Уведомление (Toast) -->
-<div class="toast-container position-fixed bottom-0 end-0 p-3">
-    <div id="liveToast" class="toast align-items-center border-0 shadow-lg rounded-4" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="d-flex">
-            <div class="toast-body">
-                👋 Welcome back! Check out new features.
-            </div>
-            <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"></button>
-        </div>
-    </div>
-</div>
-
 <!-- Навигация -->
 <div class="fixed-top p-3 d-flex justify-content-center" style="z-index: 1030;">
     <nav class="navbar navbar-expand-lg navbar-floating w-100" style="max-width: 1000px;">
@@ -40,8 +28,7 @@
                 <ul class="navbar-nav gap-1 gap-lg-4 text-center my-3 my-lg-0">
                     <li class="nav-item"><a class="nav-link text-dark fw-medium" href="{{ url_for('landing') }}">Home</a></li>
                     <li class="nav-item"><a class="nav-link text-dark fw-medium" href="{{ url_for('dashboard') }}">Dashboard</a></li>
-                    <!-- ИСПРАВЛЕНИЕ: Заменили url_for('pricing') на # -->
-                    <li class="nav-item"><a class="nav-link text-dark fw-medium" href="#">Pricing</a></li>
+                    <li class="nav-item"><a class="nav-link text-dark fw-medium" href="{{ url_for('pricing') }}">Pricing</a></li>
                 </ul>
             </div>
             <div class="d-none d-lg-flex gap-2">
@@ -52,7 +39,7 @@
     </nav>
 </div>
 
-<!-- Spacer чтобы меню не перекрывало контент -->
+<!-- Spacer -->
 <div class="navbar-spacer"></div>
 
 <main>
@@ -70,16 +57,12 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
+    // Инициализация тултипов
     document.addEventListener("DOMContentLoaded", function(){
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
         var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl)
         });
-        const toastEl = document.getElementById('liveToast')
-        if(toastEl) {
-            const toast = new bootstrap.Toast(toastEl)
-            toast.show()
-        }
     });
 </script>
 {% block scripts %}{% endblock %}
