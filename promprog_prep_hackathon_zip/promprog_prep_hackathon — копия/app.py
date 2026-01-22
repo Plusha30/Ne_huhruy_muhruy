@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for
 from ivan_db import *
 import pathlib
 import json
@@ -24,8 +24,11 @@ def object_detail(id):
 def login():
     return render_template('login.html', **commonkwargs({}))
 
-@app.route('/register')
+@app.route('/register', methods=["GET", "POST"])
 def register():
+    print("a")
+    if (request.method == 'POST'):
+        return redirect(url_for('profile'), 301)
     return render_template('register.html', **commonkwargs({}))
 
 @app.route('/profile')

@@ -17,7 +17,7 @@ def commonkwargs(kwargs):
     if (email in users_base):
         return kwargs | {'username': users_base[email][1], 'userimg': return_image(f'users/{email}', 'user_placeholder')}
     else:
-        return kwargs | {'username': 'Вы', 'userimg': return_image(f'users/{email}', 'user_placeholder')}
+        return kwargs | {'username': 'Log in', 'userimg': return_image(f'users/{email}', 'user_placeholder')}
 
 def getTovarsData(folder_path):
     total = dict()
