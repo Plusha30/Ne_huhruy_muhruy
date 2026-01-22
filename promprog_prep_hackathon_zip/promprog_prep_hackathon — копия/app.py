@@ -15,7 +15,7 @@ def dashboard():
 
 @app.route('/object/<int:id>')
 def object_detail(id):
-    return render_template('object.html', id=id, **commonkwargs)
+    return render_template('object.html', id=id, **commonkwargs({}))
 
 @app.route('/login')
 def login():
