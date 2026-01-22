@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Hackathon Platform{% endblock %}</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<!-- Уведомление (Toast) -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="liveToast" class="toast align-items-center border-0 shadow-lg rounded-4" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                👋 Welcome back! Check out new features.
+            </div>
+            <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"></button>
+        </div>
+    </div>
+</div>
+
+<!-- Навигация -->
+<div class="fixed-top p-3 d-flex justify-content-center" style="z-index: 1030;">
+    <nav class="navbar navbar-expand-lg navbar-floating w-100" style="max-width: 1000px;">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="/">
+                <div class="bg-primary rounded-circle" style="width: 10px; height: 10px;"></div>
+                ProjectName
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-center" id="navContent">
+                <ul class="navbar-nav gap-1 gap-lg-4 text-center my-3 my-lg-0">
+                    <li class="nav-item"><a class="nav-link text-dark fw-medium" href="{{ url_for('landing') }}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link text-dark fw-medium" href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                    <!-- ИСПРАВЛЕНИЕ: Заменили url_for('pricing') на # -->
+                    <li class="nav-item"><a class="nav-link text-dark fw-medium" href="#">Pricing</a></li>
+                </ul>
+            </div>
+            <div class="d-none d-lg-flex gap-2">
+                <a href="{{ url_for('login') }}" class="btn btn-sm btn-link text-decoration-none text-dark fw-bold">Log In</a>
+                <a href="{{ url_for('register') }}" class="btn btn-sm btn-primary-custom btn-pill">Sign Up</a>
+            </div>
+        </div>
+    </nav>
+</div>
+
+<!-- Spacer чтобы меню не перекрывало контент -->
+<div class="navbar-spacer"></div>
+
+<main>
+    {% block content %}{% endblock %}
+</main>
+
+<footer class="py-5 mt-auto text-center border-top bg-white">
+    <div class="container">
+        <p class="text-muted mb-0 small">&copy; 2024 ProjectName. Built for Hackathon.</p>
+    </div>
+</footer>
+
+<!-- JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        });
+        const toastEl = document.getElementById('liveToast')
+        if(toastEl) {
+            const toast = new bootstrap.Toast(toastEl)
+            toast.show()
+        }
+    });
+</script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

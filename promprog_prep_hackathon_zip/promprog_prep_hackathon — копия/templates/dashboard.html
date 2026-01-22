@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+{% block title %}Workspace{% endblock %}
+
+{% block content %}
+<div class="container">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <div>
+            <h1 class="fw-bold mb-1">Dashboard</h1>
+            <p class="text-secondary mb-0">Overview of your system performance.</p>
+        </div>
+        <div>
+            <!-- Кнопка вызывает Offcanvas -->
+            <button class="btn btn-white border shadow-sm btn-pill" type="button" data-bs-toggle="offcanvas" data-bs-target="#filterSidebar">
+                <i class="bi bi-sliders me-2"></i>Filters
+            </button>
+            <button class="btn btn-primary-custom btn-pill ms-2">
+                <i class="bi bi-plus-lg me-2"></i>Create New
+            </button>
+        </div>
+    </div>
+
+    <!-- Stats Cards (Generic SaaS) -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-4">
+            <div class="card card-hover p-4 h-100 border-0 shadow-sm" style="background: linear-gradient(135deg, #0f172a 0%, #334155 100%); color: white;">
+                <p class="mb-1 opacity-75">Monthly Revenue</p>
+                <h2 class="fw-bold">$45,200.00</h2>
+                <div class="progress mt-3 bg-white bg-opacity-10" style="height: 4px;">
+                    <div class="progress-bar bg-success" style="width: 75%"></div>
+                </div>
+                <small class="mt-2 d-block opacity-75">Target: $60k</small>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card card-hover p-4 h-100 bg-white border-0 shadow-sm">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <p class="text-muted mb-1">Active Users</p>
+                        <h2 class="fw-bold text-dark">1,240</h2>
+                    </div>
+                    <div class="bg-primary bg-opacity-10 rounded-circle p-3 text-primary" style="height: fit-content;">
+                        <i class="bi bi-people-fill"></i>
+                    </div>
+                </div>
+                <span class="badge bg-success bg-opacity-10 text-success mt-3 rounded-pill">+12% vs last week</span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card card-hover p-4 h-100 bg-white border-0 shadow-sm">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <p class="text-muted mb-1">System Load</p>
+                        <h2 class="fw-bold text-dark">34%</h2>
+                    </div>
+                    <div class="bg-warning bg-opacity-10 rounded-circle p-3 text-warning" style="height: fit-content;">
+                        <i class="bi bi-hdd-rack-fill"></i>
+                    </div>
+                </div>
+                <span class="badge bg-secondary bg-opacity-10 text-secondary mt-3 rounded-pill">Optimal</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- GRID OF OBJECTS (Generic) -->
+    <h4 class="fw-bold mb-4">Recent Projects</h4>
+    <div class="row g-4">
+        {% for i in range(1, 9) %}
+        <div class="col-md-6 col-lg-3">
+            <div class="card card-hover h-100 border-0 shadow-sm">
+                <div class="card-body p-4 d-flex flex-column">
+                    <!-- Заглушка иконки -->
+                    <div class="mb-3 d-flex justify-content-between align-items-start">
+                        <div class="rounded-3 d-flex align-items-center justify-content-center text-primary bg-light" style="width: 48px; height: 48px;">
+                            <i class="bi bi-folder-fill fs-4"></i>
+                        </div>
+                        <!-- Dropdown (Bootstrap) -->
+                        <div class="dropdown">
+                            <button class="btn btn-link text-muted p-0 text-decoration-none" data-bs-toggle="dropdown">
+                                <i class="bi bi-three-dots"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end border-0 shadow-lg rounded-3">
+                                <li><a class="dropdown-item small" href="#">Edit</a></li>
+                                <li><a class="dropdown-item small text-danger" href="#">Archive</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <h5 class="fw-bold mb-1">Project Alpha {{ i }}</h5>
+                    <p class="text-muted small mb-3">Updated 2h ago</p>
+
+                    <!-- Generic Status Tags -->
+                    <div class="mb-4">
+                        {% if loop.index % 3 == 0 %}
+                        <span class="badge bg-warning bg-opacity-10 text-warning border border-warning border-opacity-25 rounded-pill">Processing</span>
+                        {% elif loop.index % 3 == 1 %}
+                        <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill">Completed</span>
+                        {% else %}
+                        <span class="badge bg-info bg-opacity-10 text-info border border-info border-opacity-25 rounded-pill">Draft</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
+                        <!-- Tooltip пример -->
+                        <div class="d-flex -space-x-2">
+                            <div class="bg-secondary rounded-circle border border-white" style="width: 24px; height: 24px;" data-bs-toggle="tooltip" title="User 1"></div>
+                            <div class="bg-dark rounded-circle border border-white" style="width: 24px; height: 24px; margin-left: -8px;" data-bs-toggle="tooltip" title="User 2"></div>
+                        </div>
+                        <a href="{{ url_for('object_detail', id=i) }}" class="text-decoration-none fw-bold small">Open &rarr;</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- OFFCANVAS SIDEBAR (FILTERS) -->
+<div class="offcanvas offcanvas-end rounded-start-4 border-0 p-3" tabindex="-1" id="filterSidebar">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title fw-bold">Filters</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <div class="offcanvas-body">
+        <label class="form-label fw-bold small text-muted text-uppercase">Status</label>
+        <div class="d-flex flex-column gap-2 mb-4">
+            <label class="form-check-label d-flex align-items-center gap-2 p-2 rounded hover-bg-light cursor-pointer">
+                <input class="form-check-input" type="checkbox" checked> Active Projects
+            </label>
+            <label class="form-check-label d-flex align-items-center gap-2 p-2 rounded hover-bg-light cursor-pointer">
+                <input class="form-check-input" type="checkbox"> Archived
+            </label>
+        </div>
+
+        <label class="form-label fw-bold small text-muted text-uppercase">Date Range</label>
+        <select class="form-select mb-4 rounded-3">
+            <option>Last 7 Days</option>
+            <option>Last 30 Days</option>
+            <option>This Year</option>
+        </select>
+
+        <button class="btn btn-primary-custom w-100 btn-pill">Apply Filters</button>
+    </div>
+</div>
+
+{% endblock %}

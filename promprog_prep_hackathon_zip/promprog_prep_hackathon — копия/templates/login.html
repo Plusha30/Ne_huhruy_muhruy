@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<div class="container-fluid p-0">
+    <div class="row g-0">
+        <!-- Left Side: Form -->
+        <div class="col-md-6 d-flex align-items-center justify-content-center bg-white min-vh-100">
+            <div class="p-5" style="width: 100%; max-width: 450px;">
+                <a href="/" class="text-decoration-none fw-bold text-primary mb-5 d-block">&larr; Back to Home</a>
+
+                <h2 class="fw-bold mb-2">Welcome Back</h2>
+                <p class="text-muted mb-4">Please enter your details.</p>
+
+                <form>
+                    <div class="mb-3">
+                        <label class="form-label text-muted small fw-bold">Email</label>
+                        <input type="email" class="form-control form-control-lg rounded-4 bg-light border-0" placeholder="hello@example.com">
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label text-muted small fw-bold">Password</label>
+                        <input type="password" class="form-control form-control-lg rounded-4 bg-light border-0" placeholder="••••••••">
+                    </div>
+                    <button class="btn btn-dark-blue btn-pill w-100 py-3 mb-3">Sign in</button>
+                    <button class="btn btn-outline-secondary btn-pill w-100 py-3 border-light text-muted">
+                        <img src="https://www.svgrepo.com/show/475656/google-color.svg" width="20" class="me-2"> Sign in with Google
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Right Side: Image/Art -->
+        <div class="col-md-6 d-none d-md-block">
+            <div class="h-100 w-100 bg-dark text-white d-flex align-items-center justify-content-center p-5 text-center" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);">
+                <div>
+                    <h1 class="display-4 fw-bold mb-3">Secure.<br>Simple.<br><span class="text-gradient">Yours.</span></h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

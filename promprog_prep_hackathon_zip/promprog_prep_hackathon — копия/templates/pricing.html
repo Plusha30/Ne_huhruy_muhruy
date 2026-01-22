@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Pricing{% endblock %}
+
+{% block content %}
+<div class="container py-5 text-center">
+    <h6 class="text-primary fw-bold text-uppercase ls-wide">Plans</h6>
+    <h2 class="display-4 fw-bold mb-3">Simple Pricing</h2>
+    <p class="text-muted mb-5">Start for free, scale as you grow.</p>
+
+    <div class="row g-4 justify-content-center">
+        <!-- Free Tier -->
+        <div class="col-lg-4">
+            <div class="card card-custom p-5 h-100">
+                <h4 class="fw-bold text-muted">Starter</h4>
+                <h1 class="display-5 fw-bold my-3">$0</h1>
+                <p class="text-muted mb-4">Perfect for side projects</p>
+                <ul class="list-unstyled text-start mb-4 d-flex flex-column gap-2">
+                    <li><i class="bi bi-check-circle-fill text-success me-2"></i> 1 Project</li>
+                    <li><i class="bi bi-check-circle-fill text-success me-2"></i> Basic Analytics</li>
+                    <li><i class="bi bi-check-circle-fill text-success me-2"></i> Community Support</li>
+                </ul>
+                <button class="btn btn-outline-dark btn-pill w-100 mt-auto">Get Started</button>
+            </div>
+        </div>
+
+        <!-- Pro Tier (Highlighted) -->
+        <div class="col-lg-4">
+            <div class="card card-custom p-5 h-100 border-primary border-2 shadow-lg">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h4 class="fw-bold text-primary mb-0">Pro</h4>
+                    <span class="badge bg-primary rounded-pill">Popular</span>
+                </div>
+                <h1 class="display-5 fw-bold my-3">$29</h1>
+                <p class="text-muted mb-4">For power users</p>
+                <ul class="list-unstyled text-start mb-4 d-flex flex-column gap-2">
+                    <li><i class="bi bi-check-circle-fill text-primary me-2"></i> Unlimited Projects</li>
+                    <li><i class="bi bi-check-circle-fill text-primary me-2"></i> Advanced Privacy</li>
+                    <li><i class="bi bi-check-circle-fill text-primary me-2"></i> Priority Support</li>
+                </ul>
+                <button class="btn btn-dark-blue btn-pill w-100 mt-auto">Upgrade Now</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
