@@ -163,7 +163,7 @@ def login():
     if (request.method == 'POST'):
         data = request.form.to_dict(flat=False)
         input_email = data['email'][0]
-        if input_email in users_base: # Исправил data['email'][0] на input_email для читаемости
+        if len(data['email']) > 0 and data['email'][0] in users_base:
             global email
             email = input_email
             return redirect(url_for('profile'), 301)
