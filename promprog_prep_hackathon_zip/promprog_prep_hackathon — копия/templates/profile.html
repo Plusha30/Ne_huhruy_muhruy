@@ -68,19 +68,19 @@
                     <div class="row g-3 mb-3">
                         <div class="col-md-6">
                             <label class="form-label small fw-bold text-muted">First Name</label>
-                            <input type="text" class="form-control rounded-3" value={{username}}>
+                            <input name="name" type="text" class="form-control rounded-3" value={{username}}>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label small fw-bold text-muted">Last Name</label>
-                            <input type="text" class="form-control rounded-3" value="Morgan">
+                            <label class="form-label small fw-bold text-muted">Phone</label>
+                            <input name="phone" type="text" class="form-control rounded-3" value="{{phone}}">
                         </div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label small fw-bold text-muted">Bio / Job Title</label>
-                        <textarea class="form-control rounded-3" rows="3">Senior Product Manager at TechCorp.</textarea>
+                        <textarea name="desc" class="form-control rounded-3" rows="3">{{desc}}</textarea>
                     </div>
                     <div class="d-flex justify-content-end">
-                        <button class="btn btn-primary-custom btn-pill">Save Changes</button>
+                        <button type="submit" class="btn btn-primary-custom btn-pill">Save Changes</button>
                     </div>
                 </form>
             </div>

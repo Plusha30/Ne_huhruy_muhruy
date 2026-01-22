@@ -26,9 +26,9 @@ def return_image(path, placeholder):
 
 def commonkwargs(kwargs):
     if (email in users_base):
-        return kwargs | {'username': users_base[email][1], 'userimg': return_image(f'users/{email}', 'user_placeholder'), 'desc': users_base[email][2]}
+        return kwargs | {'username': users_base[email][1], 'userimg': return_image(f'users/{email}', 'user_placeholder'), 'desc': users_base[email][2], 'phone': users_base[email][3]}
     else:
-        return kwargs | {'username': 'Log in', 'userimg': return_image(f'users/{email}', 'user_placeholder'), 'desc': 'empty'}
+        return kwargs | {'username': 'Log in', 'userimg': return_image(f'users/{email}', 'user_placeholder'), 'desc': 'empty', 'phone': 'N/A'}
 
 #read data about tovars i think (maybe delete)
 
@@ -93,13 +93,13 @@ def product_detail(id):
 def login():
     global email
     if (email != 'placeholder'):
-        return redirect(url_for('profile'), 301)
+        return redirect(url_for('profile'), 302)
     if (request.method == 'POST'):
         data = request.form.to_dict(flat=False)
         input_email = data['email'][0]
         if len(data['email']) > 0 and data['email'][0] in users_base and data['password'][0] == users_base[input_email][0]:
             email = input_email
-            return redirect(url_for('profile'), 301)
+            return redirect(url_for('profile'), 302)
         else:
             pass
     return render_template('login.html', **commonkwargs({}))
@@ -108,26 +108,33 @@ def login():
 def register():
     global email
     if (email != 'placeholder'):
-        return redirect(url_for('profile'), 301)
+        return redirect(url_for('landing'), 302)
     if (request.method == 'POST'):
         data = request.form.to_dict(flat=False)
-        users_base[data['email'][0]] = [data['password'][0], data['name'][0], "empty"]
+        users_base[data['email'][0]] = [data['password'][0], data['name'][0], "empty", "N/A"]
         with open(f"{base_path}/users_base.json", 'w', encoding='utf-8') as f:
             f.write(json.dumps(users_base, indent=4))
         email = data['email'][0]
-        return redirect(url_for('profile'), 301)
+        return redirect(url_for('landing'), 302)
     return render_template('register.html', **commonkwargs({}))
 
 @app.route('/profile', methods=["GET", "POST"])
 def profile():
     global email
     if (email == 'placeholder'):
-        return redirect(url_for('login'), 301)
+        return redirect(url_for('login'), 302)
     if (request.method == 'POST'):
         data = request.form.to_dict(flat=False)
         if (data['commit_type'][0] == 'logout'):
             email = 'placeholder'
-            return redirect(url_for('landing'), 301)
+            return redirect(url_for('landing'), 302)
+        if (data['commit_type'][0] == 'update_data'):
+            if (len(data['name']) > 0):
+                users_base[email][1] = data['name'][0]
+            if (len(data['phone']) > 0):
+                users_base[email][3] = data['phone'][0]
+            if (len(data['desc']) > 0):
+                users_base[email][2] = data['desc'][0]
     return render_template('profile.html', **commonkwargs({}))
 
 @app.route('/pricing')

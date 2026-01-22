@@ -2,11 +2,19 @@
     "example@mail.com": [
         "qwerty",
         "\u0422\u0435\u0441\u0442\u043e\u0432\u044b\u0439 \u0430\u043a\u043a\u0430\u0443\u043d\u0442",
-        "test account"
+        "test account",
+        "+1(234)567-89-00"
     ],
     "plusha@plusha.com": [
         "plusha",
         "plusha",
+        "plusha",
         "plusha"
+    ],
+    "ya@hoo.com": [
+        "yahoo",
+        "yahoo",
+        "empty",
+        "N/A"
     ]
 }
