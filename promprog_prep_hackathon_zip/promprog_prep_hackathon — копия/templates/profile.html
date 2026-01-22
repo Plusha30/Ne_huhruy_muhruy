@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block title %}My Profile{% endblock %}
+
+{% block content %}
+<div class="container">
+
+    <!-- Header -->
+    <div class="mb-5">
+        <h1 class="fw-bold mb-1">Account Settings</h1>
+        <p class="text-secondary">Manage your profile information and security.</p>
+    </div>
+
+    <div class="row g-5">
+        <!-- SIDEBAR MENU -->
+        <div class="col-lg-3">
+            <div class="profile-sidebar sticky-top" style="top: 100px;">
+                <nav class="nav flex-column">
+                    <a class="nav-link active" href="#">
+                        <i class="bi bi-person"></i> General
+                    </a>
+                    <a class="nav-link" href="#">
+                        <i class="bi bi-shield-lock"></i> Security
+                    </a>
+                    <a class="nav-link" href="#">
+                        <i class="bi bi-credit-card"></i> Billing
+                    </a>
+                    <a class="nav-link" href="#">
+                        <i class="bi bi-bell"></i> Notifications
+                    </a>
+                    <hr class="my-3 opacity-25">
+                    <a class="nav-link text-danger" href="{{ url_for('landing') }}">
+                        <i class="bi bi-box-arrow-right"></i> Sign Out
+                    </a>
+                </nav>
+            </div>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="col-lg-9">
+
+            <!-- 1. Profile Photo -->
+            <div class="card card-hover p-4 border-0 mb-4 shadow-sm">
+                <h5 class="fw-bold mb-4">Profile Photo</h5>
+                <div class="d-flex align-items-center gap-4">
+                    <!-- Заглушка аватара -->
+                    <div class="avatar-upload">
+                        <i class="bi bi-camera"></i>
+                    </div>
+                    <div>
+                        <p class="mb-1 fw-bold">Upload new image</p>
+                        <p class="text-muted small mb-3">Max file size 2MB. JPG, PNG supported.</p>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-sm btn-white border shadow-sm rounded-pill">Upload</button>
+                            <button class="btn btn-sm btn-link text-danger text-decoration-none">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Personal Info -->
+            <div class="card card-hover p-4 border-0 mb-4 shadow-sm">
+                <h5 class="fw-bold mb-4">Personal Information</h5>
+                <form>
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-muted">First Name</label>
+                            <input type="text" class="form-control rounded-3" value="Alex">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-muted">Last Name</label>
+                            <input type="text" class="form-control rounded-3" value="Morgan">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-muted">Email Address</label>
+                        <input type="email" class="form-control rounded-3" value="alex.morgan@example.com">
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label small fw-bold text-muted">Bio / Job Title</label>
+                        <textarea class="form-control rounded-3" rows="3">Senior Product Manager at TechCorp.</textarea>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-primary-custom btn-pill">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- 3. Preferences -->
+            <div class="card card-hover p-4 border-0 shadow-sm">
+                <h5 class="fw-bold mb-4">Preferences</h5>
+                <div class="d-flex align-items-center justify-content-between mb-3 pb-3 border-bottom border-light">
+                    <div>
+                        <p class="mb-0 fw-bold">Email Notifications</p>
+                        <p class="text-muted small mb-0">Receive updates about your projects.</p>
+                    </div>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" checked>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <p class="mb-0 fw-bold">Dark Mode (Beta)</p>
+                        <p class="text-muted small mb-0">Switch interface to dark theme.</p>
+                    </div>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
