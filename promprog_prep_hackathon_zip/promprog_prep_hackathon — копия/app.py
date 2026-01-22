@@ -8,7 +8,7 @@ import shutil
 
 global tovars_data
 global users_base
-tovars_data = {}
+tovars_data = {} 
 users_base = {}
 email = 'placeholder'
 base_path = pathlib.Path(__file__).parent.resolve()
