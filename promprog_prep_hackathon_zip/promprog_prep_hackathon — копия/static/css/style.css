@@ -215,3 +215,80 @@ body {
         margin-bottom: 1rem;
     }
 }
+
+
+
+/* === PRICING CARD STYLES (Pro Business) === */
+
+/* Контейнер карточки */
+.pricing-card-featured {
+    border: 2px solid #3b82f6;      /* Толстая синяя рамка */
+    border-radius: 24px;            /* Сильное скругление */
+    position: relative;             /* Чтобы позиционировать бейдж */
+    background: white;
+    box-shadow: 0 20px 40px rgba(59, 130, 246, 0.15); /* Синеватая тень */
+    overflow: visible;              /* Важно! Чтобы бейдж не обрезался сверху */
+    transition: transform 0.3s ease;
+    z-index: 10;
+}
+
+/* Эффект увеличения на ПК */
+@media (min-width: 992px) {
+    .pricing-card-featured {
+        transform: scale(1.05);
+    }
+}
+
+/* Бейдж сверху (Most Popular) */
+.popular-badge {
+    position: absolute;
+    top: -18px;                     /* Вытаскиваем наверх */
+    left: 50%;
+    transform: translateX(-50%);    /* Центрируем */
+    background-color: #3b82f6;
+    color: white;
+    padding: 6px 20px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+}
+
+/* Темная кнопка как на картинке */
+.btn-dark-pricing {
+    background-color: #0f172a;      /* Темно-синий/Черный */
+    color: white;
+    border-radius: 50rem;           /* Таблетка */
+    padding: 14px 20px;
+    font-weight: 600;
+    font-size: 1rem;
+    width: 100%;
+    border: none;
+    transition: all 0.2s;
+}
+
+.btn-dark-pricing:hover {
+    background-color: #1e293b;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    color: white;
+}
+
+/* Список с галочками */
+.check-list-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 500;
+    color: #334155;
+    margin-bottom: 16px;
+    font-size: 1.05rem;
+}
+
+.check-icon-circle {
+    color: #3b82f6;                 /* Синий цвет галочки */
+    font-size: 1.4rem;              /* Размер галочки */
+    flex-shrink: 0;
+}
