@@ -81,8 +81,7 @@ def product_detail(id):
 def login():
     if (request.method == 'POST'):
         data = request.form.to_dict(flat=False)
-        input_email = data['email'][0]
-        if data['email'][0] in users_base:
+        if len(data['email']) > 0 and data['email'][0] in users_base:
             global email
             email = data['email'][0]
             return redirect(url_for('profile'), 301)
