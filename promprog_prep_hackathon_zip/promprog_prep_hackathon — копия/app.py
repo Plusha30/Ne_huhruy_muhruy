@@ -15,12 +15,15 @@ email = 'placeholder'
 # basic functions for site render
 
 def return_image(path, placeholder):
-    if os.path.exists(f"{pathlib.Path(__file__).parent.resolve()}/static/images/{path}.jpg"):
+    # Проверка существования картинки
+    full_path = f"{pathlib.Path(__file__).parent.resolve()}/static/images/{path}.jpg"
+    if os.path.exists(full_path):
         return f'images/{path}.jpg'
     else:
         return f'images/common/{placeholder}.jpg'
 
 def commonkwargs(kwargs):
+    # Если email есть в базе, возвращаем данные юзера, иначе заглушку "Log in"
     if (email in users_base):
         return kwargs | {'username': users_base[email][1], 'userimg': return_image(f'users/{email}', 'user_placeholder')}
     else:
@@ -30,6 +33,10 @@ def commonkwargs(kwargs):
 
 def getTovarsData(folder_path):
     total = dict()
+    # Проверка на существование папки, чтобы не падало
+    if not os.path.exists(folder_path):
+        return {}
+
     for filename in os.listdir(folder_path):
         file_path = os.path.join(folder_path, filename)
         with open(file_path, 'r', encoding='utf-8') as f:
@@ -39,13 +46,14 @@ def getTovarsData(folder_path):
             for i in d:
                 d[i] |= {"tovars": {}}
             way = f"{pathlib.Path(__file__).parent.resolve()}/tovars/{filename[:-5]}"
-            for tovar in os.listdir(way):
-                tovar_path = os.path.join(way, tovar)
-                with open(tovar_path, 'r', encoding='utf-8') as f1:
-                    info = f1.read()
-                    tov = json.loads(info)
-                    for i in d:
-                        d[i]["tovars"] |= tov
+            if os.path.exists(way):
+                for tovar in os.listdir(way):
+                    tovar_path = os.path.join(way, tovar)
+                    with open(tovar_path, 'r', encoding='utf-8') as f1:
+                        info = f1.read()
+                        tov = json.loads(info)
+                        for i in d:
+                            d[i]["tovars"] |= tov
     return total
 
 #app
@@ -68,28 +76,44 @@ def dashboard():
 def object_detail(id):
     return render_template('object.html', id=id, **commonkwargs({}))
 
+# --- ВАЖНОЕ ДОБАВЛЕНИЕ: Маршрут для товаров ---
+@app.route('/product/<int:id>')
+def product_detail(id):
+    return render_template('product.html', id=id, **commonkwargs({}))
+# ----------------------------------------------
+
 #login-register
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
-    #if (request.method == 'POST'):
-    #    data = request.form.to_dict(flat=False)
-    #    with open(f"{pathlib.Path(__file__).parent.resolve()}/users_base.json", 'w', encoding='utf-8') as f:
-    #        f.write(json.dumps(users_base, indent=4))
-    #    global email
-    #    email = data['email'][0]
-    #    return redirect(url_for('profile'), 301)
+    if (request.method == 'POST'):
+        data = request.form.to_dict(flat=False)
+        # Здесь можно добавить проверку пароля в будущем
+        # Пока просто логиним пользователя по email, если он есть в базе
+        input_email = data['email'][0]
+
+        if input_email in users_base:
+            global email
+            email = input_email
+            return redirect(url_for('dashboard'), 301)
+        else:
+            # Можно добавить обработку ошибки "Пользователь не найден"
+            pass
+
     return render_template('login.html', **commonkwargs({}))
 
 @app.route('/register', methods=["GET", "POST"])
 def register():
     if (request.method == 'POST'):
-        data = request.form.to_dict(flat=False) 
+        data = request.form.to_dict(flat=False)
+        # Сохраняем нового юзера: Email -> [Пароль, Имя]
         users_base[data['email'][0]] = [data['password'][0], data['name'][0]]
+
         with open(f"{pathlib.Path(__file__).parent.resolve()}/users_base.json", 'w', encoding='utf-8') as f:
             f.write(json.dumps(users_base, indent=4))
+
         global email
-        email = data['email'][0]
+        email = data['email'][0] # Сразу логиним после регистрации
         return redirect(url_for('profile'), 301)
     return render_template('register.html', **commonkwargs({}))
 
@@ -103,16 +127,30 @@ def pricing():
 
 @app.route('/<name>')
 def four04(name):
-    return render_template('404.html')
+    # Добавил **commonkwargs({}), чтобы на 404 странице тоже была красивая шапка
+    return render_template('404.html', **commonkwargs({}))
 
 def readfiles():
     global tovars_data
     global users_base
-    tovars_data = getTovarsData(f"{pathlib.Path(__file__).parent.resolve()}/categories")
-    with open(f"{pathlib.Path(__file__).parent.resolve()}/users_base.json", 'r', encoding='utf-8') as f:
+
+    # Создаем файлы/папки если их нет, чтобы не падало при первом запуске
+    base_path = pathlib.Path(__file__).parent.resolve()
+    users_path = f"{base_path}/users_base.json"
+
+    if not os.path.exists(users_path):
+        with open(users_path, 'w', encoding='utf-8') as f:
+            f.write("{}")
+
+    tovars_data = getTovarsData(f"{base_path}/categories")
+
+    with open(users_path, 'r', encoding='utf-8') as f:
         info = f.read()
-        users_base = json.loads(info)
-    
+        if info:
+            users_base = json.loads(info)
+        else:
+            users_base = {}
+
 if __name__ == '__main__':
     readfiles()
     app.run(port=5237, host="127.0.0.1", debug=True)
