@@ -1,5 +1,7 @@
 from flask import Flask, render_template
 from ivan_db import *
+import pathlib
+import json
 
 app = Flask(__name__)
 app.secret_key = 'hackathon_key'
@@ -15,7 +17,8 @@ def dashboard():
 
 @app.route('/object/<int:id>')
 def object_detail(id):
-    return render_template('object.html', id=id, **commonkwargs)
+    # ИСПРАВЛЕНО: добавлены скобки ({}), теперь функция вернет словарь
+    return render_template('object.html', id=id, **commonkwargs({}))
 
 @app.route('/login')
 def login():
@@ -25,14 +28,12 @@ def login():
 def register():
     return render_template('register.html', **commonkwargs({}))
 
-# НОВЫЙ МАРШРУТ
 @app.route('/profile')
 def profile():
     return render_template('profile.html', **commonkwargs({}))
 
 @app.route('/pricing')
 def pricing():
-    # ТЕПЕРЬ МЫ ИСПОЛЬЗУЕМ НОВЫЙ ШАБЛОН
     return render_template('pricing.html', **commonkwargs({}))
 
 if __name__ == '__main__':
