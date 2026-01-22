@@ -191,6 +191,10 @@ def profile():
 def pricing():
     return render_template('pricing.html', **commonkwargs({}))
 
+@app.route('/ultimate-dashboard')
+def ultimate_dashboard():
+    return render_template('super_dashboard.html', **commonkwargs({}))
+
 @app.errorhandler(404)
 def four04(name):
     return render_template('404.html', **commonkwargs({}))
