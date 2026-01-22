@@ -2,29 +2,54 @@
 {% block title %}Sign Up{% endblock %}
 
 {% block content %}
-<div class="auth-container">
-    <div class="card auth-box">
-        <div style="text-align: center; margin-bottom: 30px;">
-            <h2>Create Account</h2>
-            <p style="color: var(--text-muted);">Join the future of privacy</p>
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="card auth-card border-0 rounded-4 w-100" style="max-width: 900px;">
+        <div class="row g-0">
+
+            <!-- LEFT SIDE: Form -->
+            <div class="col-md-6 bg-white p-5">
+                <div class="mb-4">
+                    <h2 class="fw-bold mb-1">Create Account</h2>
+                    <p class="text-muted small">Start your free 14-day trial today.</p>
+                </div>
+
+                <form action="{{ url_for('dashboard') }}">
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-muted">Full Name</label>
+                        <input type="text" class="form-control rounded-3 py-2 bg-light border-light" placeholder="John Doe">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-muted">Email Address</label>
+                        <input type="email" class="form-control rounded-3 py-2 bg-light border-light" placeholder="name@company.com">
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label small fw-bold text-muted">Password</label>
+                        <input type="password" class="form-control rounded-3 py-2 bg-light border-light" placeholder="Create a password">
+                    </div>
+
+                    <button class="btn btn-primary-custom btn-pill w-100 mb-3">Get Started</button>
+                </form>
+
+                <div class="text-center mt-4 small">
+                    <span class="text-muted">Already have an account?</span>
+                    <a href="{{ url_for('login') }}" class="fw-bold text-decoration-none">Sign in</a>
+                </div>
+            </div>
+
+            <!-- RIGHT SIDE: Art/Info -->
+            <div class="col-md-6 auth-bg-side d-none d-md-flex flex-column text-center">
+                <div class="z-1">
+                    <div class="mb-4 text-white opacity-75">
+                        <i class="bi bi-rocket-takeoff-fill" style="font-size: 3rem;"></i>
+                    </div>
+                    <h3 class="fw-bold mb-3">Join the Future</h3>
+                    <p class="opacity-75 small px-4">
+                        Join over 10,000+ developers building the next generation of SaaS applications.
+                    </p>
+                </div>
+            </div>
+
         </div>
-
-        <form>
-            <label>Full Name</label>
-            <input type="text" class="form-control" placeholder="John Doe">
-
-            <label>Email Address</label>
-            <input type="email" class="form-control" placeholder="name@company.com">
-
-            <label>Password</label>
-            <input type="password" class="form-control" placeholder="Create a password">
-
-            <button class="btn btn-primary" style="width: 100%; margin-top: 10px; padding: 12px;">Create Account</button>
-        </form>
-
-        <p style="text-align: center; margin-top: 20px; font-size: 0.9rem;">
-            Already have an account? <a href="{{ url_for('login') }}" style="color: var(--accent); font-weight: 600;">Log In</a>
-        </p>
     </div>
 </div>
 {% endblock %}
