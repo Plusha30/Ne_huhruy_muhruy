@@ -26,13 +26,13 @@ def login():
 
 @app.route('/register', methods=["GET", "POST"])
 def register():
-    #print("a")
-    #if (request.method == 'POST'):
-    #    data = request.form.to_dict(flat=False) 
-    #    users_base[data['email'][0]] = [data['password'][0], data['name'][0]]
-    #    with open(f"{pathlib.Path(__file__).parent.resolve()}/users_base.txt", 'w', encoding='utf-8') as f:
-    #        f.write(json.dumps(users_base, indent=4))
-    #    return redirect(url_for('profile'), 301)
+    if (request.method == 'POST'):
+        print("a")
+        data = request.form.to_dict(flat=False) 
+        users_base[data['email'][0]] = [data['password'][0], data['name'][0]]
+        with open(f"{pathlib.Path(__file__).parent.resolve()}/users_base.json", 'w', encoding='utf-8') as f:
+            f.write(json.dumps(users_base, indent=4))
+        return redirect(url_for('profile'), 301)
     return render_template('register.html', **commonkwargs({}))
 
 @app.route('/profile')
@@ -42,6 +42,10 @@ def profile():
 @app.route('/pricing')
 def pricing():
     return render_template('pricing.html', **commonkwargs({}))
+
+@app.route('/<name>')
+def four04(name):
+    return render_template('404.html')
 
 if __name__ == '__main__':
     tovars_data = getTovarsData(f"{pathlib.Path(__file__).parent.resolve()}/categories")
