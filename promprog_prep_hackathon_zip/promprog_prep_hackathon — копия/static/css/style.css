@@ -292,3 +292,93 @@ body {
     font-size: 1.4rem;              /* Размер галочки */
     flex-shrink: 0;
 }
+
+
+/* === Вставлять в конец style.css === */
+
+/* --- SIDEBAR FILTERS (Сайдбар фильтров) --- */
+.filters-sidebar {
+    background-color: white;
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+    padding: 1.5rem;
+    position: sticky; /* Липкий сайдбар, едет при скролле */
+    top: 100px;
+    height: fit-content;
+}
+
+.filter-group-title {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-secondary);
+    font-weight: 700;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+/* Кастомные чекбоксы для фильтров */
+.form-check-custom {
+    margin-bottom: 0.6rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.form-check-custom label {
+    font-size: 0.95rem;
+    color: var(--color-primary);
+    cursor: pointer;
+    margin-bottom: 0;
+    flex-grow: 1;
+}
+.count-badge {
+    font-size: 0.75rem;
+    color: var(--color-secondary);
+    background: #f1f5f9;
+    padding: 2px 8px;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+/* --- TAGS (Категории) --- */
+.tag-badge {
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: inline-block;
+}
+
+/* Цвета для разных категорий */
+.tag-dev { background: #eff6ff; color: #1d4ed8; border: 1px solid #dbeafe; }       /* Синий */
+.tag-design { background: #fdf2f8; color: #be185d; border: 1px solid #fce7f3; }    /* Розовый */
+.tag-marketing { background: #fff7ed; color: #c2410c; border: 1px solid #ffedd5; } /* Оранжевый */
+.tag-finance { background: #f0fdf4; color: #15803d; border: 1px solid #dcfce7; }   /* Зеленый */
+.tag-hr { background: #f5f3ff; color: #7c3aed; border: 1px solid #ede9fe; }        /* Фиолетовый */
+
+/* --- COMPLEX FORM ELEMENTS --- */
+.form-select-lg-custom {
+    padding-top: 0.8rem;
+    padding-bottom: 0.8rem;
+    border-radius: 12px;
+    border-color: #cbd5e1;
+    font-size: 0.95rem;
+}
+.interest-checkbox-card {
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: white;
+}
+.interest-checkbox-card:hover {
+    border-color: var(--color-accent);
+    background: #eff6ff;
+}
+.interest-checkbox-card input:checked + span {
+    color: var(--color-accent);
+    font-weight: 700;
+}
