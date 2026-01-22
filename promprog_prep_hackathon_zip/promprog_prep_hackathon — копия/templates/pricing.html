@@ -16,7 +16,7 @@
             Transparent pricing. No hidden fees. Cancel anytime.
         </p>
 
-        <!-- Toggle Switch (Visual) -->
+        <!-- Toggle Switch (Месяц / Год) -->
         <div class="d-flex justify-content-center align-items-center gap-3 mb-5">
             <span class="fw-bold small">Monthly</span>
             <div class="form-check form-switch">
@@ -28,80 +28,84 @@
 </section>
 
 <!-- PRICING CARDS -->
-<section class="pb-5">
+<section class="pb-5" style="padding-top: 2rem;">
     <div class="container">
         <div class="row g-4 align-items-center">
 
-            <!-- Starter -->
-            <div class="col-lg-4">
+            <!-- 1. Starter (Обычная карточка) -->
+            <div class="col-lg-4 order-2 order-lg-1">
                 <div class="card card-hover border-0 shadow-sm h-100 p-4">
                     <div class="mb-4">
                         <h5 class="fw-bold text-muted">Starter</h5>
                         <h2 class="display-4 fw-bold mb-0">$0<span class="fs-6 text-muted fw-normal">/mo</span></h2>
+                        <p class="text-muted small mt-2">Perfect for side projects.</p>
                     </div>
-                    <ul class="list-unstyled mb-4 d-flex flex-column gap-3">
-                        <li class="d-flex align-items-center gap-2 text-secondary">
-                            <i class="bi bi-check-circle-fill text-primary"></i> 1 Project
-                        </li>
-                        <li class="d-flex align-items-center gap-2 text-secondary">
-                            <i class="bi bi-check-circle-fill text-primary"></i> Basic Analytics
-                        </li>
-                        <li class="d-flex align-items-center gap-2 text-secondary">
-                            <i class="bi bi-check-circle-fill text-primary"></i> 24h Support Response
-                        </li>
+                    <ul class="list-unstyled mb-5">
+                        <li class="check-list-item"><i class="bi bi-check-circle check-icon-circle text-muted" style="font-size: 1.2rem;"></i> 1 Project</li>
+                        <li class="check-list-item"><i class="bi bi-check-circle check-icon-circle text-muted" style="font-size: 1.2rem;"></i> Basic Analytics</li>
+                        <li class="check-list-item"><i class="bi bi-check-circle check-icon-circle text-muted" style="font-size: 1.2rem;"></i> Community Support</li>
                     </ul>
-                    <a href="{{ url_for('register') }}" class="btn btn-white border w-100 btn-pill">Get Started</a>
+                    <a href="{{ url_for('register') }}" class="btn btn-white border w-100 btn-pill py-2 fw-bold">Get Started</a>
                 </div>
             </div>
 
-            <!-- PRO (Highlighted) -->
-            <div class="col-lg-4">
-                <div class="card card-hover border-primary border-2 shadow h-100 p-4 position-relative transform-scale-sm">
-                    <div class="position-absolute top-0 start-50 translate-middle">
-                        <span class="badge bg-primary rounded-pill px-3 py-2 shadow-sm">Most Popular</span>
+            <!-- 2. PRO BUSINESS (Центральная - ДИЗАЙН КАК НА КАРТИНКЕ) -->
+            <div class="col-lg-4 order-1 order-lg-2 mb-4 mb-lg-0">
+                <!-- Используем специальный класс pricing-card-featured -->
+                <div class="pricing-card-featured p-4 p-md-5 d-flex flex-column h-100">
+
+                    <!-- Бейдж "Most Popular" сидящий на рамке -->
+                    <div class="popular-badge">Most Popular</div>
+
+                    <div class="text-center mb-4 mt-2">
+                        <h4 class="fw-bold text-primary mb-2">Pro Business</h4>
+                        <!-- Цена (меняется JS) -->
+                        <div class="d-flex justify-content-center align-items-end">
+                            <span class="display-3 fw-bold text-dark lh-1 price-text" data-monthly="$29" data-yearly="$24">$29</span>
+                            <span class="text-muted fs-5 mb-2 ms-1">/mo</span>
+                        </div>
+                        <p class="text-muted mt-3">Everything you need to scale.</p>
                     </div>
-                    <div class="mb-4 text-center">
-                        <h5 class="fw-bold text-primary">Pro Business</h5>
-                        <h2 class="display-4 fw-bold mb-0 price-text" data-monthly="$29" data-yearly="$24">$29<span class="fs-6 text-muted fw-normal">/mo</span></h2>
-                        <p class="small text-muted mt-2">Everything you need to scale.</p>
+
+                    <hr class="border-light mb-4 opacity-50">
+
+                    <!-- Список с синими галочками -->
+                    <div class="flex-grow-1 mb-5">
+                        <div class="check-list-item">
+                            <i class="bi bi-check-circle-fill check-icon-circle"></i> Unlimited Projects
+                        </div>
+                        <div class="check-list-item">
+                            <i class="bi bi-check-circle-fill check-icon-circle"></i> Advanced Analytics
+                        </div>
+                        <div class="check-list-item">
+                            <i class="bi bi-check-circle-fill check-icon-circle"></i> Team Collaboration
+                        </div>
+                        <div class="check-list-item">
+                            <i class="bi bi-check-circle-fill check-icon-circle"></i> Priority Support
+                        </div>
                     </div>
-                    <ul class="list-unstyled mb-5 d-flex flex-column gap-3">
-                        <li class="d-flex align-items-center gap-2 fw-medium">
-                            <i class="bi bi-check-circle-fill text-primary"></i> Unlimited Projects
-                        </li>
-                        <li class="d-flex align-items-center gap-2 fw-medium">
-                            <i class="bi bi-check-circle-fill text-primary"></i> Advanced Analytics
-                        </li>
-                        <li class="d-flex align-items-center gap-2 fw-medium">
-                            <i class="bi bi-check-circle-fill text-primary"></i> Team Collaboration
-                        </li>
-                        <li class="d-flex align-items-center gap-2 fw-medium">
-                            <i class="bi bi-check-circle-fill text-primary"></i> Priority Support
-                        </li>
-                    </ul>
-                    <a href="{{ url_for('register') }}" class="btn btn-primary-custom w-100 btn-pill py-2 shadow-sm">Start Free Trial</a>
+
+                    <!-- Темная кнопка -->
+                    <a href="{{ url_for('register') }}" class="btn-dark-pricing">
+                        Start Free Trial
+                    </a>
                 </div>
             </div>
 
-            <!-- Enterprise -->
-            <div class="col-lg-4">
+            <!-- 3. Enterprise (Обычная карточка) -->
+            <div class="col-lg-4 order-3 order-lg-3">
                 <div class="card card-hover border-0 shadow-sm h-100 p-4">
                     <div class="mb-4">
                         <h5 class="fw-bold text-muted">Enterprise</h5>
                         <h2 class="display-4 fw-bold mb-0 price-text" data-monthly="$99" data-yearly="$79">$99<span class="fs-6 text-muted fw-normal">/mo</span></h2>
+                        <p class="text-muted small mt-2">For large scale organizations.</p>
                     </div>
-                    <ul class="list-unstyled mb-4 d-flex flex-column gap-3">
-                        <li class="d-flex align-items-center gap-2 text-secondary">
-                            <i class="bi bi-check-circle-fill text-dark"></i> Unlimited Users
-                        </li>
-                        <li class="d-flex align-items-center gap-2 text-secondary">
-                            <i class="bi bi-check-circle-fill text-dark"></i> Custom Integrations
-                        </li>
-                        <li class="d-flex align-items-center gap-2 text-secondary">
-                            <i class="bi bi-check-circle-fill text-dark"></i> Dedicated Manager
-                        </li>
+                    <ul class="list-unstyled mb-5">
+                        <li class="check-list-item"><i class="bi bi-check-circle-fill text-dark" style="font-size: 1.2rem;"></i> Unlimited Users</li>
+                        <li class="check-list-item"><i class="bi bi-check-circle-fill text-dark" style="font-size: 1.2rem;"></i> Custom Integrations</li>
+                        <li class="check-list-item"><i class="bi bi-check-circle-fill text-dark" style="font-size: 1.2rem;"></i> Dedicated Manager</li>
                     </ul>
-                    <a href="#" class="btn btn-white border w-100 btn-pill">Contact Sales</a>
+                    <a href="#" class="btn btn-white border w-100 btn-pill py-2 fw-bold">Contact Sales</a>
                 </div>
             </div>
 
@@ -109,8 +113,8 @@
     </div>
 </section>
 
-<!-- COMPARISON TABLE -->
-<section class="py-5 bg-white border-top">
+<!-- COMPARISON TABLE (Таблица сравнения) -->
+<section class="py-5 bg-white border-top mt-5">
     <div class="container">
         <h3 class="text-center fw-bold mb-5">Compare Features</h3>
         <div class="table-responsive">
@@ -164,17 +168,17 @@
 
 {% block scripts %}
 <script>
-    // Простой скрипт для переключения цен (Месяц/Год)
+    // Скрипт переключения цен (Monthly / Yearly)
     const switchEl = document.getElementById('billingSwitch');
     const prices = document.querySelectorAll('.price-text');
 
     switchEl.addEventListener('change', function() {
         prices.forEach(price => {
             if (this.checked) {
-                // Если включено (Год)
+                // Если включен свитч (Yearly)
                 price.innerHTML = price.dataset.yearly + '<span class="fs-6 text-muted fw-normal">/mo</span>';
             } else {
-                // Если выключено (Месяц)
+                // Если выключен (Monthly)
                 price.innerHTML = price.dataset.monthly + '<span class="fs-6 text-muted fw-normal">/mo</span>';
             }
         });
