@@ -1,0 +1,226 @@
+{% extends "base.html" %}
+{% block title %}Smart Watch - Product Store{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+
+    <!-- ХЛЕБНЫЕ КРОШКИ (Навигация) -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('dashboard') }}" class="text-decoration-none text-muted">Store</a></li>
+            <li class="breadcrumb-item"><a href="#" class="text-decoration-none text-muted">Electronics</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Product #{{ id }}</li>
+        </ol>
+    </nav>
+
+    <div class="row g-5">
+
+        <!-- ЛЕВАЯ КОЛОНКА: ГАЛЕРЕЯ -->
+        <div class="col-lg-6">
+            <!-- Основное фото -->
+            <div class="bg-white rounded-4 border p-5 d-flex align-items-center justify-content-center position-relative overflow-hidden shadow-sm mb-3" style="height: 500px;">
+                <span class="badge bg-danger position-absolute top-0 start-0 m-4 px-3 py-2 rounded-pill shadow-sm">Sale -20%</span>
+                <span class="position-absolute top-0 end-0 m-4 text-muted"><i class="bi bi-heart fs-4 cursor-pointer"></i></span>
+
+                <!-- Иконка-заглушка (в реальном проекте тут <img>) -->
+                <i class="bi bi-smartwatch text-secondary opacity-25" style="font-size: 12rem;"></i>
+            </div>
+
+            <!-- Миниатюры -->
+            <div class="row g-2">
+                <div class="col-3">
+                    <div class="bg-white rounded-3 border p-2 d-flex align-items-center justify-content-center cursor-pointer border-primary border-2" style="height: 80px;">
+                        <i class="bi bi-smartwatch text-primary fs-3"></i>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="bg-white rounded-3 border p-2 d-flex align-items-center justify-content-center cursor-pointer" style="height: 80px;">
+                        <i class="bi bi-watch text-muted opacity-50 fs-3"></i>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="bg-white rounded-3 border p-2 d-flex align-items-center justify-content-center cursor-pointer" style="height: 80px;">
+                        <i class="bi bi-cpu text-muted opacity-50 fs-3"></i>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="bg-white rounded-3 border p-2 d-flex align-items-center justify-content-center cursor-pointer" style="height: 80px;">
+                        <i class="bi bi-play-circle text-muted opacity-50 fs-3"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ПРАВАЯ КОЛОНКА: ИНФОРМАЦИЯ И ПОКУПКА -->
+        <div class="col-lg-6">
+            <div class="ps-lg-3">
+
+                <!-- Заголовок и Рейтинг -->
+                <div class="mb-2">
+                    <span class="text-uppercase text-primary fw-bold small tracking-wide">Premium Tech</span>
+                </div>
+                <h1 class="display-5 fw-bold mb-3 text-dark">Ultra Smart Watch Series {{ id }}</h1>
+
+                <div class="d-flex align-items-center gap-3 mb-4">
+                    <div class="d-flex text-warning small">
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-half"></i>
+                    </div>
+                    <span class="text-muted small border-start ps-3">4.8 (1,204 reviews)</span>
+                    <span class="badge bg-success bg-opacity-10 text-success rounded-pill px-2">In Stock</span>
+                </div>
+
+                <!-- Цена -->
+                <div class="mb-4 p-3 bg-light rounded-3 d-inline-block">
+                    <span class="text-decoration-line-through text-muted fs-5 me-2">$399.00</span>
+                    <span class="display-6 fw-bold text-dark">$299.00</span>
+                    <div class="small text-success fw-bold mt-1">Save $100.00 today</div>
+                </div>
+
+                <p class="text-secondary lead mb-4" style="font-size: 1.1rem;">
+                    Monitor your health, track your workouts, and stay connected with the all-new Series {{ id }}.
+                    Now with 48-hour battery life and titanium case.
+                </p>
+
+                <hr class="text-muted opacity-25 my-4">
+
+                <!-- Выбор Цвета -->
+                <div class="mb-4">
+                    <label class="fw-bold small mb-2 d-block text-uppercase text-muted">Select Color</label>
+                    <div class="d-flex gap-2">
+                        <!-- Активный цвет (с рамкой) -->
+                        <div class="rounded-circle border border-2 border-primary p-1" style="cursor: pointer;">
+                            <div class="rounded-circle bg-dark" style="width: 32px; height: 32px;"></div>
+                        </div>
+                        <!-- Неактивные -->
+                        <div class="rounded-circle border border-2 border-transparent p-1" style="cursor: pointer;">
+                            <div class="rounded-circle bg-secondary" style="width: 32px; height: 32px; background-color: #94a3b8 !important;"></div>
+                        </div>
+                        <div class="rounded-circle border border-2 border-transparent p-1" style="cursor: pointer;">
+                            <div class="rounded-circle bg-primary" style="width: 32px; height: 32px; background-color: #e2e8f0 !important;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Действия (Кнопки) -->
+                <div class="row g-2 mb-4">
+                    <div class="col-3">
+                        <input type="number" class="form-control form-control-lg text-center fw-bold border-secondary" value="1" min="1">
+                    </div>
+                    <div class="col-9">
+                        <button class="btn btn-primary-custom btn-pill w-100 py-2 fs-5 shadow-sm">
+                            <i class="bi bi-cart-plus me-2"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Инфо о доставке -->
+                <div class="d-flex gap-4 text-muted small mt-2">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-truck fs-5"></i> Free Shipping
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-shield-check fs-5"></i> 2 Year Warranty
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- НИЖНЯЯ СЕКЦИЯ: Табы с деталями -->
+    <div class="row mt-5 pt-5">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-bottom">
+                    <ul class="nav nav-tabs card-header-tabs" id="productTabs" role="tablist">
+                        <li class="nav-item">
+                            <button class="nav-link active text-dark fw-bold" data-bs-toggle="tab" data-bs-target="#desc">Description</button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link text-muted" data-bs-toggle="tab" data-bs-target="#specs">Specifications</button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link text-muted" data-bs-toggle="tab" data-bs-target="#reviews">Reviews (12)</button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body p-4 p-md-5">
+                    <div class="tab-content">
+                        <!-- Описание -->
+                        <div class="tab-pane fade show active" id="desc">
+                            <h4 class="fw-bold mb-3">Product Overview</h4>
+                            <p class="text-secondary">
+                                The Smart Watch Series {{ id }} is designed for those who lead an active lifestyle.
+                                With its robust titanium frame and sapphire crystal glass, it withstands the toughest conditions.
+                            </p>
+                            <ul class="text-secondary mb-0">
+                                <li>Always-on Retina display</li>
+                                <li>ECG app and blood oxygen sensor</li>
+                                <li>Water resistant up to 50 meters</li>
+                            </ul>
+                        </div>
+
+                        <!-- Характеристики -->
+                        <div class="tab-pane fade" id="specs">
+                            <table class="table table-striped">
+                                <tbody>
+                                <tr><td class="fw-bold w-25">Display</td><td>1.9 inch OLED</td></tr>
+                                <tr><td class="fw-bold">Battery</td><td>Up to 48 hours</td></tr>
+                                <tr><td class="fw-bold">Connectivity</td><td>Bluetooth 5.3, Wi-Fi, NFC</td></tr>
+                                <tr><td class="fw-bold">Sensors</td><td>Heart Rate, GPS, Accelerometer</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Отзывы -->
+                        <div class="tab-pane fade" id="reviews">
+                            <div class="mb-3 border-bottom pb-3">
+                                <div class="d-flex justify-content-between">
+                                    <h6 class="fw-bold">John Doe</h6>
+                                    <div class="text-warning small"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+                                </div>
+                                <p class="text-muted small mb-0">Amazing battery life! Totally worth the price.</p>
+                            </div>
+                            <div class="mb-0">
+                                <div class="d-flex justify-content-between">
+                                    <h6 class="fw-bold">Sarah Smith</h6>
+                                    <div class="text-warning small"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star"></i></div>
+                                </div>
+                                <p class="text-muted small mb-0">Good watch, but the strap is a bit stiff at first.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ПОХОЖИЕ ТОВАРЫ -->
+    <div class="mt-5 pt-4">
+        <h3 class="fw-bold mb-4">You might also like</h3>
+        <div class="row g-4">
+            {% for i in range(1, 5) %}
+            <div class="col-md-3">
+                <a href="#" class="text-decoration-none text-dark">
+                    <div class="card h-100 border-0 shadow-sm card-hover">
+                        <div class="bg-light p-4 text-center rounded-top" style="height: 200px; display: flex; align-items: center; justify-content: center;">
+                            <i class="bi bi-headphones fs-1 text-muted opacity-50"></i>
+                        </div>
+                        <div class="card-body">
+                            <h6 class="fw-bold mb-1">Wireless Accessory {{ i }}</h6>
+                            <p class="text-muted small mb-2">Audio & Sound</p>
+                            <div class="fw-bold text-primary">$149.00</div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
+{% endblock %}
