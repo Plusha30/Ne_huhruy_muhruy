@@ -1,45 +1,183 @@
 {% extends "base.html" %}
-{% block title %}Pricing{% endblock %}
+{% block title %}Pricing Plans{% endblock %}
 
 {% block content %}
-<div class="container py-5 text-center">
-    <h6 class="text-primary fw-bold text-uppercase ls-wide">Plans</h6>
-    <h2 class="display-4 fw-bold mb-3">Simple Pricing</h2>
-    <p class="text-muted mb-5">Start for free, scale as you grow.</p>
 
-    <div class="row g-4 justify-content-center">
-        <!-- Free Tier -->
-        <div class="col-lg-4">
-            <div class="card card-custom p-5 h-100">
-                <h4 class="fw-bold text-muted">Starter</h4>
-                <h1 class="display-5 fw-bold my-3">$0</h1>
-                <p class="text-muted mb-4">Perfect for side projects</p>
-                <ul class="list-unstyled text-start mb-4 d-flex flex-column gap-2">
-                    <li><i class="bi bi-check-circle-fill text-success me-2"></i> 1 Project</li>
-                    <li><i class="bi bi-check-circle-fill text-success me-2"></i> Basic Analytics</li>
-                    <li><i class="bi bi-check-circle-fill text-success me-2"></i> Community Support</li>
-                </ul>
-                <button class="btn btn-outline-dark btn-pill w-100 mt-auto">Get Started</button>
-            </div>
-        </div>
+<!-- HERO HEADER -->
+<section class="text-center py-5">
+    <div class="container">
+        <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 rounded-pill px-3 py-2 mb-3">
+            Simple Pricing
+        </span>
+        <h1 class="display-title display-4 mb-3">
+            Choose the right plan<br>for your <span class="text-gradient">Growth</span>
+        </h1>
+        <p class="text-secondary lead mb-5">
+            Transparent pricing. No hidden fees. Cancel anytime.
+        </p>
 
-        <!-- Pro Tier (Highlighted) -->
-        <div class="col-lg-4">
-            <div class="card card-custom p-5 h-100 border-primary border-2 shadow-lg">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                    <h4 class="fw-bold text-primary mb-0">Pro</h4>
-                    <span class="badge bg-primary rounded-pill">Popular</span>
-                </div>
-                <h1 class="display-5 fw-bold my-3">$29</h1>
-                <p class="text-muted mb-4">For power users</p>
-                <ul class="list-unstyled text-start mb-4 d-flex flex-column gap-2">
-                    <li><i class="bi bi-check-circle-fill text-primary me-2"></i> Unlimited Projects</li>
-                    <li><i class="bi bi-check-circle-fill text-primary me-2"></i> Advanced Privacy</li>
-                    <li><i class="bi bi-check-circle-fill text-primary me-2"></i> Priority Support</li>
-                </ul>
-                <button class="btn btn-dark-blue btn-pill w-100 mt-auto">Upgrade Now</button>
+        <!-- Toggle Switch (Visual) -->
+        <div class="d-flex justify-content-center align-items-center gap-3 mb-5">
+            <span class="fw-bold small">Monthly</span>
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="billingSwitch" style="width: 3em; height: 1.5em; cursor: pointer;">
             </div>
+            <span class="fw-bold small text-muted">Yearly <span class="badge bg-success bg-opacity-10 text-success ms-1">-20%</span></span>
         </div>
     </div>
-</div>
+</section>
+
+<!-- PRICING CARDS -->
+<section class="pb-5">
+    <div class="container">
+        <div class="row g-4 align-items-center">
+
+            <!-- Starter -->
+            <div class="col-lg-4">
+                <div class="card card-hover border-0 shadow-sm h-100 p-4">
+                    <div class="mb-4">
+                        <h5 class="fw-bold text-muted">Starter</h5>
+                        <h2 class="display-4 fw-bold mb-0">$0<span class="fs-6 text-muted fw-normal">/mo</span></h2>
+                    </div>
+                    <ul class="list-unstyled mb-4 d-flex flex-column gap-3">
+                        <li class="d-flex align-items-center gap-2 text-secondary">
+                            <i class="bi bi-check-circle-fill text-primary"></i> 1 Project
+                        </li>
+                        <li class="d-flex align-items-center gap-2 text-secondary">
+                            <i class="bi bi-check-circle-fill text-primary"></i> Basic Analytics
+                        </li>
+                        <li class="d-flex align-items-center gap-2 text-secondary">
+                            <i class="bi bi-check-circle-fill text-primary"></i> 24h Support Response
+                        </li>
+                    </ul>
+                    <a href="{{ url_for('register') }}" class="btn btn-white border w-100 btn-pill">Get Started</a>
+                </div>
+            </div>
+
+            <!-- PRO (Highlighted) -->
+            <div class="col-lg-4">
+                <div class="card card-hover border-primary border-2 shadow h-100 p-4 position-relative transform-scale-sm">
+                    <div class="position-absolute top-0 start-50 translate-middle">
+                        <span class="badge bg-primary rounded-pill px-3 py-2 shadow-sm">Most Popular</span>
+                    </div>
+                    <div class="mb-4 text-center">
+                        <h5 class="fw-bold text-primary">Pro Business</h5>
+                        <h2 class="display-4 fw-bold mb-0 price-text" data-monthly="$29" data-yearly="$24">$29<span class="fs-6 text-muted fw-normal">/mo</span></h2>
+                        <p class="small text-muted mt-2">Everything you need to scale.</p>
+                    </div>
+                    <ul class="list-unstyled mb-5 d-flex flex-column gap-3">
+                        <li class="d-flex align-items-center gap-2 fw-medium">
+                            <i class="bi bi-check-circle-fill text-primary"></i> Unlimited Projects
+                        </li>
+                        <li class="d-flex align-items-center gap-2 fw-medium">
+                            <i class="bi bi-check-circle-fill text-primary"></i> Advanced Analytics
+                        </li>
+                        <li class="d-flex align-items-center gap-2 fw-medium">
+                            <i class="bi bi-check-circle-fill text-primary"></i> Team Collaboration
+                        </li>
+                        <li class="d-flex align-items-center gap-2 fw-medium">
+                            <i class="bi bi-check-circle-fill text-primary"></i> Priority Support
+                        </li>
+                    </ul>
+                    <a href="{{ url_for('register') }}" class="btn btn-primary-custom w-100 btn-pill py-2 shadow-sm">Start Free Trial</a>
+                </div>
+            </div>
+
+            <!-- Enterprise -->
+            <div class="col-lg-4">
+                <div class="card card-hover border-0 shadow-sm h-100 p-4">
+                    <div class="mb-4">
+                        <h5 class="fw-bold text-muted">Enterprise</h5>
+                        <h2 class="display-4 fw-bold mb-0 price-text" data-monthly="$99" data-yearly="$79">$99<span class="fs-6 text-muted fw-normal">/mo</span></h2>
+                    </div>
+                    <ul class="list-unstyled mb-4 d-flex flex-column gap-3">
+                        <li class="d-flex align-items-center gap-2 text-secondary">
+                            <i class="bi bi-check-circle-fill text-dark"></i> Unlimited Users
+                        </li>
+                        <li class="d-flex align-items-center gap-2 text-secondary">
+                            <i class="bi bi-check-circle-fill text-dark"></i> Custom Integrations
+                        </li>
+                        <li class="d-flex align-items-center gap-2 text-secondary">
+                            <i class="bi bi-check-circle-fill text-dark"></i> Dedicated Manager
+                        </li>
+                    </ul>
+                    <a href="#" class="btn btn-white border w-100 btn-pill">Contact Sales</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- COMPARISON TABLE -->
+<section class="py-5 bg-white border-top">
+    <div class="container">
+        <h3 class="text-center fw-bold mb-5">Compare Features</h3>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead>
+                <tr class="text-center">
+                    <th style="width: 40%;" class="text-start ps-4">Feature</th>
+                    <th style="width: 20%;">Starter</th>
+                    <th style="width: 20%;" class="text-primary fw-bold">Pro</th>
+                    <th style="width: 20%;">Enterprise</th>
+                </tr>
+                </thead>
+                <tbody class="text-center text-secondary">
+                <tr>
+                    <td class="text-start ps-4 fw-medium text-dark">Active Projects</td>
+                    <td>1</td>
+                    <td class="text-primary fw-bold">Unlimited</td>
+                    <td>Unlimited</td>
+                </tr>
+                <tr>
+                    <td class="text-start ps-4 fw-medium text-dark">Storage</td>
+                    <td>5 GB</td>
+                    <td class="text-primary fw-bold">100 GB</td>
+                    <td>1 TB+</td>
+                </tr>
+                <tr>
+                    <td class="text-start ps-4 fw-medium text-dark">API Access</td>
+                    <td><i class="bi bi-dash-lg text-muted"></i></td>
+                    <td><i class="bi bi-check-lg text-success"></i></td>
+                    <td><i class="bi bi-check-lg text-success"></i></td>
+                </tr>
+                <tr>
+                    <td class="text-start ps-4 fw-medium text-dark">Custom Domain</td>
+                    <td><i class="bi bi-dash-lg text-muted"></i></td>
+                    <td><i class="bi bi-check-lg text-success"></i></td>
+                    <td><i class="bi bi-check-lg text-success"></i></td>
+                </tr>
+                <tr>
+                    <td class="text-start ps-4 fw-medium text-dark">SSO / SAML</td>
+                    <td><i class="bi bi-dash-lg text-muted"></i></td>
+                    <td><i class="bi bi-dash-lg text-muted"></i></td>
+                    <td><i class="bi bi-check-lg text-success"></i></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Простой скрипт для переключения цен (Месяц/Год)
+    const switchEl = document.getElementById('billingSwitch');
+    const prices = document.querySelectorAll('.price-text');
+
+    switchEl.addEventListener('change', function() {
+        prices.forEach(price => {
+            if (this.checked) {
+                // Если включено (Год)
+                price.innerHTML = price.dataset.yearly + '<span class="fs-6 text-muted fw-normal">/mo</span>';
+            } else {
+                // Если выключено (Месяц)
+                price.innerHTML = price.dataset.monthly + '<span class="fs-6 text-muted fw-normal">/mo</span>';
+            }
+        });
+    });
+</script>
 {% endblock %}
