@@ -10,6 +10,7 @@ tovars_data = {}
 users_base = {}
 email = 'placeholder'
 app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024
+#mdkasmdlaskmdlam
 
 def return_image(path, placeholder):
     if os.path.exists(f"{pathlib.Path(__file__).parent.resolve()}/static/images/{path}.jpg"):
