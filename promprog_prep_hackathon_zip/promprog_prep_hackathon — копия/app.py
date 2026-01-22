@@ -48,19 +48,12 @@ def dashboard():
 def object_detail(id):
     return render_template('object.html', id=id, **commonkwargs({}))
 
-# --- ИЗМЕНЕННЫЙ МАРШРУТ (ДИНАМИЧЕСКИЕ ТОВАРЫ) ---
 @app.route('/product/<id>')
 def product_detail(id):
-    # Берем данные из словаря products_db
     product_data = products_db.get(id)
-
-    # Если товара нет (например, id=999), показываем ошибку
     if not product_data:
         return render_template('404.html', **commonkwargs({}))
-
-    # Передаем данные в шаблон как переменную product
     return render_template('product.html', id=id, product=product_data, **commonkwargs({}))
-# -----------------------------------------------
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
