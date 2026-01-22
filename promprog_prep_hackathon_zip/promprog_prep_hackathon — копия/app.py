@@ -4,11 +4,15 @@ import json
 import pathlib
 import shutil
 
+# some global variables
+
 global tovars_data
 global users_base
 tovars_data = {}
 users_base = {}
 email = 'placeholder'
+
+# basic functions for site render
 
 def return_image(path, placeholder):
     if os.path.exists(f"{pathlib.Path(__file__).parent.resolve()}/static/images/{path}.jpg"):
@@ -21,6 +25,8 @@ def commonkwargs(kwargs):
         return kwargs | {'username': users_base[email][1], 'userimg': return_image(f'users/{email}', 'user_placeholder')}
     else:
         return kwargs | {'username': 'Log in', 'userimg': return_image(f'users/{email}', 'user_placeholder')}
+
+#read data about tovars i think (maybe delete)
 
 def getTovarsData(folder_path):
     total = dict()
@@ -42,9 +48,13 @@ def getTovarsData(folder_path):
                         d[i]["tovars"] |= tov
     return total
 
+#app
+
 app = Flask(__name__)
 app.secret_key = 'hackathon_key'
 app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024
+
+#routes
 
 @app.route('/')
 def landing():
@@ -56,17 +66,24 @@ def dashboard():
 
 @app.route('/object/<int:id>')
 def object_detail(id):
-    # ИСПРАВЛЕНО: добавлены скобки ({}), теперь функция вернет словарь
     return render_template('object.html', id=id, **commonkwargs({}))
 
-@app.route('/login')
+#login-register
+
+@app.route('/login', methods=["GET", "POST"])
 def login():
+    #if (request.method == 'POST'):
+    #    data = request.form.to_dict(flat=False)
+    #    with open(f"{pathlib.Path(__file__).parent.resolve()}/users_base.json", 'w', encoding='utf-8') as f:
+    #        f.write(json.dumps(users_base, indent=4))
+    #    global email
+    #    email = data['email'][0]
+    #    return redirect(url_for('profile'), 301)
     return render_template('login.html', **commonkwargs({}))
 
 @app.route('/register', methods=["GET", "POST"])
 def register():
     if (request.method == 'POST'):
-        print("a")
         data = request.form.to_dict(flat=False) 
         users_base[data['email'][0]] = [data['password'][0], data['name'][0]]
         with open(f"{pathlib.Path(__file__).parent.resolve()}/users_base.json", 'w', encoding='utf-8') as f:
