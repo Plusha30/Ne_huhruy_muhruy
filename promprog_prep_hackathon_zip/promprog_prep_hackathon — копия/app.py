@@ -11,25 +11,27 @@ def landing():
 def dashboard():
     return render_template('dashboard.html')
 
-# Маршрут для страницы объекта
 @app.route('/object/<int:id>')
 def object_detail(id):
     return render_template('object.html', id=id)
 
-# --- ИСПРАВЛЕНИЕ ОШИБКИ ЗДЕСЬ ---
-# Мы добавили этот маршрут, так как он мог вызываться в шаблонах
-@app.route('/pricing')
-def pricing():
-    # Если отдельного шаблона нет, покажем лендинг или дашборд
-    return render_template('landing.html')
-
 @app.route('/login')
 def login():
-    return render_template('dashboard.html')
+    return render_template('login.html')
 
 @app.route('/register')
 def register():
-    return render_template('dashboard.html')
+    return render_template('register.html')
+
+# НОВЫЙ МАРШРУТ
+@app.route('/profile')
+def profile():
+    return render_template('profile.html')
+
+@app.route('/pricing')
+def pricing():
+    # ТЕПЕРЬ МЫ ИСПОЛЬЗУЕМ НОВЫЙ ШАБЛОН
+    return render_template('pricing.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
