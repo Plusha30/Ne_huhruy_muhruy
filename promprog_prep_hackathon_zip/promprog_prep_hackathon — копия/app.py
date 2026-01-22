@@ -26,9 +26,9 @@ def return_image(path, placeholder):
 
 def commonkwargs(kwargs):
     if (email in users_base):
-        return kwargs | {'username': users_base[email][1], 'userimg': return_image(f'users/{email}', 'user_placeholder')}
+        return kwargs | {'username': users_base[email][1], 'userimg': return_image(f'users/{email}', 'user_placeholder'), 'desc': users_base[email][2]}
     else:
-        return kwargs | {'username': 'Log in', 'userimg': return_image(f'users/{email}', 'user_placeholder')}
+        return kwargs | {'username': 'Log in', 'userimg': return_image(f'users/{email}', 'user_placeholder'), 'desc': 'empty'}
 
 #read data about tovars i think (maybe delete)
 
@@ -91,11 +91,13 @@ def product_detail(id):
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
+    global email
+    if (email != 'placeholder'):
+        return redirect(url_for('profile'), 301)
     if (request.method == 'POST'):
         data = request.form.to_dict(flat=False)
         input_email = data['email'][0]
-        if len(data['email']) > 0 and data['email'][0] in users_base:
-            global email
+        if len(data['email']) > 0 and data['email'][0] in users_base and data['password'][0] == users_base[input_email][0]:
             email = input_email
             return redirect(url_for('profile'), 301)
         else:
@@ -104,18 +106,28 @@ def login():
 
 @app.route('/register', methods=["GET", "POST"])
 def register():
+    global email
+    if (email != 'placeholder'):
+        return redirect(url_for('profile'), 301)
     if (request.method == 'POST'):
         data = request.form.to_dict(flat=False)
         users_base[data['email'][0]] = [data['password'][0], data['name'][0]]
         with open(f"{base_path}/users_base.json", 'w', encoding='utf-8') as f:
             f.write(json.dumps(users_base, indent=4))
-        global email
         email = data['email'][0]
         return redirect(url_for('profile'), 301)
     return render_template('register.html', **commonkwargs({}))
 
-@app.route('/profile')
+@app.route('/profile', methods=["GET", "POST"])
 def profile():
+    global email
+    if (email == 'placeholder'):
+        return redirect(url_for('login'), 301)
+    if (request.method == 'POST'):
+        data = request.form.to_dict(flat=False)
+        if (data['commit_type'][0] == 'logout'):
+            email = 'placeholder'
+            return redirect(url_for('landing'), 301)
     return render_template('profile.html', **commonkwargs({}))
 
 @app.route('/pricing')

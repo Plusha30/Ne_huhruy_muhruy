@@ -28,9 +28,12 @@
                         <i class="bi bi-bell"></i> Notifications
                     </a>
                     <hr class="my-3 opacity-25">
-                    <a class="nav-link text-danger" href="{{ url_for('landing') }}">
-                        <i class="bi bi-box-arrow-right"></i> Sign Out
-                    </a>
+                    <form action="{{ url_for('profile') }}" method="post">
+                        <input name="commit_type" value="logout" hidden>
+                        <button type="submit" class="nav-link text-danger">
+                            <i class="bi bi-box-arrow-right"></i> Sign Out
+                        </button>
+                    </form>
                 </nav>
             </div>
         </div>
@@ -60,7 +63,8 @@
             <!-- 2. Personal Info -->
             <div class="card card-hover p-4 border-0 mb-4 shadow-sm">
                 <h5 class="fw-bold mb-4">Personal Information</h5>
-                <form>
+                <form action="{{ url_for('profile') }}" method="post">
+                    <input name="commit_type" value="update_data" hidden>
                     <div class="row g-3 mb-3">
                         <div class="col-md-6">
                             <label class="form-label small fw-bold text-muted">First Name</label>
