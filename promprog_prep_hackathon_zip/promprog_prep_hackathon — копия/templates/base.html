@@ -32,7 +32,8 @@
                 </ul>
             </div>
             <div class="d-none d-lg-flex gap-2">
-                <a href="{{ url_for('login') }}" class="btn btn-sm btn-link text-decoration-none text-dark fw-bold">Log In</a>
+                <img width=50 src="{{ url_for('static', filename=userimg) }}">
+                <a href="{{ url_for('login') }}" class="btn btn-sm btn-link text-decoration-none text-dark fw-bold">{{ username }}</a>
                 <a href="{{ url_for('register') }}" class="btn btn-sm btn-primary-custom btn-pill">Sign Up</a>
             </div>
         </div>
