@@ -23,7 +23,7 @@
     <div class="row g-4">
 
         <!-- ==================================================
-             ЛЕВАЯ КОЛОНКА: САЙДБАР С ФИЛЬТРАМИ (РАБОЧИЙ)
+             ЛЕВАЯ КОЛОНКА: САЙДБАР С ФИЛЬТРАМИ
              ================================================== -->
         <div class="col-lg-3">
             <div class="filters-sidebar shadow-sm">
@@ -33,7 +33,6 @@
                     <span class="filter-group-title">Search</span>
                     <div class="input-group">
                         <span class="input-group-text bg-light border-end-0"><i class="bi bi-search text-muted"></i></span>
-                        <!-- ID для JS -->
                         <input type="text" id="searchInput" class="form-control bg-light border-start-0" placeholder="Keywords...">
                     </div>
                 </div>
@@ -43,7 +42,6 @@
                     <span class="filter-group-title">Modules</span>
                     <div class="d-flex flex-column">
                         <div class="form-check-custom">
-                            <!-- Класс filter-module для JS -->
                             <input class="form-check-input filter-module" type="checkbox" id="cat1" value="ecommerce" checked>
                             <label for="cat1" class="ms-2">E-Commerce</label>
                             <span class="count-badge">4</span>
@@ -75,7 +73,6 @@
                 <div class="mb-4">
                     <span class="filter-group-title">Status</span>
                     <div class="form-check mb-2">
-                        <!-- Name одинаковый, value разный -->
                         <input class="form-check-input filter-status" type="radio" name="status" id="st1" value="all" checked>
                         <label class="form-check-label small" for="st1">All Items</label>
                     </div>
@@ -89,7 +86,7 @@
                     </div>
                 </div>
 
-                <!-- Team (Visual Only) -->
+                <!-- Team -->
                 <div>
                     <span class="filter-group-title">Team Members</span>
                     <div class="d-flex -space-x-2 overflow-hidden py-1">
@@ -105,7 +102,7 @@
 
         <!-- ==================================================
              ПРАВАЯ КОЛОНКА: КОНТЕНТ
-             ================================================== -->
+             ================================================= -->
         <div class="col-lg-9">
 
             <!-- KPIs Row -->
@@ -153,7 +150,7 @@
                 </div>
 
                 <div class="row g-4 mb-5">
-                    <!-- Item 1: E-commerce, Published -->
+                    <!-- Item 1 -->
                     <div class="col-md-4 filterable-item" data-module="ecommerce" data-status="published">
                         <a href="{{ url_for('product_detail', id=1) }}" class="card-link">
                             <div class="product-card h-100">
@@ -172,7 +169,7 @@
                             </div>
                         </a>
                     </div>
-                    <!-- Item 2: E-commerce, Published -->
+                    <!-- Item 2 -->
                     <div class="col-md-4 filterable-item" data-module="ecommerce" data-status="published">
                         <a href="{{ url_for('product_detail', id=2) }}" class="card-link">
                             <div class="product-card h-100">
@@ -191,7 +188,7 @@
                             </div>
                         </a>
                     </div>
-                    <!-- Item 3: E-commerce, Published -->
+                    <!-- Item 3 -->
                     <div class="col-md-4 filterable-item" data-module="ecommerce" data-status="published">
                         <a href="{{ url_for('product_detail', id=3) }}" class="card-link">
                             <div class="product-card h-100">
@@ -220,7 +217,6 @@
                 </div>
 
                 <div class="row g-4 mb-5">
-                    <!-- Service 1 -->
                     <div class="col-md-6 filterable-item" data-module="services" data-status="published">
                         <a href="{{ url_for('object_detail', id=201) }}" class="card-link">
                             <div class="service-card h-100">
@@ -237,7 +233,6 @@
                             </div>
                         </a>
                     </div>
-                    <!-- Service 2 -->
                     <div class="col-md-6 filterable-item" data-module="services" data-status="draft">
                         <a href="{{ url_for('object_detail', id=202) }}" class="card-link">
                             <div class="service-card h-100">
@@ -257,7 +252,7 @@
                 </div>
             </div>
 
-            <!-- PROJECT MANAGEMENT GRID -->
+            <!-- PROJECT MANAGEMENT GRID (ОБНОВЛЕННАЯ СЕКЦИЯ) -->
             <div class="section-container" data-section="projects">
                 <div class="d-flex align-items-center justify-content-between mb-3">
                     <h5 class="fw-bold mb-0">Active Projects <span class="badge bg-light text-dark ms-2 border">Management</span></h5>
@@ -270,57 +265,117 @@
 
                 <div class="row g-4 mb-5">
                     {% for i in range(1, 7) %}
+                    <!-- ЛОГИКА ОПРЕДЕЛЕНИЯ КАТЕГОРИИ И СТИЛЯ -->
                     {% if i % 3 == 0 %}
+                    {% set category = "Marketing" %}
                     {% set mod = "marketing" %}
                     {% set stat = "published" %}
+                    {% set icon = "bi-megaphone" %}
+                    {% set color = "warning" %} <!-- Оранжевый -->
                     {% elif i % 3 == 1 %}
+                    {% set category = "Development" %}
                     {% set mod = "development" %}
                     {% set stat = "published" %}
+                    {% set icon = "bi-code-slash" %}
+                    {% set color = "primary" %} <!-- Синий -->
                     {% else %}
+                    {% set category = "Finance" %}
                     {% set mod = "finance" %}
                     {% set stat = "draft" %}
+                    {% set icon = "bi-pie-chart" %}
+                    {% set color = "success" %} <!-- Зеленый -->
                     {% endif %}
 
-                    <!-- Добавляем атрибуты для фильтрации -->
                     <div class="col-md-6 col-xl-4 filterable-item" data-module="{{ mod }}" data-status="{{ stat }}">
                         <a href="{{ url_for('object_detail', id=i) }}" class="card-link">
                             <div class="card card-hover h-100 border-0 shadow-sm">
                                 <div class="card-body p-4 d-flex flex-column">
+
+                                    <!-- HEADER: ТЕГ -->
                                     <div class="d-flex justify-content-between align-items-start mb-3">
-                                        {% if i % 3 == 0 %}
-                                        <span class="tag-badge tag-marketing">Marketing</span>
-                                        {% elif i % 3 == 1 %}
-                                        <span class="tag-badge tag-dev">Development</span>
+                                        {% if category == "Marketing" %}
+                                        <span class="tag-badge tag-marketing"><i class="bi bi-graph-up me-1"></i> Marketing</span>
+                                        {% elif category == "Development" %}
+                                        <span class="tag-badge tag-dev"><i class="bi bi-git me-1"></i> Dev Team</span>
                                         {% else %}
-                                        <span class="tag-badge tag-finance">Finance</span>
+                                        <span class="tag-badge tag-finance"><i class="bi bi-wallet2 me-1"></i> Finance</span>
                                         {% endif %}
 
-                                        <!-- Индикатор статуса для наглядности -->
-                                        {% if stat == 'draft' %}
-                                        <span class="badge bg-secondary bg-opacity-25 text-secondary" style="font-size: 0.6rem;">Draft</span>
-                                        {% endif %}
+                                        <i class="bi bi-three-dots text-muted"></i>
                                     </div>
 
-                                    <h6 class="fw-bold mb-2 text-dark search-target">Project Alpha {{ i }}</h6>
+                                    <!-- TITLE & ICON -->
+                                    <div class="d-flex align-items-center gap-3 mb-3">
+                                        <div class="rounded-circle d-flex align-items-center justify-content-center bg-{{ color }} bg-opacity-10 text-{{ color }}" style="width: 48px; height: 48px; min-width: 48px;">
+                                            <i class="bi {{ icon }} fs-5"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="fw-bold mb-0 text-dark search-target">
+                                                {% if category == "Marketing" %} Q{{ i }} Ad Campaign
+                                                {% elif category == "Development" %} Web App v{{ i }}.0
+                                                {% else %} Annual Audit Report {% endif %}
+                                            </h6>
+                                            <small class="text-muted">Updated 2h ago</small>
+                                        </div>
+                                    </div>
 
-                                    <p class="text-muted small mb-4 line-clamp-2">
-                                        Project dashboard simulation with task tracking progress.
-                                    </p>
+                                    <!-- УНИКАЛЬНЫЙ КОНТЕНТ ДЛЯ КАЖДОГО ТИПА -->
+                                    <div class="mb-4">
+                                        {% if category == "Marketing" %}
+                                        <!-- Marketing: Metrics -->
+                                        <div class="d-flex justify-content-between text-center bg-light rounded-3 p-2">
+                                            <div>
+                                                <small class="text-muted d-block" style="font-size: 0.7rem;">REACH</small>
+                                                <span class="fw-bold text-dark">12.5k</span>
+                                            </div>
+                                            <div>
+                                                <small class="text-muted d-block" style="font-size: 0.7rem;">CLICKS</small>
+                                                <span class="fw-bold text-dark">850</span>
+                                            </div>
+                                            <div>
+                                                <small class="text-muted d-block" style="font-size: 0.7rem;">ROI</small>
+                                                <span class="fw-bold text-success">+24%</span>
+                                            </div>
+                                        </div>
 
-                                    <div class="mt-auto">
+                                        {% elif category == "Development" %}
+                                        <!-- Development: Progress Bar -->
                                         <div class="d-flex justify-content-between small mb-1">
-                                            <span class="fw-bold text-secondary">Progress</span>
+                                            <span class="fw-bold text-secondary">Sprint Progress</span>
                                             <span class="fw-bold text-primary">{{ i * 15 }}%</span>
                                         </div>
-                                        <div class="progress mb-3" style="height: 4px;">
+                                        <div class="progress mb-2" style="height: 6px;">
                                             <div class="progress-bar bg-primary" style="width: {{ i * 15 }}%"></div>
                                         </div>
+                                        <small class="text-muted"><i class="bi bi-bug me-1"></i> 3 open issues</small>
 
-                                        <div class="d-flex align-items-center gap-2 pt-2 border-top">
-                                            <img src="https://ui-avatars.com/api/?name=User+{{i}}&background=random" class="rounded-circle" width="24">
-                                            <span class="small text-muted ms-auto">2 days left</span>
+                                        {% else %}
+                                        <!-- Finance: Budget Info -->
+                                        <div class="border rounded-3 p-2 d-flex align-items-center justify-content-between">
+                                            <div class="d-flex align-items-center gap-2">
+                                                <div class="bg-success rounded-circle" style="width: 8px; height: 8px;"></div>
+                                                <span class="small fw-bold text-dark">On Budget</span>
+                                            </div>
+                                            <span class="fw-bold text-dark">$4,200</span>
                                         </div>
+                                        <small class="text-muted d-block mt-2">Invoice #INV-202{{ i }}</small>
+                                        {% endif %}
                                     </div>
+
+                                    <!-- FOOTER -->
+                                    <div class="mt-auto pt-3 border-top d-flex align-items-center justify-content-between">
+                                        <div class="d-flex -space-x-2">
+                                            <img src="https://ui-avatars.com/api/?name=User+{{i}}&background=random" class="rounded-circle border border-2 border-white" width="28" height="28">
+                                            <img src="https://ui-avatars.com/api/?name=Admin&background=0D8ABC&color=fff" class="rounded-circle border border-2 border-white" width="28" height="28" style="margin-left: -8px;">
+                                        </div>
+
+                                        {% if category == "Finance" %}
+                                        <span class="badge bg-light text-dark border">Review</span>
+                                        {% else %}
+                                        <span class="small fw-bold text-primary">Manage &rarr;</span>
+                                        {% endif %}
+                                    </div>
+
                                 </div>
                             </div>
                         </a>
@@ -347,7 +402,6 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <!-- Строка таблицы как фильтруемый элемент -->
                             <tr class="filterable-item" data-module="development" data-status="published" onclick="window.location='{{ url_for('object_detail', id=101) }}'">
                                 <td class="ps-4 fw-bold search-target">Website Redesign</td>
                                 <td><span class="badge bg-light text-dark border">Nike</span></td>
@@ -372,7 +426,6 @@
                 </div>
             </div>
 
-            <!-- Сообщение, если ничего не найдено -->
             <div id="noResults" class="text-center py-5 d-none">
                 <i class="bi bi-search fs-1 text-muted opacity-25"></i>
                 <p class="text-muted mt-3">No items found matching your filters.</p>
@@ -387,75 +440,49 @@
 {% block scripts %}
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        // Элементы управления
         const searchInput = document.getElementById('searchInput');
         const moduleCheckboxes = document.querySelectorAll('.filter-module');
         const statusRadios = document.querySelectorAll('.filter-status');
         const items = document.querySelectorAll('.filterable-item');
         const noResultsMsg = document.getElementById('noResults');
 
-        // Функция фильтрации
         function filterItems() {
             const searchTerm = searchInput.value.toLowerCase();
-
-            // Собираем выбранные модули в массив
-            const selectedModules = Array.from(moduleCheckboxes)
-                .filter(cb => cb.checked)
-                .map(cb => cb.value);
-
-            // Получаем выбранный статус
+            const selectedModules = Array.from(moduleCheckboxes).filter(cb => cb.checked).map(cb => cb.value);
             let selectedStatus = 'all';
-            statusRadios.forEach(radio => {
-                if(radio.checked) selectedStatus = radio.value;
-            });
+            statusRadios.forEach(radio => { if(radio.checked) selectedStatus = radio.value; });
 
             let visibleCount = 0;
 
             items.forEach(item => {
-                // Данные элемента
                 const itemModule = item.getAttribute('data-module');
                 const itemStatus = item.getAttribute('data-status');
                 const titleEl = item.querySelector('.search-target');
                 const itemTitle = titleEl ? titleEl.innerText.toLowerCase() : '';
 
-                // Проверка условий
                 const matchesSearch = itemTitle.includes(searchTerm);
-                // Если модули не выбраны, показываем все, иначе проверяем наличие
                 const matchesModule = selectedModules.length === 0 || selectedModules.includes(itemModule);
                 const matchesStatus = selectedStatus === 'all' || itemStatus === selectedStatus;
 
                 if (matchesSearch && matchesModule && matchesStatus) {
-                    item.classList.remove('d-none'); // Показываем (Bootstrap класс)
-
-                    // Если это строка таблицы, восстанавливаем table-row
-                    if(item.tagName === 'TR') {
-                        item.style.display = '';
-                    }
+                    item.classList.remove('d-none');
+                    if(item.tagName === 'TR') item.style.display = '';
                     visibleCount++;
                 } else {
-                    item.classList.add('d-none'); // Скрываем
+                    item.classList.add('d-none');
                 }
             });
 
-            // Показываем/скрываем заглушку "Ничего не найдено"
-            if (visibleCount === 0) {
-                noResultsMsg.classList.remove('d-none');
-            } else {
-                noResultsMsg.classList.add('d-none');
-            }
+            if (visibleCount === 0) noResultsMsg.classList.remove('d-none');
+            else noResultsMsg.classList.add('d-none');
 
-            // Скрываем пустые заголовки секций (опционально, для красоты)
             document.querySelectorAll('.section-container').forEach(section => {
                 const visibleChildren = section.querySelectorAll('.filterable-item:not(.d-none)');
-                if(visibleChildren.length === 0) {
-                    section.classList.add('d-none');
-                } else {
-                    section.classList.remove('d-none');
-                }
+                if(visibleChildren.length === 0) section.classList.add('d-none');
+                else section.classList.remove('d-none');
             });
         }
 
-        // Вешаем слушатели событий
         searchInput.addEventListener('input', filterItems);
         moduleCheckboxes.forEach(cb => cb.addEventListener('change', filterItems));
         statusRadios.forEach(radio => radio.addEventListener('change', filterItems));
