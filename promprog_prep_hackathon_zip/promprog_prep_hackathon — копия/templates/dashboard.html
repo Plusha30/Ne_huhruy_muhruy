@@ -1,147 +1,232 @@
 {% extends "base.html" %}
-{% block title %}Workspace{% endblock %}
+{% block title %}Workspace Dashboard{% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="container pb-5">
 
-    <!-- Header -->
-    <div class="d-flex justify-content-between align-items-center mb-5">
+    <!-- Page Header -->
+    <div class="d-flex flex-wrap justify-content-between align-items-end mb-5 gap-3">
         <div>
-            <h1 class="fw-bold mb-1">Dashboard</h1>
-            <p class="text-secondary mb-0">Overview of your system performance.</p>
+            <h1 class="fw-bold mb-1">Projects Overview</h1>
+            <p class="text-secondary mb-0">Manage and track your organization's performance.</p>
         </div>
-        <div>
-            <!-- Кнопка вызывает Offcanvas -->
-            <button class="btn btn-white border shadow-sm btn-pill" type="button" data-bs-toggle="offcanvas" data-bs-target="#filterSidebar">
-                <i class="bi bi-sliders me-2"></i>Filters
+        <div class="d-flex gap-2">
+            <button class="btn btn-white border shadow-sm btn-pill">
+                <i class="bi bi-cloud-arrow-down me-2"></i>Export
             </button>
-            <button class="btn btn-primary-custom btn-pill ms-2">
-                <i class="bi bi-plus-lg me-2"></i>Create New
+            <button class="btn btn-primary-custom btn-pill shadow-sm">
+                <i class="bi bi-plus-lg me-2"></i>New Project
             </button>
         </div>
     </div>
 
-    <!-- Stats Cards (Generic SaaS) -->
-    <div class="row g-4 mb-5">
-        <div class="col-md-4">
-            <div class="card card-hover p-4 h-100 border-0 shadow-sm" style="background: linear-gradient(135deg, #0f172a 0%, #334155 100%); color: white;">
-                <p class="mb-1 opacity-75">Monthly Revenue</p>
-                <h2 class="fw-bold">$45,200.00</h2>
-                <div class="progress mt-3 bg-white bg-opacity-10" style="height: 4px;">
-                    <div class="progress-bar bg-success" style="width: 75%"></div>
-                </div>
-                <small class="mt-2 d-block opacity-75">Target: $60k</small>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card card-hover p-4 h-100 bg-white border-0 shadow-sm">
-                <div class="d-flex justify-content-between">
-                    <div>
-                        <p class="text-muted mb-1">Active Users</p>
-                        <h2 class="fw-bold text-dark">1,240</h2>
-                    </div>
-                    <div class="bg-primary bg-opacity-10 rounded-circle p-3 text-primary" style="height: fit-content;">
-                        <i class="bi bi-people-fill"></i>
-                    </div>
-                </div>
-                <span class="badge bg-success bg-opacity-10 text-success mt-3 rounded-pill">+12% vs last week</span>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card card-hover p-4 h-100 bg-white border-0 shadow-sm">
-                <div class="d-flex justify-content-between">
-                    <div>
-                        <p class="text-muted mb-1">System Load</p>
-                        <h2 class="fw-bold text-dark">34%</h2>
-                    </div>
-                    <div class="bg-warning bg-opacity-10 rounded-circle p-3 text-warning" style="height: fit-content;">
-                        <i class="bi bi-hdd-rack-fill"></i>
-                    </div>
-                </div>
-                <span class="badge bg-secondary bg-opacity-10 text-secondary mt-3 rounded-pill">Optimal</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- GRID OF OBJECTS (Generic) -->
-    <h4 class="fw-bold mb-4">Recent Projects</h4>
     <div class="row g-4">
-        {% for i in range(1, 9) %}
-        <div class="col-md-6 col-lg-3">
-            <div class="card card-hover h-100 border-0 shadow-sm">
-                <div class="card-body p-4 d-flex flex-column">
-                    <!-- Заглушка иконки -->
-                    <div class="mb-3 d-flex justify-content-between align-items-start">
-                        <div class="rounded-3 d-flex align-items-center justify-content-center text-primary bg-light" style="width: 48px; height: 48px;">
-                            <i class="bi bi-folder-fill fs-4"></i>
+
+        <!-- === SIDEBAR FILTERS (Левая колонка) === -->
+        <div class="col-lg-3">
+            <div class="filters-sidebar shadow-sm">
+
+                <!-- Search -->
+                <div class="mb-4">
+                    <span class="filter-group-title">Search</span>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light border-end-0"><i class="bi bi-search text-muted"></i></span>
+                        <input type="text" class="form-control bg-light border-start-0" placeholder="Keywords...">
+                    </div>
+                </div>
+
+                <!-- Categories -->
+                <div class="mb-4">
+                    <span class="filter-group-title">Department</span>
+                    <div class="d-flex flex-column">
+                        <div class="form-check-custom">
+                            <input class="form-check-input" type="checkbox" id="cat1" checked>
+                            <label for="cat1" class="ms-2">Development</label>
+                            <span class="count-badge">12</span>
                         </div>
-                        <!-- Dropdown (Bootstrap) -->
-                        <div class="dropdown">
-                            <button class="btn btn-link text-muted p-0 text-decoration-none" data-bs-toggle="dropdown">
-                                <i class="bi bi-three-dots"></i>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end border-0 shadow-lg rounded-3">
-                                <li><a class="dropdown-item small" href="#">Edit</a></li>
-                                <li><a class="dropdown-item small text-danger" href="#">Archive</a></li>
-                            </ul>
+                        <div class="form-check-custom">
+                            <input class="form-check-input" type="checkbox" id="cat2">
+                            <label for="cat2" class="ms-2">Marketing</label>
+                            <span class="count-badge">5</span>
+                        </div>
+                        <div class="form-check-custom">
+                            <input class="form-check-input" type="checkbox" id="cat3">
+                            <label for="cat3" class="ms-2">Design</label>
+                            <span class="count-badge">8</span>
+                        </div>
+                        <div class="form-check-custom">
+                            <input class="form-check-input" type="checkbox" id="cat4">
+                            <label for="cat4" class="ms-2">Finance</label>
+                            <span class="count-badge">3</span>
+                        </div>
+                        <div class="form-check-custom">
+                            <input class="form-check-input" type="checkbox" id="cat5">
+                            <label for="cat5" class="ms-2">HR & Legal</label>
+                            <span class="count-badge">2</span>
                         </div>
                     </div>
+                </div>
 
-                    <h5 class="fw-bold mb-1">Project Alpha {{ i }}</h5>
-                    <p class="text-muted small mb-3">Updated 2h ago</p>
-
-                    <!-- Generic Status Tags -->
-                    <div class="mb-4">
-                        {% if loop.index % 3 == 0 %}
-                        <span class="badge bg-warning bg-opacity-10 text-warning border border-warning border-opacity-25 rounded-pill">Processing</span>
-                        {% elif loop.index % 3 == 1 %}
-                        <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill">Completed</span>
-                        {% else %}
-                        <span class="badge bg-info bg-opacity-10 text-info border border-info border-opacity-25 rounded-pill">Draft</span>
-                        {% endif %}
+                <!-- Status -->
+                <div class="mb-4">
+                    <span class="filter-group-title">Status</span>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="radio" name="status" id="st1" checked>
+                        <label class="form-check-label small" for="st1">All Projects</label>
                     </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="radio" name="status" id="st2">
+                        <label class="form-check-label small" for="st2">Active Now</label>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="radio" name="status" id="st3">
+                        <label class="form-check-label small" for="st3">On Hold</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="status" id="st4">
+                        <label class="form-check-label small" for="st4">Completed</label>
+                    </div>
+                </div>
 
-                    <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
-                        <!-- Tooltip пример -->
-                        <div class="d-flex -space-x-2">
-                            <div class="bg-secondary rounded-circle border border-white" style="width: 24px; height: 24px;" data-bs-toggle="tooltip" title="User 1"></div>
-                            <div class="bg-dark rounded-circle border border-white" style="width: 24px; height: 24px; margin-left: -8px;" data-bs-toggle="tooltip" title="User 2"></div>
+                <!-- Team -->
+                <div>
+                    <span class="filter-group-title">Team Members</span>
+                    <div class="d-flex -space-x-2 overflow-hidden py-1">
+                        {% for i in range(1, 6) %}
+                        <img src="https://ui-avatars.com/api/?name=User+{{i}}&background=random" class="rounded-circle border border-2 border-white" width="36" height="36" data-bs-toggle="tooltip" title="User {{i}}">
+                        {% endfor %}
+                        <div class="bg-light rounded-circle border border-2 border-white d-flex align-items-center justify-content-center small text-muted" style="width: 36px; height: 36px; cursor: pointer;">+4</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- === MAIN CONTENT (Правая колонка) === -->
+        <div class="col-lg-9">
+
+            <!-- KPIs Row -->
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm p-3 h-100">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="bg-primary bg-opacity-10 text-primary p-3 rounded-3"><i class="bi bi-kanban"></i></div>
+                            <div>
+                                <h3 class="fw-bold mb-0">24</h3>
+                                <small class="text-muted">Active Tasks</small>
+                            </div>
                         </div>
-                        <a href="{{ url_for('object_detail', id=i) }}" class="text-decoration-none fw-bold small">Open &rarr;</a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm p-3 h-100">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="bg-warning bg-opacity-10 text-warning p-3 rounded-3"><i class="bi bi-clock-history"></i></div>
+                            <div>
+                                <h3 class="fw-bold mb-0">12h</h3>
+                                <small class="text-muted">Time Tracked</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm p-3 h-100">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="bg-success bg-opacity-10 text-success p-3 rounded-3"><i class="bi bi-currency-dollar"></i></div>
+                            <div>
+                                <h3 class="fw-bold mb-0">$8.4k</h3>
+                                <small class="text-muted">Revenue</small>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Grid Items -->
+            <div class="row g-4">
+                <!-- Мы используем цикл с логикой, чтобы сгенерировать РАЗНЫЕ карточки -->
+                {% for i in range(1, 10) %}
+                <div class="col-md-6 col-xl-4">
+                    <div class="card card-hover h-100 border-0 shadow-sm">
+
+                        <!-- Header карточки -->
+                        <div class="card-body p-4 d-flex flex-column">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <!-- Разные теги в зависимости от числа i -->
+                                {% if i % 4 == 0 %}
+                                <span class="tag-badge tag-marketing">Marketing</span>
+                                {% elif i % 4 == 1 %}
+                                <span class="tag-badge tag-dev">Development</span>
+                                {% elif i % 4 == 2 %}
+                                <span class="tag-badge tag-design">Design</span>
+                                {% else %}
+                                <span class="tag-badge tag-finance">Finance</span>
+                                {% endif %}
+
+                                <div class="dropdown">
+                                    <button class="btn btn-link text-muted p-0 text-decoration-none" data-bs-toggle="dropdown">
+                                        <i class="bi bi-three-dots"></i>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end border-0 shadow-sm">
+                                        <li><a class="dropdown-item small" href="#">Edit</a></li>
+                                        <li><a class="dropdown-item small" href="#">Share</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item small text-danger" href="#">Delete</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <h5 class="fw-bold mb-2">
+                                {% if i % 4 == 0 %} Q4 Ad Campaign
+                                {% elif i % 4 == 1 %} API Integration v2
+                                {% elif i % 4 == 2 %} Mobile App UI Kit
+                                {% else %} Annual Audit Report {% endif %}
+                            </h5>
+
+                            <p class="text-muted small mb-4 line-clamp-2">
+                                Use this card to display project summary. This simulates real data content for the hackathon presentation.
+                            </p>
+
+                            <!-- Progress Bar -->
+                            <div class="mt-auto">
+                                <div class="d-flex justify-content-between small mb-1">
+                                    <span class="fw-bold text-secondary">Progress</span>
+                                    <span class="fw-bold text-primary">{{ i * 10 + 5 }}%</span>
+                                </div>
+                                <div class="progress mb-3" style="height: 6px;">
+                                    <div class="progress-bar bg-primary" style="width: {{ i * 10 + 5 }}%"></div>
+                                </div>
+
+                                <div class="d-flex justify-content-between align-items-center pt-2 border-top">
+                                    <div class="d-flex -space-x-2">
+                                        <img src="https://ui-avatars.com/api/?name=A+B&background=random" class="rounded-circle border border-white" width="24">
+                                        <img src="https://ui-avatars.com/api/?name=C+D&background=random" class="rounded-circle border border-white" width="24" style="margin-left: -8px;">
+                                    </div>
+                                    <a href="{{ url_for('object_detail', id=i) }}" class="btn btn-sm btn-white border shadow-sm rounded-pill px-3 fw-bold" style="font-size: 0.75rem;">
+                                        View <i class="bi bi-arrow-right ms-1"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Pagination -->
+            <div class="d-flex justify-content-center mt-5">
+                <nav>
+                    <ul class="pagination">
+                        <li class="page-item disabled"><a class="page-link border-0 bg-transparent" href="#">Prev</a></li>
+                        <li class="page-item active"><a class="page-link rounded-3 border-0 bg-primary mx-1" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link rounded-3 border-0 bg-transparent text-dark mx-1" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link rounded-3 border-0 bg-transparent text-dark mx-1" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link border-0 bg-transparent" href="#">Next</a></li>
+                    </ul>
+                </nav>
+            </div>
+
         </div>
-        {% endfor %}
     </div>
 </div>
-
-<!-- OFFCANVAS SIDEBAR (FILTERS) -->
-<div class="offcanvas offcanvas-end rounded-start-4 border-0 p-3" tabindex="-1" id="filterSidebar">
-    <div class="offcanvas-header">
-        <h5 class="offcanvas-title fw-bold">Filters</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
-    </div>
-    <div class="offcanvas-body">
-        <label class="form-label fw-bold small text-muted text-uppercase">Status</label>
-        <div class="d-flex flex-column gap-2 mb-4">
-            <label class="form-check-label d-flex align-items-center gap-2 p-2 rounded hover-bg-light cursor-pointer">
-                <input class="form-check-input" type="checkbox" checked> Active Projects
-            </label>
-            <label class="form-check-label d-flex align-items-center gap-2 p-2 rounded hover-bg-light cursor-pointer">
-                <input class="form-check-input" type="checkbox"> Archived
-            </label>
-        </div>
-
-        <label class="form-label fw-bold small text-muted text-uppercase">Date Range</label>
-        <select class="form-select mb-4 rounded-3">
-            <option>Last 7 Days</option>
-            <option>Last 30 Days</option>
-            <option>This Year</option>
-        </select>
-
-        <button class="btn btn-primary-custom w-100 btn-pill">Apply Filters</button>
-    </div>
-</div>
-
 {% endblock %}
