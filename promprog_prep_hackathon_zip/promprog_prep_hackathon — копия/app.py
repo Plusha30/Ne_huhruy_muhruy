@@ -6,10 +6,8 @@ import shutil
 
 # some global variables
 
-global tovars_data
 global users_base
 global products_db
-tovars_data = {} 
 users_base = {}
 products_db = {}
 email = 'placeholder'
@@ -29,31 +27,6 @@ def commonkwargs(kwargs):
         return kwargs | {'username': users_base[email][1], 'userimg': return_image(f'users/{email}', 'user_placeholder'), 'desc': users_base[email][2], 'phone': users_base[email][3]}
     else:
         return kwargs | {'username': 'Log in', 'userimg': return_image(f'users/{email}', 'user_placeholder'), 'desc': 'empty', 'phone': 'N/A'}
-
-#read data about tovars i think (maybe delete)
-
-def getTovarsData(folder_path):
-    total = dict()
-    if not os.path.exists(folder_path):
-        return {}
-    for filename in os.listdir(folder_path):
-        file_path = os.path.join(folder_path, filename)
-        with open(file_path, 'r', encoding='utf-8') as f:
-            content = f.read()
-            d = json.loads(content)
-            total |= d
-            for i in d:
-                d[i] |= {"tovars": {}}
-            way = f"{base_path}/tovars/{filename[:-5]}"
-            if os.path.exists(way):
-                for tovar in os.listdir(way):
-                    tovar_path = os.path.join(way, tovar)
-                    with open(tovar_path, 'r', encoding='utf-8') as f1:
-                        info = f1.read()
-                        tov = json.loads(info)
-                        for i in d:
-                            d[i]["tovars"] |= tov
-    return total
 
 #app
 
@@ -150,7 +123,6 @@ def four04(name):
     return render_template('404.html', **commonkwargs({}))
 
 def readfiles():
-    global tovars_data
     global users_base
     global base_path
     global products_db
@@ -162,7 +134,6 @@ def readfiles():
     if not os.path.exists(products_path):
         with open(products_path, 'w', encoding='utf-8') as f:
             f.write("{}")
-    tovars_data = getTovarsData(f"{base_path}/categories")
     with open(users_path, 'r', encoding='utf-8') as f:
         info = f.read()
         if info:
