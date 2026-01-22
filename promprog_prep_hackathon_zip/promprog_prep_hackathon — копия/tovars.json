@@ -1,0 +1,68 @@
+{
+    "1": {
+        "name": "Smart Watch Series 7",
+        "category": "Electronics",
+        "price": 299,
+        "old_price": 399,
+        "badge": "Sale -20%",
+        "rating": 4.8,
+        "reviews_count": 1204,
+        "description": "Monitor your health, track your workouts, and stay connected. Now with 48-hour battery life and titanium case.",
+        "main_icon": "bi-smartwatch",
+        "gallery": ["bi-smartwatch", "bi-watch", "bi-cpu", "bi-play-circle"],
+        "specs": {
+            "Display": "1.9 inch OLED",
+            "Battery": "Up to 48 hours",
+            "Connectivity": "Bluetooth 5.3, Wi-Fi",
+            "Waterproof": "Yes, 50m"
+        },
+        "reviews": [
+            {"user": "John Doe", "text": "Amazing battery life!"},
+            {"user": "Sarah Smith", "text": "Best watch I ever had."}
+        ]
+    },
+    "2": {
+        "name": "Leather Travel Bag",
+        "category": "Accessories",
+        "price": 120,
+        "old_price": 150,
+        "badge": "New Arrival",
+        "rating": 4.9,
+        "reviews_count": 85,
+        "description": "Handcrafted from genuine Italian leather. Spacious, durable, and perfect for weekend getaways.",
+        "main_icon": "bi-handbag",
+        "gallery": ["bi-handbag", "bi-wallet", "bi-briefcase", "bi-gem"],
+        "specs": {
+            "Material": "Genuine Leather",
+            "Volume": "45 Liters",
+            "Warranty": "5 Years",
+            "Color": "Brown / Black"
+        },
+        "reviews": [
+            {"user": "Mike Ross", "text": "Very stylish and robust."},
+            {"user": "Elena K.", "text": "Fits everything I need."}
+        ]
+    },
+    "3": {
+        "name": "Pro Headphones X",
+        "category": "Audio",
+        "price": 199,
+        "old_price": 249,
+        "badge": "Best Seller",
+        "rating": 4.7,
+        "reviews_count": 432,
+        "description": "Active noise cancelling, studio-quality sound, and plush ear cushions for all-day comfort.",
+        "main_icon": "bi-headphones",
+        "gallery": ["bi-headphones", "bi-music-note-beamed", "bi-soundwave", "bi-bluetooth"],
+        "specs": {
+            "Type": "Over-Ear",
+            "ANC": "Active Noise Cancelling",
+            "Battery": "30 hours",
+            "Jack": "3.5mm included"
+        },
+        "reviews": [
+            {"user": "Audiophile99", "text": "Soundstage is incredible."},
+            {"user": "Gamer_One", "text": "No lag in games."}
+        ]
+    }
+}
