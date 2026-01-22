@@ -1,118 +1,127 @@
 {% extends "base.html" %}
-{% block title %}UI Component Library{% endblock %}
+{% block title %}UI Library{% endblock %}
 
 {% block content %}
 <div class="container pb-5">
 
-    <!-- Header -->
     <div class="mb-5 text-center">
-        <h1 class="fw-bold">UI Templates Kit</h1>
-        <p class="text-secondary">Copy & Paste these components for your Hackathon project.</p>
+        <h1 class="fw-bold">UI Kit & Templates</h1>
+        <p class="text-secondary">Ready-to-use components. Click on any item to view details.</p>
     </div>
 
     <!-- ==============================================
-         SECTION 1: E-COMMERCE (Товары)
+         SECTION 1: E-COMMERCE (Товары - Кликабельные)
          ============================================== -->
     <div class="d-flex align-items-center gap-2 mb-4">
         <span class="badge bg-primary rounded-pill">01</span>
-        <h4 class="fw-bold mb-0">E-Commerce Cards</h4>
+        <h4 class="fw-bold mb-0">Products</h4>
     </div>
 
     <div class="row g-4 mb-5">
-        <!-- Product Card 1: Simple -->
+        <!-- Card 1 -->
         <div class="col-md-3">
-            <div class="product-card h-100">
-                <div class="product-img-wrapper">
-                    <span class="product-badge text-danger">Sale -20%</span>
-                    <i class="bi bi-smartwatch fs-1 text-muted opacity-50"></i>
-                </div>
-                <div class="p-3">
-                    <div class="text-muted small mb-1">Electronics</div>
-                    <h6 class="fw-bold mb-2">Smart Watch Series 7</h6>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span class="fw-bold text-primary fs-5">$299</span>
-                        <button class="btn btn-sm btn-white border rounded-circle shadow-sm">
-                            <i class="bi bi-plus-lg"></i>
-                        </button>
+            <a href="{{ url_for('object_detail', id=1) }}" class="card-link">
+                <div class="product-card h-100">
+                    <div class="product-img-wrapper">
+                        <span class="product-badge text-danger">Sale -20%</span>
+                        <i class="bi bi-smartwatch fs-1 text-muted opacity-50"></i>
+                    </div>
+                    <div class="p-3">
+                        <div class="text-muted small mb-1">Electronics</div>
+                        <h6 class="fw-bold mb-2 text-dark">Smart Watch Series 7</h6>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="fw-bold text-primary fs-5">$299</span>
+                            <span class="btn btn-sm btn-white border rounded-circle shadow-sm">
+                                <i class="bi bi-arrow-right"></i>
+                            </span>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
 
-        <!-- Product Card 2: Sneaker -->
+        <!-- Card 2 -->
         <div class="col-md-3">
-            <div class="product-card h-100">
-                <div class="product-img-wrapper">
-                    <span class="product-badge text-success">New</span>
-                    <i class="bi bi-handbag fs-1 text-muted opacity-50"></i>
-                </div>
-                <div class="p-3">
-                    <div class="text-muted small mb-1">Accessories</div>
-                    <h6 class="fw-bold mb-2">Leather Travel Bag</h6>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span class="fw-bold text-dark fs-5">$120</span>
-                        <button class="btn btn-sm btn-dark-blue rounded-pill px-3" style="font-size: 0.8rem;">Buy</button>
+            <a href="{{ url_for('object_detail', id=2) }}" class="card-link">
+                <div class="product-card h-100">
+                    <div class="product-img-wrapper">
+                        <span class="product-badge text-success">New</span>
+                        <i class="bi bi-handbag fs-1 text-muted opacity-50"></i>
+                    </div>
+                    <div class="p-3">
+                        <div class="text-muted small mb-1">Accessories</div>
+                        <h6 class="fw-bold mb-2 text-dark">Leather Travel Bag</h6>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="fw-bold text-dark fs-5">$120</span>
+                            <span class="small fw-bold text-muted">View &rarr;</span>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
 
-        <!-- Product Card 3: Minimal -->
+        <!-- Card 3 -->
         <div class="col-md-3">
-            <div class="product-card h-100 border-0 shadow-sm">
-                <div class="product-img-wrapper bg-white border-bottom">
-                    <i class="bi bi-headphones fs-1 text-muted opacity-50"></i>
-                </div>
-                <div class="p-3 text-center">
-                    <h6 class="fw-bold mb-1">Pro Headphones</h6>
-                    <div class="mb-2">
-                        <i class="bi bi-star-fill text-warning small"></i>
-                        <i class="bi bi-star-fill text-warning small"></i>
-                        <i class="bi bi-star-fill text-warning small"></i>
-                        <i class="bi bi-star-fill text-warning small"></i>
-                        <i class="bi bi-star-half text-warning small"></i>
+            <a href="{{ url_for('object_detail', id=3) }}" class="card-link">
+                <div class="product-card h-100 border-0 shadow-sm">
+                    <div class="product-img-wrapper bg-white border-bottom">
+                        <i class="bi bi-headphones fs-1 text-muted opacity-50"></i>
                     </div>
-                    <span class="fw-bold">$199.00</span>
+                    <div class="p-3 text-center">
+                        <h6 class="fw-bold mb-1 text-dark">Pro Headphones</h6>
+                        <div class="mb-2">
+                            <i class="bi bi-star-fill text-warning small"></i>
+                            <i class="bi bi-star-fill text-warning small"></i>
+                            <i class="bi bi-star-fill text-warning small"></i>
+                            <i class="bi bi-star-fill text-warning small"></i>
+                            <i class="bi bi-star-half text-warning small"></i>
+                        </div>
+                        <span class="fw-bold text-dark">$199.00</span>
+                    </div>
                 </div>
-            </div>
+            </a>
         </div>
 
-        <!-- Product Card 4: Horizontal (Wide) -->
+        <!-- Card 4 (Promo) -->
         <div class="col-md-3">
-            <div class="product-card h-100 bg-primary text-white d-flex flex-column justify-content-center p-4 text-center">
-                <h4 class="fw-bold">Summer Sale</h4>
-                <p class="opacity-75">Up to 50% off on all items.</p>
-                <button class="btn btn-white text-primary fw-bold rounded-pill mt-2">Explore</button>
-            </div>
+            <a href="{{ url_for('pricing') }}" class="card-link">
+                <div class="product-card h-100 bg-primary text-white d-flex flex-column justify-content-center p-4 text-center">
+                    <h4 class="fw-bold">Summer Sale</h4>
+                    <p class="opacity-75">Up to 50% off on all items.</p>
+                    <div class="mt-3">
+                        <span class="btn btn-white text-primary fw-bold rounded-pill px-4">Go to Pricing</span>
+                    </div>
+                </div>
+            </a>
         </div>
     </div>
 
 
     <!-- ==============================================
-         SECTION 2: DATA TABLE (Красивая таблица)
+         SECTION 2: DATA TABLE (Красивая и Кликабельная)
          ============================================== -->
     <div class="d-flex align-items-center gap-2 mb-4">
         <span class="badge bg-primary rounded-pill">02</span>
-        <h4 class="fw-bold mb-0">Advanced Table</h4>
+        <h4 class="fw-bold mb-0">Projects Table</h4>
     </div>
 
-    <div class="table-custom-container mb-5">
+    <div class="table-modern-container mb-5">
         <div class="table-responsive">
-            <table class="table table-custom mb-0">
+            <table class="table-modern">
                 <thead>
                 <tr>
-                    <th>Project Name</th>
+                    <th class="ps-4">Project Name</th>
                     <th>Client</th>
                     <th>Status</th>
                     <th>Progress</th>
-                    <th>Revenue</th>
-                    <th class="text-end">Action</th>
+                    <th>Budget</th>
+                    <th class="text-end pe-4">Details</th>
                 </tr>
                 </thead>
                 <tbody>
                 <!-- Row 1 -->
-                <tr>
-                    <td>
+                <tr onclick="window.location='{{ url_for('object_detail', id=101) }}'">
+                    <td class="ps-4">
                         <div class="d-flex align-items-center gap-3">
                             <div class="bg-primary bg-opacity-10 text-primary rounded-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
                                 <i class="bi bi-globe"></i>
@@ -125,11 +134,11 @@
                     </td>
                     <td>
                         <div class="d-flex align-items-center gap-2">
-                            <img src="https://ui-avatars.com/api/?name=Nike&background=random" class="rounded-circle" width="24">
+                            <div class="bg-danger text-white rounded-circle d-flex justify-content-center align-items-center fw-bold" style="width: 28px; height: 28px; font-size: 0.7rem;">N</div>
                             <span class="fw-medium">Nike Corp</span>
                         </div>
                     </td>
-                    <td><span class="badge bg-success bg-opacity-10 text-success px-3 rounded-pill">Completed</span></td>
+                    <td><span class="status-pill status-success">Completed</span></td>
                     <td style="width: 20%;">
                         <div class="d-flex align-items-center gap-2">
                             <div class="progress flex-grow-1" style="height: 6px;">
@@ -139,14 +148,14 @@
                         </div>
                     </td>
                     <td class="fw-bold">$12,500</td>
-                    <td class="text-end">
-                        <button class="btn btn-sm btn-white border shadow-sm"><i class="bi bi-three-dots"></i></button>
+                    <td class="text-end pe-4">
+                        <i class="bi bi-chevron-right text-muted"></i>
                     </td>
                 </tr>
 
                 <!-- Row 2 -->
-                <tr>
-                    <td>
+                <tr onclick="window.location='{{ url_for('object_detail', id=102) }}'">
+                    <td class="ps-4">
                         <div class="d-flex align-items-center gap-3">
                             <div class="bg-warning bg-opacity-10 text-warning rounded-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
                                 <i class="bi bi-phone"></i>
@@ -159,11 +168,11 @@
                     </td>
                     <td>
                         <div class="d-flex align-items-center gap-2">
-                            <img src="https://ui-avatars.com/api/?name=Uber&background=random" class="rounded-circle" width="24">
+                            <div class="bg-dark text-white rounded-circle d-flex justify-content-center align-items-center fw-bold" style="width: 28px; height: 28px; font-size: 0.7rem;">U</div>
                             <span class="fw-medium">Uber</span>
                         </div>
                     </td>
-                    <td><span class="badge bg-warning bg-opacity-10 text-warning px-3 rounded-pill">In Progress</span></td>
+                    <td><span class="status-pill status-warning">In Progress</span></td>
                     <td>
                         <div class="d-flex align-items-center gap-2">
                             <div class="progress flex-grow-1" style="height: 6px;">
@@ -173,14 +182,14 @@
                         </div>
                     </td>
                     <td class="fw-bold">$45,000</td>
-                    <td class="text-end">
-                        <button class="btn btn-sm btn-white border shadow-sm"><i class="bi bi-three-dots"></i></button>
+                    <td class="text-end pe-4">
+                        <i class="bi bi-chevron-right text-muted"></i>
                     </td>
                 </tr>
 
                 <!-- Row 3 -->
-                <tr>
-                    <td>
+                <tr onclick="window.location='{{ url_for('object_detail', id=103) }}'">
+                    <td class="ps-4">
                         <div class="d-flex align-items-center gap-3">
                             <div class="bg-info bg-opacity-10 text-info rounded-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
                                 <i class="bi bi-shield-lock"></i>
@@ -193,11 +202,11 @@
                     </td>
                     <td>
                         <div class="d-flex align-items-center gap-2">
-                            <img src="https://ui-avatars.com/api/?name=Bank&background=random" class="rounded-circle" width="24">
+                            <div class="bg-info text-white rounded-circle d-flex justify-content-center align-items-center fw-bold" style="width: 28px; height: 28px; font-size: 0.7rem;">B</div>
                             <span class="fw-medium">Global Bank</span>
                         </div>
                     </td>
-                    <td><span class="badge bg-secondary bg-opacity-10 text-secondary px-3 rounded-pill">Pending</span></td>
+                    <td><span class="status-pill status-pending">Pending</span></td>
                     <td>
                         <div class="d-flex align-items-center gap-2">
                             <div class="progress flex-grow-1" style="height: 6px;">
@@ -207,140 +216,67 @@
                         </div>
                     </td>
                     <td class="fw-bold">$8,200</td>
-                    <td class="text-end">
-                        <button class="btn btn-sm btn-white border shadow-sm"><i class="bi bi-three-dots"></i></button>
+                    <td class="text-end pe-4">
+                        <i class="bi bi-chevron-right text-muted"></i>
                     </td>
                 </tr>
                 </tbody>
             </table>
         </div>
-        <div class="p-3 border-top bg-light d-flex justify-content-between align-items-center">
-            <span class="text-muted small">Showing 3 of 124 results</span>
-            <div class="btn-group">
-                <button class="btn btn-sm btn-white border">Prev</button>
-                <button class="btn btn-sm btn-white border">Next</button>
-            </div>
-        </div>
     </div>
 
-
     <!-- ==============================================
-         SECTION 3: SERVICES & FEATURES (Услуги)
+         SECTION 3: SERVICES (Услуги - Кликабельные)
          ============================================== -->
     <div class="d-flex align-items-center gap-2 mb-4">
         <span class="badge bg-primary rounded-pill">03</span>
-        <h4 class="fw-bold mb-0">Service Cards</h4>
+        <h4 class="fw-bold mb-0">Services</h4>
     </div>
 
     <div class="row g-4 mb-5">
-        <!-- Service 1 -->
         <div class="col-md-4">
-            <div class="service-card h-100">
-                <div class="service-icon">
-                    <i class="bi bi-bar-chart-line-fill"></i>
+            <a href="{{ url_for('object_detail', id=201) }}" class="card-link">
+                <div class="service-card h-100">
+                    <div class="service-icon">
+                        <i class="bi bi-bar-chart-line-fill"></i>
+                    </div>
+                    <h4 class="fw-bold mb-3 text-dark">Data Analytics</h4>
+                    <p class="text-secondary mb-4">
+                        Turn your data into actionable insights with our powerful machine learning algorithms.
+                    </p>
+                    <span class="btn btn-outline-primary btn-pill px-4">Learn More</span>
                 </div>
-                <h4 class="fw-bold mb-3">Data Analytics</h4>
-                <p class="text-secondary mb-4">
-                    Turn your data into actionable insights with our powerful machine learning algorithms.
-                </p>
-                <a href="#" class="btn btn-outline-primary btn-pill px-4">Learn More</a>
-            </div>
+            </a>
         </div>
 
-        <!-- Service 2 -->
         <div class="col-md-4">
-            <div class="service-card h-100">
-                <div class="service-icon" style="background: #fdf2f8; color: #be185d;">
-                    <i class="bi bi-brush-fill"></i>
+            <a href="{{ url_for('object_detail', id=202) }}" class="card-link">
+                <div class="service-card h-100">
+                    <div class="service-icon" style="background: #fdf2f8; color: #be185d;">
+                        <i class="bi bi-brush-fill"></i>
+                    </div>
+                    <h4 class="fw-bold mb-3 text-dark">UI/UX Design</h4>
+                    <p class="text-secondary mb-4">
+                        Crafting beautiful and intuitive user experiences that convert visitors into customers.
+                    </p>
+                    <span class="btn btn-outline-dark btn-pill px-4">Portfolio</span>
                 </div>
-                <h4 class="fw-bold mb-3">UI/UX Design</h4>
-                <p class="text-secondary mb-4">
-                    Crafting beautiful and intuitive user experiences that convert visitors into customers.
-                </p>
-                <a href="#" class="btn btn-outline-dark btn-pill px-4">Portfolio</a>
-            </div>
+            </a>
         </div>
 
-        <!-- Service 3 -->
         <div class="col-md-4">
-            <div class="service-card h-100">
-                <div class="service-icon" style="background: #f0fdf4; color: #15803d;">
-                    <i class="bi bi-code-slash"></i>
+            <a href="{{ url_for('object_detail', id=203) }}" class="card-link">
+                <div class="service-card h-100">
+                    <div class="service-icon" style="background: #f0fdf4; color: #15803d;">
+                        <i class="bi bi-code-slash"></i>
+                    </div>
+                    <h4 class="fw-bold mb-3 text-dark">Web Development</h4>
+                    <p class="text-secondary mb-4">
+                        Full-stack development using the latest technologies like Python, React, and Flask.
+                    </p>
+                    <span class="btn btn-outline-success btn-pill px-4">Start Project</span>
                 </div>
-                <h4 class="fw-bold mb-3">Web Development</h4>
-                <p class="text-secondary mb-4">
-                    Full-stack development using the latest technologies like Python, React, and Flask.
-                </p>
-                <a href="#" class="btn btn-outline-success btn-pill px-4">Start Project</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- ==============================================
-         SECTION 4: KPI & STATS (Статистика)
-         ============================================== -->
-    <div class="d-flex align-items-center gap-2 mb-4">
-        <span class="badge bg-primary rounded-pill">04</span>
-        <h4 class="fw-bold mb-0">Stats & Metrics</h4>
-    </div>
-
-    <div class="row g-4">
-        <!-- Stat 1 -->
-        <div class="col-md-3">
-            <div class="card border-0 shadow-sm p-3">
-                <div class="d-flex align-items-center gap-3">
-                    <div class="bg-primary text-white rounded-3 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; font-size: 1.5rem;">
-                        <i class="bi bi-people"></i>
-                    </div>
-                    <div>
-                        <h4 class="fw-bold mb-0">1,204</h4>
-                        <small class="text-muted">Total Users</small>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Stat 2 -->
-        <div class="col-md-3">
-            <div class="card border-0 shadow-sm p-3 bg-dark text-white">
-                <div class="d-flex align-items-center gap-3">
-                    <div class="bg-white bg-opacity-25 text-white rounded-3 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; font-size: 1.5rem;">
-                        <i class="bi bi-cart"></i>
-                    </div>
-                    <div>
-                        <h4 class="fw-bold mb-0">450</h4>
-                        <small class="opacity-75">New Orders</small>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Stat 3 -->
-        <div class="col-md-3">
-            <div class="card border-0 shadow-sm p-3" style="background: #e0f2fe; color: #0369a1;">
-                <div class="d-flex align-items-center gap-3">
-                    <div class="bg-white rounded-3 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; font-size: 1.5rem;">
-                        <i class="bi bi-graph-up-arrow"></i>
-                    </div>
-                    <div>
-                        <h4 class="fw-bold mb-0">+24%</h4>
-                        <small>Growth Rate</small>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Stat 4 -->
-        <div class="col-md-3">
-            <div class="card border-0 shadow-sm p-3">
-                <div class="d-flex justify-content-between align-items-start">
-                    <div>
-                        <small class="text-muted fw-bold">TOTAL REVENUE</small>
-                        <h3 class="fw-bold text-success mb-0">$12,400</h3>
-                    </div>
-                    <span class="badge bg-success bg-opacity-10 text-success">+12%</span>
-                </div>
-            </div>
+            </a>
         </div>
     </div>
 
