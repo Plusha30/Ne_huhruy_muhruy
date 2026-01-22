@@ -23,9 +23,13 @@ def login():
 
 @app.route('/register', methods=["GET", "POST"])
 def register():
-    print("a")
-    if (request.method == 'POST'):
-        return redirect(url_for('profile'), 301)
+    #print("a")
+    #if (request.method == 'POST'):
+    #    data = request.form.to_dict(flat=False) 
+    #    users_base[data['email'][0]] = [data['password'][0], data['name'][0]]
+    #    with open(f"{pathlib.Path(__file__).parent.resolve()}/users_base.txt", 'w', encoding='utf-8') as f:
+    #        f.write(json.dumps(users_base, indent=4))
+    #    return redirect(url_for('profile'), 301)
     return render_template('register.html', **commonkwargs({}))
 
 # НОВЫЙ МАРШРУТ
