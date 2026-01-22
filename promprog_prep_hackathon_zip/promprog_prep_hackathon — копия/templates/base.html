@@ -31,10 +31,23 @@
                     <li class="nav-item"><a class="nav-link text-dark fw-medium" href="{{ url_for('pricing') }}">Pricing</a></li>
                 </ul>
             </div>
-            <div class="d-none d-lg-flex gap-2">
-                <img width=50 src="{{ url_for('static', filename=userimg) }}">
-                <a href="{{ url_for('login') }}" class="btn btn-sm btn-link text-decoration-none text-dark fw-bold">{{ username }}</a>
-                <a href="{{ url_for('register') }}" class="btn btn-sm btn-primary-custom btn-pill">Sign Up</a>
+
+            <!-- ИСПРАВЛЕННЫЙ БЛОК ЛОГИНА -->
+            <div class="d-none d-lg-flex align-items-center gap-3">
+                <!-- Ссылка на логин с аватаркой (сгруппировано) -->
+                <a href="{{ url_for('login') }}" class="d-flex align-items-center text-decoration-none text-dark gap-2" style="transition: opacity 0.2s;">
+                    <!-- Аватарка: круглая, с рамкой, фиксированный размер -->
+                    <img src="{{ url_for('static', filename=userimg) }}"
+                         alt="User"
+                         class="rounded-circle border bg-light"
+                         style="width: 40px; height: 40px; object-fit: cover;">
+
+                    <!-- Имя пользователя -->
+                    <span class="fw-bold">{{ username }}</span>
+                </a>
+
+                <!-- Кнопка регистрации -->
+                <a href="{{ url_for('register') }}" class="btn btn-sm btn-primary-custom btn-pill px-4">Sign Up</a>
             </div>
         </div>
     </nav>
