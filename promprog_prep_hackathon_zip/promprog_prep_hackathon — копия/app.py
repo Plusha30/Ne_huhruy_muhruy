@@ -5,6 +5,7 @@ from subscript.filework import *
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024
 
+#cookie work
 def getlogin(rq):
     if (rq.get('account')):
         return rq.get('account')
@@ -85,6 +86,7 @@ def profile():
             email = 'placeholder'
             response = make_response(redirect(url_for('landing'), 302))
             response.set_cookie('account', email)
+            return response
         if (data['commit_type'][0] == 'update_data'):
             changes = getuser(email)
             if (len(data['name']) > 0):

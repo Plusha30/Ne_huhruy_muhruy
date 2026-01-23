@@ -48,5 +48,5 @@ def gettovar(id):
     return False
 
 def gettovarlist():
-    with open("tovars.json", 'r', encoding='utf-8') as f:
+    with open("tovars/tovars.json", 'r', encoding='utf-8') as f:
         return json.loads(f.read())
