@@ -151,62 +151,26 @@
 
                 <div class="row g-4 mb-5">
                     <!-- Item 1 -->
+                    {% for tovar in tovarlist %}
                     <div class="col-md-4 filterable-item" data-module="ecommerce" data-status="published">
-                        <a href="{{ url_for('product_detail', id=1) }}" class="card-link">
+                        <a href="{{ url_for('product_detail', id=tovar|int) }}" class="card-link">
                             <div class="product-card h-100">
                                 <div class="product-img-wrapper">
-                                    <span class="product-badge text-danger">Sale -20%</span>
-                                    <i class="bi bi-smartwatch fs-1 text-muted opacity-50"></i>
+                                    <span class="product-badge" style="color: {{tovarlist[tovar]['color']}};">{{tovarlist[tovar]['badge']}}</span>
+                                    <i class="bi {{tovarlist[tovar]['main_icon']}} fs-1 text-muted opacity-50"></i>
                                 </div>
                                 <div class="p-3">
-                                    <div class="text-muted small mb-1">Electronics</div>
-                                    <h6 class="fw-bold mb-2 text-dark search-target">Smart Watch Series 7</h6>
+                                    <div class="text-muted small mb-1">{{tovarlist[tovar]['category']}}</div>
+                                    <h6 class="fw-bold mb-2 text-dark search-target">{{tovarlist[tovar]['name']}}</h6>
                                     <div class="d-flex justify-content-between align-items-center">
-                                        <span class="fw-bold text-primary fs-5">$299</span>
+                                        <span class="fw-bold text-primary fs-5">${{tovarlist[tovar]['price']}}</span>
                                         <span class="btn btn-sm btn-white border rounded-circle shadow-sm"><i class="bi bi-plus-lg"></i></span>
                                     </div>
                                 </div>
                             </div>
                         </a>
                     </div>
-                    <!-- Item 2 -->
-                    <div class="col-md-4 filterable-item" data-module="ecommerce" data-status="published">
-                        <a href="{{ url_for('product_detail', id=2) }}" class="card-link">
-                            <div class="product-card h-100">
-                                <div class="product-img-wrapper">
-                                    <span class="product-badge text-success">New</span>
-                                    <i class="bi bi-handbag fs-1 text-muted opacity-50"></i>
-                                </div>
-                                <div class="p-3">
-                                    <div class="text-muted small mb-1">Accessories</div>
-                                    <h6 class="fw-bold mb-2 text-dark search-target">Leather Bag</h6>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="fw-bold text-dark fs-5">$120</span>
-                                        <span class="small fw-bold text-muted">View &rarr;</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <!-- Item 3 -->
-                    <div class="col-md-4 filterable-item" data-module="ecommerce" data-status="published">
-                        <a href="{{ url_for('product_detail', id=3) }}" class="card-link">
-                            <div class="product-card h-100">
-                                <div class="product-img-wrapper">
-                                    <span class="product-badge text-success">New</span>
-                                    <i class="bi bi-headphones fs-1 text-muted opacity-50"></i>
-                                </div>
-                                <div class="p-3">
-                                    <div class="text-muted small mb-1">Audio</div>
-                                    <h6 class="fw-bold mb-2 text-dark search-target">Pro Watch</h6>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="fw-bold text-dark fs-5">$199.9</span>
-                                        <span class="small fw-bold text-muted">View &rarr;</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
+                    {% endfor %}
                 </div>
             </div>
 

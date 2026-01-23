@@ -1,0 +1,33 @@
+{
+    "name": "Pro Headphones X",
+    "category": "Audio",
+    "price": 199,
+    "old_price": 249,
+    "badge": "Best Seller",
+    "rating": 4.7,
+    "reviews_count": 432,
+    "description": "Active noise cancelling, studio-quality sound, and plush ear cushions for all-day comfort.",
+    "main_icon": "bi-headphones",
+    "gallery": [
+        "bi-headphones",
+        "bi-music-note-beamed",
+        "bi-soundwave",
+        "bi-bluetooth"
+    ],
+    "specs": {
+        "Type": "Over-Ear",
+        "ANC": "Active Noise Cancelling",
+        "Battery": "30 hours",
+        "Jack": "3.5mm included"
+    },
+    "reviews": [
+        {
+            "user": "Audiophile99",
+            "text": "Soundstage is incredible."
+        },
+        {
+            "user": "Gamer_One",
+            "text": "No lag in games."
+        }
+    ]
+}

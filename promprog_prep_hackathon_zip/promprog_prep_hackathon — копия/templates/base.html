@@ -48,7 +48,9 @@
                 </a>
 
                 <!-- Кнопка регистрации -->
-                <a href="{{ url_for('register') }}" class="btn btn-sm btn-primary-custom btn-pill px-4">Sign Up</a>
+                {% if rights == 0 %}
+                    <a href="{{ url_for('register') }}" class="btn btn-sm btn-primary-custom btn-pill px-4">Sign Up</a>
+                {% endif %}
             </div>
         </div>
     </nav>

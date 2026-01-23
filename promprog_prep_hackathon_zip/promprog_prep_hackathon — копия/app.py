@@ -1,63 +1,44 @@
 from flask import Flask, render_template, request, redirect, url_for
-import os
-import json
-import pathlib
+from subscript.filework import *
 
 #global variables
-global users_base
-global products_db
-users_base = {}
-products_db = {}
 email = 'placeholder'
-base_path = pathlib.Path(__file__).parent.resolve()
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024
 
 #useful function for filework and etc
-def return_image(path, placeholder):
-    full_path = f"{base_path}/static/images/{path}.jpg"
-    if os.path.exists(full_path):
-        return f'images/{path}.jpg'
-    else:
-        return f'images/common/{placeholder}.jpg'
-
-def commonkwargs():
-    if (email in users_base):
-        return {'username': users_base[email][1], 'userimg': return_image(f'users/{email}', 'user_placeholder'), 'desc': users_base[email][2], 'phone': users_base[email][3]}
-    else:
-        return {'username': 'Log in', 'userimg': return_image(f'users/{email}', 'user_placeholder'), 'desc': 'empty', 'phone': 'N/A'}
 
 #basic routes
 @app.route('/')
 def landing():
-    return render_template('landing.html', **commonkwargs())
+    return render_template('landing.html', **commonkwargs(email))
 
 @app.route('/pricing')
 def pricing():
-    return render_template('pricing.html', **commonkwargs())
-
+    return render_template('pricing.html', **commonkwargs(email))
+ 
 @app.route('/ultimate_dashboard')
 def ultimate_dashboard():
-    return render_template('super_dashboard.html', **commonkwargs())
+    return render_template('super_dashboard.html', **commonkwargs(email))
 
 @app.errorhandler(404)
 def four04(name):
-    return render_template('404.html', **commonkwargs())
+    return render_template('404.html', **commonkwargs(email))
 
 @app.route('/dashboard')
 def dashboard():
-    return render_template('dashboard.html', **commonkwargs())
+    return render_template('dashboard.html', tovarlist=gettovarlist(), **commonkwargs(email))
 
 @app.route('/object/<int:id>')
 def object_detail(id):
-    return render_template('object.html', id=id, **commonkwargs())
+    return render_template('object.html', id=id, **commonkwargs(email))
 
 @app.route('/product/<id>')
 def product_detail(id):
-    product_data = products_db.get(id)
+    product_data = gettovar(id)
     if not product_data:
-        return render_template('404.html', **commonkwargs())
-    return render_template('product.html', id=id, product=product_data, **commonkwargs())
+        return render_template('404.html', **commonkwargs(email))
+    return render_template('product.html', id=id, product=product_data, **commonkwargs(email))
 
 #login-register-profile
 @app.route('/login', methods=["GET", "POST"])
@@ -68,12 +49,13 @@ def login():
     if (request.method == 'POST'):
         data = request.form.to_dict(flat=False)
         input_email = data['email'][0]
-        if len(data['email']) > 0 and data['email'][0] in users_base and data['password'][0] == users_base[input_email][0]:
+        if len(data['email']) > 0 and getuser(data['email'][0]) != False and data['password'][0] == getuser(data['email'][0])['password']:
+            
             email = input_email
             return redirect(url_for('profile'), 302)
         else:
             pass
-    return render_template('login.html', **commonkwargs())
+    return render_template('login.html', **commonkwargs(email))
 
 @app.route('/register', methods=["GET", "POST"])
 def register():
@@ -82,12 +64,11 @@ def register():
         return redirect(url_for('profile'), 302)
     if (request.method == 'POST'):
         data = request.form.to_dict(flat=False)
-        users_base[data['email'][0]] = [data['password'][0], data['name'][0], "empty", "N/A"]
-        with open(f"{base_path}/users_base.json", 'w', encoding='utf-8') as f:
-            f.write(json.dumps(users_base, indent=4))
+        setuser(data['email'][0], {'password': data['password'][0], 'username': data['name'][0], 'description': "empty", \
+            'phone': "N/A", 'rights': int(data['rights'][0]), 'money': 0})
         email = data['email'][0]
         return redirect(url_for('profile'), 302)
-    return render_template('register.html', **commonkwargs())
+    return render_template('register.html', **commonkwargs(email))
 
 @app.route('/profile', methods=["GET", "POST"])
 def profile():
@@ -100,14 +81,14 @@ def profile():
             email = 'placeholder'
             return redirect(url_for('landing'), 302)
         if (data['commit_type'][0] == 'update_data'):
+            changes = getuser(email)
             if (len(data['name']) > 0):
-                users_base[email][1] = data['name'][0]
+                changes['username'] = data['name'][0]
             if (len(data['phone']) > 0):
-                users_base[email][3] = data['phone'][0]
-            if (len(data['desc']) > 0):
-                users_base[email][2] = data['desc'][0]
-            with open(f"{base_path}/users_base.json", 'w', encoding='utf-8') as f:
-                f.write(json.dumps(users_base, indent=4))
+                changes['phone'] = data['phone'][0]
+            if (len(data['description']) > 0):
+                changes['description'] = data['description'][0]
+            setuser(email, changes)
         if (data['commit_type'][0] == 'update_photo'):
             if (request.files['avatar'].filename == ''):
                 if (os.path.exists(f"{base_path}/static/images/users/{email}.jpg")):
@@ -117,35 +98,9 @@ def profile():
                 if (photo.filename != ''):
                     path = f"{base_path}/static/images/users/{email}.jpg"
                     photo.save(path)
-    return render_template('profile.html', **commonkwargs())
-
-#collect data from files function
-def readfiles():
-    global users_base
-    global base_path
-    global products_db
-    users_path = f"{base_path}/users_base.json"
-    if not os.path.exists(users_path):
-        with open(users_path, 'w', encoding='utf-8') as f:
-            f.write("{}")
-    products_path = f"{base_path}/tovars.json"
-    if not os.path.exists(products_path):
-        with open(products_path, 'w', encoding='utf-8') as f:
-            f.write("{}")
-    with open(users_path, 'r', encoding='utf-8') as f:
-        info = f.read()
-        if info:
-            users_base = json.loads(info)
-        else:
-            users_base = {}
-    with open(products_path, 'r', encoding='utf-8') as f:
-        info = f.read()
-        if info:
-            products_db = json.loads(info)
-        else:
-            products_db = {}
+    return render_template('profile.html', **commonkwargs(email))
 
 #start
 if __name__ == '__main__':
-    readfiles()
+    print(base_path)
     app.run(port=5237, host="127.0.0.1", debug=True)

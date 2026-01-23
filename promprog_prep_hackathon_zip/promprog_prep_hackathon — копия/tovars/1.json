@@ -1,0 +1,33 @@
+{
+    "name": "Smart Watch Series 7",
+    "category": "Electronics",
+    "price": 299,
+    "old_price": 399,
+    "badge": "Sale -20%",
+    "rating": 4.8,
+    "reviews_count": 1204,
+    "description": "Monitor your health, track your workouts, and stay connected. Now with 48-hour battery life and titanium case.",
+    "main_icon": "bi-smartwatch",
+    "gallery": [
+        "bi-smartwatch",
+        "bi-watch",
+        "bi-cpu",
+        "bi-play-circle"
+    ],
+    "specs": {
+        "Display": "1.9 inch OLED",
+        "Battery": "Up to 48 hours",
+        "Connectivity": "Bluetooth 5.3, Wi-Fi",
+        "Waterproof": "Yes, 50m"
+    },
+    "reviews": [
+        {
+            "user": "John Doe",
+            "text": "Amazing battery life!"
+        },
+        {
+            "user": "Sarah Smith",
+            "text": "Best watch I ever had."
+        }
+    ]
+}

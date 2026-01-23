@@ -1,0 +1,33 @@
+{
+    "name": "Leather Travel Bag",
+    "category": "Accessories",
+    "price": 120,
+    "old_price": 150,
+    "badge": "New Arrival",
+    "rating": 4.9,
+    "reviews_count": 85,
+    "description": "Handcrafted from genuine Italian leather. Spacious, durable, and perfect for weekend getaways.",
+    "main_icon": "bi-handbag",
+    "gallery": [
+        "bi-handbag",
+        "bi-wallet",
+        "bi-briefcase",
+        "bi-gem"
+    ],
+    "specs": {
+        "Material": "Genuine Leather",
+        "Volume": "45 Liters",
+        "Warranty": "5 Years",
+        "Color": "Brown / Black"
+    },
+    "reviews": [
+        {
+            "user": "Mike Ross",
+            "text": "Very stylish and robust."
+        },
+        {
+            "user": "Elena K.",
+            "text": "Fits everything I need."
+        }
+    ]
+}
