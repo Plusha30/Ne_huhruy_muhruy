@@ -1,3 +1,5 @@
+#Выделенный файл для работы с файлами, аватарками, cookie и т.д.
+
 import pathlib
 import os
 import json
