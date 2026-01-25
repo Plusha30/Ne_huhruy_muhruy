@@ -1,455 +1,673 @@
 {% extends "base.html" %}
-{% block title %}Workspace Dashboard{% endblock %}
+{% block title %}
+{% if rights == 2 %}Рабочее место повара{% elif rights == 3 %}Кабинет администратора{% else %}Меню столовой{% endif %}
+{% endblock %}
 
 {% block content %}
 <div class="container pb-5">
 
-    <!-- Page Header -->
+    <!-- ============================================== -->
+    <!-- 1. ОБЩИЙ ЗАГОЛОВОК СТРАНИЦЫ (ДЛЯ ВСЕХ)     -->
+    <!-- ============================================== -->
     <div class="d-flex flex-wrap justify-content-between align-items-end mb-5 gap-3">
         <div>
-            <h1 class="fw-bold mb-1">Universal Dashboard</h1>
-            <p class="text-secondary mb-0">Manage projects, store items, and services in one place.</p>
+            <h1 class="fw-bold mb-1">
+                {% if rights == 0 %}Меню столовой 🍽️{% endif %}
+                {% if rights == 1 %}Привет, {{ username }}! 👋{% endif %}
+                {% if rights == 2 %}Панель управления кухней 👨‍🍳{% endif %}
+                {% if rights == 3 %}Кабинет администратора 👔{% endif %}
+            </h1>
+            <p class="text-secondary mb-0">
+                {% if rights == 0 %}Войдите, чтобы сделать заказ.{% endif %}
+                {% if rights == 1 %}Твой баланс: <span class="fw-bold text-success">{{ money }} ₽</span>{% endif %}
+                {% if rights == 2 %}Учет выдачи блюд, контроль склада и закупки.{% endif %}
+                {% if rights == 3 %}Статистика, согласование закупок и отчетность.{% endif %}
+            </p>
         </div>
+
+        <!-- КНОПКИ ДЕЙСТВИЙ -->
+        {% if rights == 1 %}
         <div class="d-flex gap-2">
-            <button class="btn btn-white border shadow-sm btn-pill">
-                <i class="bi bi-cloud-arrow-down me-2"></i>Export
-            </button>
-            <button class="btn btn-primary-custom btn-pill shadow-sm">
-                <i class="bi bi-plus-lg me-2"></i>Create New
+            <a href="{{ url_for('pricing') }}" class="btn btn-primary-custom btn-pill shadow-sm">
+                <i class="bi bi-wallet2 me-2"></i>Пополнить
+            </a>
+        </div>
+        {% endif %}
+        {% if rights == 0 %}
+        <div class="d-flex gap-2">
+            <a href="{{ url_for('login') }}" class="btn btn-primary-custom btn-pill shadow-sm">
+                Войти для заказа
+            </a>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- ============================================== -->
+    <!-- 2. РОЛЬ: УЧЕНИК (1) И ГОСТЬ (0) - МЕНЮ     -->
+    <!-- ============================================== -->
+    {% if rights == 1 or rights == 0 %}
+
+    <!-- Блок активного заказа (Только для ученика) -->
+    {% if rights == 1 %}
+    <div class="card border-0 shadow-sm p-4 mb-5" id="activeOrderCard">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+            <div class="d-flex align-items-center gap-3">
+                <div class="bg-warning bg-opacity-10 text-warning p-3 rounded-circle">
+                    <i class="bi bi-clock-history fs-4"></i>
+                </div>
+                <div>
+                    <h5 class="fw-bold mb-0">Ваш заказ готов к выдаче!</h5>
+                    <p class="text-muted small mb-0">Заказ №482: Борщ, Компот.</p>
+                </div>
+            </div>
+            <button onclick="confirmOrder(this)" class="btn btn-success btn-pill px-4">
+                <i class="bi bi-qr-code me-2"></i>Я получил еду
             </button>
         </div>
     </div>
+    {% endif %}
 
     <div class="row g-4">
-
-        <!-- ==================================================
-             ЛЕВАЯ КОЛОНКА: САЙДБАР С ФИЛЬТРАМИ
-             ================================================== -->
+        <!-- ФИЛЬТРЫ (СЛЕВА) -->
         <div class="col-lg-3">
-            <div class="filters-sidebar shadow-sm">
-
-                <!-- Search -->
+            <div class="filters-sidebar shadow-sm sticky-top" style="top: 100px;">
                 <div class="mb-4">
-                    <span class="filter-group-title">Search</span>
-                    <div class="input-group">
-                        <span class="input-group-text bg-light border-end-0"><i class="bi bi-search text-muted"></i></span>
-                        <input type="text" id="searchInput" class="form-control bg-light border-start-0" placeholder="Keywords...">
-                    </div>
-                </div>
-
-                <!-- Categories (Modules) -->
-                <div class="mb-4">
-                    <span class="filter-group-title">Modules</span>
-                    <div class="d-flex flex-column">
-                        <div class="form-check-custom">
-                            <input class="form-check-input filter-module" type="checkbox" id="cat1" value="ecommerce" checked>
-                            <label for="cat1" class="ms-2">E-Commerce</label>
-                            <span class="count-badge">4</span>
+                    <span class="filter-group-title">КАТЕГОРИИ</span>
+                    <div class="d-flex flex-column gap-2">
+                        <div class="form-check">
+                            <input class="form-check-input filter-checkbox" type="checkbox" value="Первое" checked id="c1">
+                            <label class="form-check-label cursor-pointer" for="c1">Первое</label>
                         </div>
-                        <div class="form-check-custom">
-                            <input class="form-check-input filter-module" type="checkbox" id="cat2" value="development" checked>
-                            <label for="cat2" class="ms-2">Development</label>
-                            <span class="count-badge">12</span>
+                        <div class="form-check">
+                            <input class="form-check-input filter-checkbox" type="checkbox" value="Второе" checked id="c2">
+                            <label class="form-check-label cursor-pointer" for="c2">Второе</label>
                         </div>
-                        <div class="form-check-custom">
-                            <input class="form-check-input filter-module" type="checkbox" id="cat3" value="services" checked>
-                            <label for="cat3" class="ms-2">Services</label>
-                            <span class="count-badge">3</span>
+                        <div class="form-check">
+                            <input class="form-check-input filter-checkbox" type="checkbox" value="Напитки" checked id="c3">
+                            <label class="form-check-label cursor-pointer" for="c3">Напитки</label>
                         </div>
-                        <div class="form-check-custom">
-                            <input class="form-check-input filter-module" type="checkbox" id="cat4" value="finance" checked>
-                            <label for="cat4" class="ms-2">Finance</label>
-                            <span class="count-badge">5</span>
-                        </div>
-                        <div class="form-check-custom">
-                            <input class="form-check-input filter-module" type="checkbox" id="cat5" value="marketing" checked>
-                            <label for="cat5" class="ms-2">Marketing</label>
-                            <span class="count-badge">5</span>
+                        <div class="form-check">
+                            <input class="form-check-input filter-checkbox" type="checkbox" value="Салаты" checked id="c4">
+                            <label class="form-check-label cursor-pointer" for="c4">Салаты</label>
                         </div>
                     </div>
                 </div>
 
-                <!-- Status -->
                 <div class="mb-4">
-                    <span class="filter-group-title">Status</span>
-                    <div class="form-check mb-2">
-                        <input class="form-check-input filter-status" type="radio" name="status" id="st1" value="all" checked>
-                        <label class="form-check-label small" for="st1">All Items</label>
-                    </div>
-                    <div class="form-check mb-2">
-                        <input class="form-check-input filter-status" type="radio" name="status" id="st2" value="published">
-                        <label class="form-check-label small" for="st2">Published / Active</label>
-                    </div>
-                    <div class="form-check mb-2">
-                        <input class="form-check-input filter-status" type="radio" name="status" id="st3" value="draft">
-                        <label class="form-check-label small" for="st3">Drafts</label>
+                    <span class="filter-group-title">ЗДОРОВЬЕ</span>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="allergyFilter">
+                        <label class="form-check-label" for="allergyFilter">Без аллергенов</label>
                     </div>
                 </div>
 
-                <!-- Team -->
-                <div>
-                    <span class="filter-group-title">Team Members</span>
-                    <div class="d-flex -space-x-2 overflow-hidden py-1">
-                        {% for i in range(1, 6) %}
-                        <img src="https://ui-avatars.com/api/?name=User+{{i}}&background=random" class="rounded-circle border border-2 border-white" width="36" height="36" data-bs-toggle="tooltip" title="User {{i}}">
+                {% if rights == 1 %}
+                <div class="p-3 bg-light rounded-3 border">
+                    <small class="fw-bold text-muted">Ваши аллергены:</small>
+                    <div class="d-flex gap-1 flex-wrap mt-1">
+                        <!-- Отображаем аллергены из профиля, если они есть -->
+                        {% if allergies %}
+                        {% for alg in allergies %}
+                        <span class="badge bg-white text-dark border">{{ alg }}</span>
                         {% endfor %}
-                        <div class="bg-light rounded-circle border border-2 border-white d-flex align-items-center justify-content-center small text-muted" style="width: 36px; height: 36px; cursor: pointer;">+4</div>
+                        {% else %}
+                        <span class="text-muted small">Нет данных</span>
+                        {% endif %}
                     </div>
+                    <a href="{{ url_for('profile') }}" class="d-block small text-primary text-decoration-none mt-2">Изменить в профиле</a>
                 </div>
-
+                {% endif %}
             </div>
         </div>
 
-        <!-- ==================================================
-             ПРАВАЯ КОЛОНКА: КОНТЕНТ
-             ================================================= -->
+        <!-- СЕТКА ТОВАРОВ (СПРАВА) -->
         <div class="col-lg-9">
+            <div class="row g-4" id="productsGrid">
+                {% if tovarlist %}
+                {% for id, item in tovarlist.items() %}
+                <!-- Имитация проверки на аллергены для фильтра -->
+                {% set has_allergen = 'true' if 'Апельсин' in item.name or 'Орех' in item.name else 'false' %}
 
-            <!-- KPIs Row -->
-            <div class="row g-3 mb-5">
-                <div class="col-md-4">
-                    <div class="card border-0 shadow-sm p-3 h-100">
-                        <div class="d-flex align-items-center gap-3">
-                            <div class="bg-primary bg-opacity-10 text-primary p-3 rounded-3"><i class="bi bi-cart"></i></div>
-                            <div>
-                                <h3 class="fw-bold mb-0">24</h3>
-                                <small class="text-muted">Total Products</small>
+                <div class="col-md-4 col-sm-6 product-item"
+                     data-category="{{ item.category }}"
+                     data-allergen="{{ has_allergen }}">
+
+                    <a href="{{ url_for('product_detail', id=id) }}" class="card-link h-100">
+                        <div class="product-card h-100 d-flex flex-column">
+                            <div class="product-img-wrapper" style="height: 180px;">
+                                {% if item.badge %}
+                                <span class="product-badge text-white" style="background-color: {{ item.color }};">{{ item.badge }}</span>
+                                {% endif %}
+                                <i class="bi {{ item.main_icon }}" style="font-size: 4rem; color: {{ item.color }}; opacity: 0.7;"></i>
+                            </div>
+                            <div class="p-3 d-flex flex-column flex-grow-1">
+                                <div class="text-muted small mb-1">{{ item.category }}</div>
+                                <h6 class="fw-bold mb-2 text-dark">{{ item.name }}</h6>
+                                <div class="mt-auto d-flex justify-content-between align-items-center">
+                                    <span class="fw-bold text-primary fs-5">{{ item.price }} ₽</span>
+                                    {% if rights == 1 %}
+                                    <span class="btn btn-sm btn-light border rounded-circle shadow-sm"><i class="bi bi-plus-lg"></i></span>
+                                    {% endif %}
+                                </div>
                             </div>
                         </div>
+                    </a>
+                </div>
+                {% endfor %}
+                {% else %}
+                <div class="col-12 text-center py-5">
+                    <h4 class="text-muted">Меню загружается или пусто...</h4>
+                </div>
+                {% endif %}
+            </div>
+
+            <div id="noResults" class="text-center py-5 d-none">
+                <i class="bi bi-search fs-1 text-muted opacity-25"></i>
+                <p class="text-muted mt-3">Нет блюд, соответствующих фильтрам.</p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+
+    <!-- ============================================== -->
+    <!-- 3. РОЛЬ 2: ПОВАР / СОТРУДНИК               -->
+    <!-- ============================================== -->
+    {% if rights == 2 %}
+
+    <!-- KPI КАРТОЧКИ -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm p-3 h-100">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="bg-success bg-opacity-10 text-success p-3 rounded-3"><i class="bi bi-check2-circle"></i></div>
+                    <div>
+                        <h3 class="fw-bold mb-0">142</h3>
+                        <small class="text-muted">Порций выдано сегодня</small>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="card border-0 shadow-sm p-3 h-100">
-                        <div class="d-flex align-items-center gap-3">
-                            <div class="bg-warning bg-opacity-10 text-warning p-3 rounded-3"><i class="bi bi-kanban"></i></div>
-                            <div>
-                                <h3 class="fw-bold mb-0">12</h3>
-                                <small class="text-muted">Active Projects</small>
-                            </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm p-3 h-100">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="bg-warning bg-opacity-10 text-warning p-3 rounded-3"><i class="bi bi-clock-history"></i></div>
+                    <div>
+                        <h3 class="fw-bold mb-0">15</h3>
+                        <small class="text-muted">Ожидают выдачи</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm p-3 h-100">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="bg-danger bg-opacity-10 text-danger p-3 rounded-3"><i class="bi bi-exclamation-triangle"></i></div>
+                    <div>
+                        <h3 class="fw-bold mb-0">2</h3>
+                        <small class="text-muted">Малый остаток на складе</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ТАБЫ ПОВАРА -->
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white border-bottom pt-3 px-4">
+            <ul class="nav nav-tabs card-header-tabs" id="cookTabs" role="tablist">
+                <li class="nav-item">
+                    <button class="nav-link active fw-bold text-dark" data-bs-toggle="tab" data-bs-target="#orders">
+                        <i class="bi bi-list-check me-2"></i>Выдача блюд
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link text-secondary" data-bs-toggle="tab" data-bs-target="#inventory">
+                        <i class="bi bi-box-seam me-2"></i>Склад и Остатки
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link text-secondary" data-bs-toggle="tab" data-bs-target="#requests">
+                        <i class="bi bi-cart-plus me-2"></i>Заявка на закупку
+                    </button>
+                </li>
+            </ul>
+        </div>
+
+        <div class="card-body p-4">
+            <div class="tab-content">
+
+                <!-- 3.1 ВЫДАЧА -->
+                <div class="tab-pane fade show active" id="orders">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="fw-bold mb-0">Текущая очередь</h5>
+                        <div class="input-group w-auto">
+                            <span class="input-group-text bg-light border-end-0"><i class="bi bi-search"></i></span>
+                            <input type="text" class="form-control bg-light border-start-0" placeholder="Поиск ученика...">
                         </div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card border-0 shadow-sm p-3 h-100">
-                        <div class="d-flex align-items-center gap-3">
-                            <div class="bg-success bg-opacity-10 text-success p-3 rounded-3"><i class="bi bi-currency-dollar"></i></div>
-                            <div>
-                                <h3 class="fw-bold mb-0">$8.4k</h3>
-                                <small class="text-muted">Monthly Revenue</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- E-COMMERCE SECTION -->
-            <div class="section-container" data-section="ecommerce">
-                <div class="d-flex align-items-center justify-content-between mb-3">
-                    <h5 class="fw-bold mb-0">Store Products <span class="badge bg-light text-dark ms-2 border">E-Commerce</span></h5>
-                    <a href="#" class="text-decoration-none small fw-bold">View All</a>
-                </div>
-
-                <div class="row g-4 mb-5">
-                    <!-- Item 1 -->
-                    {% for tovar in tovarlist %}
-                    <div class="col-md-4 filterable-item" data-module="ecommerce" data-status="published">
-                        <a href="{{ url_for('product_detail', id=tovar|int) }}" class="card-link">
-                            <div class="product-card h-100">
-                                <div class="product-img-wrapper">
-                                    <span class="product-badge" style="color: {{tovarlist[tovar]['color']}};">{{tovarlist[tovar]['badge']}}</span>
-                                    <i class="bi {{tovarlist[tovar]['main_icon']}} fs-1 text-muted opacity-50"></i>
-                                </div>
-                                <div class="p-3">
-                                    <div class="text-muted small mb-1">{{tovarlist[tovar]['category']}}</div>
-                                    <h6 class="fw-bold mb-2 text-dark search-target">{{tovarlist[tovar]['name']}}</h6>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="fw-bold text-primary fs-5">${{tovarlist[tovar]['price']}}</span>
-                                        <span class="btn btn-sm btn-white border rounded-circle shadow-sm"><i class="bi bi-plus-lg"></i></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-
-            <!-- SERVICES SECTION -->
-            <div class="section-container" data-section="services">
-                <div class="d-flex align-items-center justify-content-between mb-3">
-                    <h5 class="fw-bold mb-0">Our Services <span class="badge bg-light text-dark ms-2 border">SaaS</span></h5>
-                </div>
-
-                <div class="row g-4 mb-5">
-                    <div class="col-md-6 filterable-item" data-module="services" data-status="published">
-                        <a href="{{ url_for('object_detail', id=201) }}" class="card-link">
-                            <div class="service-card h-100">
-                                <div class="d-flex align-items-center gap-3 mb-3">
-                                    <div class="service-icon mb-0" style="width: 48px; height: 48px; font-size: 1.2rem;">
-                                        <i class="bi bi-bar-chart-line-fill"></i>
-                                    </div>
-                                    <h5 class="fw-bold mb-0 text-dark search-target">Data Analytics</h5>
-                                </div>
-                                <p class="text-secondary small mb-3">
-                                    Automated reporting and ML insights for your business growth.
-                                </p>
-                                <span class="btn btn-sm btn-outline-primary btn-pill">Details</span>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-md-6 filterable-item" data-module="services" data-status="draft">
-                        <a href="{{ url_for('object_detail', id=202) }}" class="card-link">
-                            <div class="service-card h-100">
-                                <div class="d-flex align-items-center gap-3 mb-3">
-                                    <div class="service-icon mb-0" style="width: 48px; height: 48px; font-size: 1.2rem; background: #fdf2f8; color: #be185d;">
-                                        <i class="bi bi-brush-fill"></i>
-                                    </div>
-                                    <h5 class="fw-bold mb-0 text-dark search-target">UI Design Kit</h5>
-                                </div>
-                                <p class="text-secondary small mb-3">
-                                    Professional templates for web and mobile applications.
-                                </p>
-                                <span class="btn btn-sm btn-outline-dark btn-pill">View Kit</span>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- PROJECT MANAGEMENT GRID (ОБНОВЛЕННАЯ СЕКЦИЯ) -->
-            <div class="section-container" data-section="projects">
-                <div class="d-flex align-items-center justify-content-between mb-3">
-                    <h5 class="fw-bold mb-0">Active Projects <span class="badge bg-light text-dark ms-2 border">Management</span></h5>
-
-                    <div class="btn-group">
-                        <button class="btn btn-sm btn-white border active"><i class="bi bi-grid"></i></button>
-                        <button class="btn btn-sm btn-white border"><i class="bi bi-list"></i></button>
-                    </div>
-                </div>
-
-                <div class="row g-4 mb-5">
-                    {% for i in range(1, 7) %}
-                    <!-- ЛОГИКА ОПРЕДЕЛЕНИЯ КАТЕГОРИИ И СТИЛЯ -->
-                    {% if i % 3 == 0 %}
-                    {% set category = "Marketing" %}
-                    {% set mod = "marketing" %}
-                    {% set stat = "published" %}
-                    {% set icon = "bi-megaphone" %}
-                    {% set color = "warning" %} <!-- Оранжевый -->
-                    {% elif i % 3 == 1 %}
-                    {% set category = "Development" %}
-                    {% set mod = "development" %}
-                    {% set stat = "published" %}
-                    {% set icon = "bi-code-slash" %}
-                    {% set color = "primary" %} <!-- Синий -->
-                    {% else %}
-                    {% set category = "Finance" %}
-                    {% set mod = "finance" %}
-                    {% set stat = "draft" %}
-                    {% set icon = "bi-pie-chart" %}
-                    {% set color = "success" %} <!-- Зеленый -->
-                    {% endif %}
-
-                    <div class="col-md-6 col-xl-4 filterable-item" data-module="{{ mod }}" data-status="{{ stat }}">
-                        <a href="{{ url_for('object_detail', id=i) }}" class="card-link">
-                            <div class="card card-hover h-100 border-0 shadow-sm">
-                                <div class="card-body p-4 d-flex flex-column">
-
-                                    <!-- HEADER: ТЕГ -->
-                                    <div class="d-flex justify-content-between align-items-start mb-3">
-                                        {% if category == "Marketing" %}
-                                        <span class="tag-badge tag-marketing"><i class="bi bi-graph-up me-1"></i> Marketing</span>
-                                        {% elif category == "Development" %}
-                                        <span class="tag-badge tag-dev"><i class="bi bi-git me-1"></i> Dev Team</span>
-                                        {% else %}
-                                        <span class="tag-badge tag-finance"><i class="bi bi-wallet2 me-1"></i> Finance</span>
-                                        {% endif %}
-
-                                        <i class="bi bi-three-dots text-muted"></i>
-                                    </div>
-
-                                    <!-- TITLE & ICON -->
-                                    <div class="d-flex align-items-center gap-3 mb-3">
-                                        <div class="rounded-circle d-flex align-items-center justify-content-center bg-{{ color }} bg-opacity-10 text-{{ color }}" style="width: 48px; height: 48px; min-width: 48px;">
-                                            <i class="bi {{ icon }} fs-5"></i>
-                                        </div>
-                                        <div>
-                                            <h6 class="fw-bold mb-0 text-dark search-target">
-                                                {% if category == "Marketing" %} Q{{ i }} Ad Campaign
-                                                {% elif category == "Development" %} Web App v{{ i }}.0
-                                                {% else %} Annual Audit Report {% endif %}
-                                            </h6>
-                                            <small class="text-muted">Updated 2h ago</small>
-                                        </div>
-                                    </div>
-
-                                    <!-- УНИКАЛЬНЫЙ КОНТЕНТ ДЛЯ КАЖДОГО ТИПА -->
-                                    <div class="mb-4">
-                                        {% if category == "Marketing" %}
-                                        <!-- Marketing: Metrics -->
-                                        <div class="d-flex justify-content-between text-center bg-light rounded-3 p-2">
-                                            <div>
-                                                <small class="text-muted d-block" style="font-size: 0.7rem;">REACH</small>
-                                                <span class="fw-bold text-dark">12.5k</span>
-                                            </div>
-                                            <div>
-                                                <small class="text-muted d-block" style="font-size: 0.7rem;">CLICKS</small>
-                                                <span class="fw-bold text-dark">850</span>
-                                            </div>
-                                            <div>
-                                                <small class="text-muted d-block" style="font-size: 0.7rem;">ROI</small>
-                                                <span class="fw-bold text-success">+24%</span>
-                                            </div>
-                                        </div>
-
-                                        {% elif category == "Development" %}
-                                        <!-- Development: Progress Bar -->
-                                        <div class="d-flex justify-content-between small mb-1">
-                                            <span class="fw-bold text-secondary">Sprint Progress</span>
-                                            <span class="fw-bold text-primary">{{ i * 15 }}%</span>
-                                        </div>
-                                        <div class="progress mb-2" style="height: 6px;">
-                                            <div class="progress-bar bg-primary" style="width: {{ i * 15 }}%"></div>
-                                        </div>
-                                        <small class="text-muted"><i class="bi bi-bug me-1"></i> 3 open issues</small>
-
-                                        {% else %}
-                                        <!-- Finance: Budget Info -->
-                                        <div class="border rounded-3 p-2 d-flex align-items-center justify-content-between">
-                                            <div class="d-flex align-items-center gap-2">
-                                                <div class="bg-success rounded-circle" style="width: 8px; height: 8px;"></div>
-                                                <span class="small fw-bold text-dark">On Budget</span>
-                                            </div>
-                                            <span class="fw-bold text-dark">$4,200</span>
-                                        </div>
-                                        <small class="text-muted d-block mt-2">Invoice #INV-202{{ i }}</small>
-                                        {% endif %}
-                                    </div>
-
-                                    <!-- FOOTER -->
-                                    <div class="mt-auto pt-3 border-top d-flex align-items-center justify-content-between">
-                                        <div class="d-flex -space-x-2">
-                                            <img src="https://ui-avatars.com/api/?name=User+{{i}}&background=random" class="rounded-circle border border-2 border-white" width="28" height="28">
-                                            <img src="https://ui-avatars.com/api/?name=Admin&background=0D8ABC&color=fff" class="rounded-circle border border-2 border-white" width="28" height="28" style="margin-left: -8px;">
-                                        </div>
-
-                                        {% if category == "Finance" %}
-                                        <span class="badge bg-light text-dark border">Review</span>
-                                        {% else %}
-                                        <span class="small fw-bold text-primary">Manage &rarr;</span>
-                                        {% endif %}
-                                    </div>
-
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-
-            <!-- TABLE VIEW -->
-            <div class="section-container" data-section="table">
-                <div class="d-flex align-items-center justify-content-between mb-3">
-                    <h5 class="fw-bold mb-0">Recent Data</h5>
-                </div>
-
-                <div class="table-modern-container mb-5">
-                    <div class="table-responsive">
+                    <div class="table-modern-container">
                         <table class="table-modern">
                             <thead>
                             <tr>
-                                <th class="ps-4">Name</th>
-                                <th>Client</th>
-                                <th>Status</th>
-                                <th>Revenue</th>
+                                <th class="ps-4">Ученик</th>
+                                <th>Класс</th>
+                                <th>Состав заказа</th>
+                                <th>Время</th>
+                                <th class="text-end pe-4">Действие</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr class="filterable-item" data-module="development" data-status="published" onclick="window.location='{{ url_for('object_detail', id=101) }}'">
-                                <td class="ps-4 fw-bold search-target">Website Redesign</td>
-                                <td><span class="badge bg-light text-dark border">Nike</span></td>
-                                <td><span class="status-pill status-success">Published</span></td>
-                                <td class="fw-bold">$12,500</td>
+                            <tr id="order-101">
+                                <td class="ps-4 fw-bold">Иван Петров</td>
+                                <td><span class="badge bg-light text-dark border">7 "Б"</span></td>
+                                <td>Борщ Московский, Чай</td>
+                                <td class="text-muted small">12:30</td>
+                                <td class="text-end pe-4">
+                                    <button onclick="issueOrder('101')" class="btn btn-sm btn-primary-custom btn-pill px-3">Выдать</button>
+                                </td>
                             </tr>
-                            <tr class="filterable-item" data-module="development" data-status="published" onclick="window.location='{{ url_for('object_detail', id=102) }}'">
-                                <td class="ps-4 fw-bold search-target">Mobile App</td>
-                                <td><span class="badge bg-light text-dark border">Uber</span></td>
-                                <td><span class="status-pill status-warning">Published</span></td>
-                                <td class="fw-bold">$45,000</td>
-                            </tr>
-                            <tr class="filterable-item" data-module="finance" data-status="draft" onclick="window.location='{{ url_for('object_detail', id=103) }}'">
-                                <td class="ps-4 fw-bold search-target">Security Audit</td>
-                                <td><span class="badge bg-light text-dark border">Bank</span></td>
-                                <td><span class="status-pill status-pending">Draft</span></td>
-                                <td class="fw-bold">$8,200</td>
+                            <tr id="order-102">
+                                <td class="ps-4 fw-bold">Мария Сидорова</td>
+                                <td><span class="badge bg-light text-dark border">5 "А"</span></td>
+                                <td>Котлета с пюре, Салат</td>
+                                <td class="text-muted small">12:32</td>
+                                <td class="text-end pe-4">
+                                    <button onclick="issueOrder('102')" class="btn btn-sm btn-primary-custom btn-pill px-3">Выдать</button>
+                                </td>
                             </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
-            </div>
 
-            <div id="noResults" class="text-center py-5 d-none">
-                <i class="bi bi-search fs-1 text-muted opacity-25"></i>
-                <p class="text-muted mt-3">No items found matching your filters.</p>
-            </div>
+                <!-- 3.2 СКЛАД -->
+                <div class="tab-pane fade" id="inventory">
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="border rounded-3 p-3">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="fw-bold">Картофель (кг)</span>
+                                    <span class="badge bg-success bg-opacity-10 text-success">Норма</span>
+                                </div>
+                                <div class="progress mb-2" style="height: 8px;">
+                                    <div class="progress-bar bg-success" style="width: 75%"></div>
+                                </div>
+                                <small class="text-muted">Остаток: 150 кг из 200 кг</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="border rounded-3 p-3">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="fw-bold">Молоко (л)</span>
+                                    <span class="badge bg-danger bg-opacity-10 text-danger">Мало!</span>
+                                </div>
+                                <div class="progress mb-2" style="height: 8px;">
+                                    <div class="progress-bar bg-danger" style="width: 15%"></div>
+                                </div>
+                                <small class="text-muted">Остаток: 8 л из 50 л</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="border rounded-3 p-3">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="fw-bold">Мясо / Говядина (кг)</span>
+                                    <span class="badge bg-warning bg-opacity-10 text-warning text-dark">Заканчивается</span>
+                                </div>
+                                <div class="progress mb-2" style="height: 8px;">
+                                    <div class="progress-bar bg-warning" style="width: 30%"></div>
+                                </div>
+                                <small class="text-muted">Остаток: 12 кг из 40 кг</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="border rounded-3 p-3">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="fw-bold">Хлеб (буханки)</span>
+                                    <span class="badge bg-success bg-opacity-10 text-success">Норма</span>
+                                </div>
+                                <div class="progress mb-2" style="height: 8px;">
+                                    <div class="progress-bar bg-success" style="width: 90%"></div>
+                                </div>
+                                <small class="text-muted">Остаток: 90 шт</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
+                <!-- 3.3 ЗАЯВКИ -->
+                <div class="tab-pane fade" id="requests">
+                    <div class="row">
+                        <div class="col-lg-5 mb-4 mb-lg-0">
+                            <div class="bg-light p-4 rounded-4">
+                                <h5 class="fw-bold mb-3">Создать заявку</h5>
+                                <form id="purchaseForm" onsubmit="submitPurchase(event)">
+                                    <div class="mb-3">
+                                        <label class="form-label small fw-bold text-muted">Продукт</label>
+                                        <select class="form-select rounded-3" id="prodSelect">
+                                            <option>Молоко</option>
+                                            <option>Мука</option>
+                                            <option>Сахар</option>
+                                            <option>Мясо</option>
+                                            <option>Овощи (сезонные)</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label small fw-bold text-muted">Количество (кг/л/шт)</label>
+                                        <input type="number" class="form-control rounded-3" id="prodAmount" placeholder="Например: 50" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label small fw-bold text-muted">Комментарий</label>
+                                        <textarea class="form-control rounded-3" rows="2" placeholder="Срочно к среде..."></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary-custom btn-pill w-100">Отправить администратору</button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-7">
+                            <h5 class="fw-bold mb-3">История заявок</h5>
+                            <div class="list-group list-group-flush" id="requestsList">
+                                <div class="list-group-item px-0 border-bottom d-flex justify-content-between align-items-center">
+                                    <div><h6 class="fw-bold mb-0">Молоко (50 л)</h6><small class="text-muted">10 мин назад</small></div>
+                                    <span class="badge bg-secondary bg-opacity-10 text-secondary">На рассмотрении</span>
+                                </div>
+                                <div class="list-group-item px-0 border-bottom d-flex justify-content-between align-items-center">
+                                    <div><h6 class="fw-bold mb-0">Мясо / Говядина (30 кг)</h6><small class="text-muted">Вчера</small></div>
+                                    <span class="badge bg-success bg-opacity-10 text-success">Одобрено</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
+    {% endif %}
+
+
+    <!-- ============================================== -->
+    <!-- 4. РОЛЬ 3: АДМИНИСТРАТОР                   -->
+    <!-- ============================================== -->
+    {% if rights == 3 %}
+
+    <!-- ТАБЫ АДМИНА -->
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white border-bottom pt-3 px-4">
+            <ul class="nav nav-tabs card-header-tabs" role="tablist">
+                <li class="nav-item">
+                    <button class="nav-link active fw-bold text-dark" data-bs-toggle="tab" data-bs-target="#stats">
+                        <i class="bi bi-bar-chart-fill me-2"></i>Статистика
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link text-secondary" data-bs-toggle="tab" data-bs-target="#admin-requests">
+                        <i class="bi bi-inbox-fill me-2"></i>Заявки на закупку <span class="badge bg-danger rounded-circle ms-1">2</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link text-secondary" data-bs-toggle="tab" data-bs-target="#reports">
+                        <i class="bi bi-file-earmark-text-fill me-2"></i>Отчеты
+                    </button>
+                </li>
+            </ul>
+        </div>
+
+        <div class="card-body p-4">
+            <div class="tab-content">
+
+                <!-- 4.1 СТАТИСТИКА -->
+                <div class="tab-pane fade show active" id="stats">
+                    <!-- KPI Cards -->
+                    <div class="row g-4 mb-4">
+                        <div class="col-md-4">
+                            <div class="card border-0 shadow-sm p-4 bg-light">
+                                <h6 class="text-muted text-uppercase small fw-bold">Выручка за день</h6>
+                                <h2 class="fw-bold text-primary mb-0">45 200 ₽</h2>
+                                <small class="text-success fw-bold">+12% к вчера</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card border-0 shadow-sm p-4 bg-light">
+                                <h6 class="text-muted text-uppercase small fw-bold">Посещаемость</h6>
+                                <h2 class="fw-bold text-dark mb-0">85%</h2>
+                                <small class="text-muted">640 из 750 учеников</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card border-0 shadow-sm p-4 bg-light">
+                                <h6 class="text-muted text-uppercase small fw-bold">Топ блюдо</h6>
+                                <h2 class="fw-bold text-danger mb-0">Борщ</h2>
+                                <small class="text-muted">Продано 180 порций</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- График -->
+                    <div class="card border-0 shadow-sm p-4">
+                        <h5 class="fw-bold mb-4">Динамика посещаемости (неделя)</h5>
+                        <div style="height: 300px;">
+                            <canvas id="attendanceChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4.2 СОГЛАСОВАНИЕ ЗАКУПОК -->
+                <div class="tab-pane fade" id="admin-requests">
+                    <h5 class="fw-bold mb-3">Заявки от кухни</h5>
+                    <div class="table-modern-container">
+                        <table class="table-modern">
+                            <thead>
+                            <tr>
+                                <th class="ps-4">Продукт</th>
+                                <th>Количество</th>
+                                <th>Повар</th>
+                                <th>Дата</th>
+                                <th class="text-end pe-4">Решение</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr id="req-1">
+                                <td class="ps-4 fw-bold">Молоко 3.2%</td>
+                                <td>50 л</td>
+                                <td>Петров В.В.</td>
+                                <td class="text-muted small">Сегодня, 09:00</td>
+                                <td class="text-end pe-4">
+                                    <button onclick="approveRequest('req-1')" class="btn btn-sm btn-success rounded-pill px-3 me-2">Согласовать</button>
+                                    <button onclick="rejectRequest('req-1')" class="btn btn-sm btn-outline-danger rounded-pill px-3">Откл.</button>
+                                </td>
+                            </tr>
+                            <tr id="req-2">
+                                <td class="ps-4 fw-bold">Говядина (вырезка)</td>
+                                <td>30 кг</td>
+                                <td>Петров В.В.</td>
+                                <td class="text-muted small">Вчера</td>
+                                <td class="text-end pe-4">
+                                    <button onclick="approveRequest('req-2')" class="btn btn-sm btn-success rounded-pill px-3 me-2">Согласовать</button>
+                                    <button onclick="rejectRequest('req-2')" class="btn btn-sm btn-outline-danger rounded-pill px-3">Откл.</button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 4.3 ОТЧЕТЫ -->
+                <div class="tab-pane fade" id="reports">
+                    <h5 class="fw-bold mb-4">Формирование отчетов</h5>
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="card border-0 shadow-sm p-4 h-100">
+                                <div class="d-flex align-items-center gap-3 mb-3">
+                                    <div class="bg-primary bg-opacity-10 text-primary p-3 rounded-circle">
+                                        <i class="bi bi-file-earmark-spreadsheet fs-3"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="fw-bold mb-0">Финансовый отчет</h6>
+                                        <small class="text-muted">Доходы и расходы за месяц</small>
+                                    </div>
+                                </div>
+                                <button onclick="downloadReport('Финансовый отчет')" class="btn btn-outline-primary btn-pill w-100 mt-auto">Скачать Excel</button>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card border-0 shadow-sm p-4 h-100">
+                                <div class="d-flex align-items-center gap-3 mb-3">
+                                    <div class="bg-success bg-opacity-10 text-success p-3 rounded-circle">
+                                        <i class="bi bi-file-earmark-pdf fs-3"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="fw-bold mb-0">Отчет по питанию</h6>
+                                        <small class="text-muted">Количество выданных порций и льготники</small>
+                                    </div>
+                                </div>
+                                <button onclick="downloadReport('Отчет по питанию')" class="btn btn-outline-success btn-pill w-100 mt-auto">Скачать PDF</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Инициализация графика Админа
+        document.addEventListener("DOMContentLoaded", function() {
+            const ctx = document.getElementById('attendanceChart');
+            if(ctx) {
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница'],
+                        datasets: [{
+                            label: 'Посещаемость',
+                            data: [620, 640, 590, 650, 600],
+                            backgroundColor: '#3b82f6',
+                            borderRadius: 6
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: { y: { beginAtZero: true } }
+                    }
+                });
+            }
+        });
+
+        // Функции Админа
+        function approveRequest(id) {
+            const row = document.getElementById(id);
+            row.style.backgroundColor = "#dcfce7";
+            const cell = row.querySelector('.text-end');
+            cell.innerHTML = '<span class="text-success fw-bold"><i class="bi bi-check-lg"></i> Согласовано</span>';
+        }
+
+        function rejectRequest(id) {
+            const row = document.getElementById(id);
+            row.style.opacity = "0.5";
+            const cell = row.querySelector('.text-end');
+            cell.innerHTML = '<span class="text-danger fw-bold">Отклонено</span>';
+        }
+
+        function downloadReport(name) {
+            alert("Генерация отчета: " + name + "...\nЗагрузка начнется автоматически.");
+        }
+    </script>
+    {% endif %}
+
 </div>
 
 {% endblock %}
 
 {% block scripts %}
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const searchInput = document.getElementById('searchInput');
-        const moduleCheckboxes = document.querySelectorAll('.filter-module');
-        const statusRadios = document.querySelectorAll('.filter-status');
-        const items = document.querySelectorAll('.filterable-item');
-        const noResultsMsg = document.getElementById('noResults');
+    // ============================================
+    // ОБЩИЕ СКРИПТЫ (Для Ученика и Повара)
+    // ============================================
 
-        function filterItems() {
-            const searchTerm = searchInput.value.toLowerCase();
-            const selectedModules = Array.from(moduleCheckboxes).filter(cb => cb.checked).map(cb => cb.value);
-            let selectedStatus = 'all';
-            statusRadios.forEach(radio => { if(radio.checked) selectedStatus = radio.value; });
-
-            let visibleCount = 0;
-
-            items.forEach(item => {
-                const itemModule = item.getAttribute('data-module');
-                const itemStatus = item.getAttribute('data-status');
-                const titleEl = item.querySelector('.search-target');
-                const itemTitle = titleEl ? titleEl.innerText.toLowerCase() : '';
-
-                const matchesSearch = itemTitle.includes(searchTerm);
-                const matchesModule = selectedModules.length === 0 || selectedModules.includes(itemModule);
-                const matchesStatus = selectedStatus === 'all' || itemStatus === selectedStatus;
-
-                if (matchesSearch && matchesModule && matchesStatus) {
-                    item.classList.remove('d-none');
-                    if(item.tagName === 'TR') item.style.display = '';
-                    visibleCount++;
-                } else {
-                    item.classList.add('d-none');
-                }
-            });
-
-            if (visibleCount === 0) noResultsMsg.classList.remove('d-none');
-            else noResultsMsg.classList.add('d-none');
-
-            document.querySelectorAll('.section-container').forEach(section => {
-                const visibleChildren = section.querySelectorAll('.filterable-item:not(.d-none)');
-                if(visibleChildren.length === 0) section.classList.add('d-none');
-                else section.classList.remove('d-none');
-            });
+    // --- УЧЕНИК: ПОДТВЕРЖДЕНИЕ ЗАКАЗА ---
+    function confirmOrder(btn) {
+        if(confirm("Вы действительно получили еду?")) {
+            const card = document.getElementById('activeOrderCard');
+            // Меняем содержимое на успех
+            card.innerHTML = `<div class="d-flex align-items-center gap-3 text-success justify-content-center w-100"><i class="bi bi-check-circle-fill fs-3"></i><h5 class="mb-0">Приятного аппетита!</h5></div>`;
+            // Скрываем через 3 секунды
+            setTimeout(() => { card.style.display = 'none'; }, 3000);
         }
+    }
 
-        searchInput.addEventListener('input', filterItems);
-        moduleCheckboxes.forEach(cb => cb.addEventListener('change', filterItems));
-        statusRadios.forEach(radio => radio.addEventListener('change', filterItems));
+    // --- УЧЕНИК: ФИЛЬТРАЦИЯ МЕНЮ ---
+    document.addEventListener("DOMContentLoaded", function() {
+        const checkboxes = document.querySelectorAll('.filter-checkbox');
+        const allergySwitch = document.getElementById('allergyFilter');
+        const items = document.querySelectorAll('.product-item');
+        const noResults = document.getElementById('noResults');
+
+        if(checkboxes.length > 0) {
+            function filterProducts() {
+                const activeCategories = Array.from(checkboxes).filter(cb => cb.checked).map(cb => cb.value);
+                let visibleCount = 0;
+
+                items.forEach(item => {
+                    const itemCategory = item.getAttribute('data-category');
+                    const isAllergen = item.getAttribute('data-allergen') === 'true';
+
+                    const matchCategory = activeCategories.includes(itemCategory);
+                    const matchAllergy = (allergySwitch && allergySwitch.checked) ? !isAllergen : true;
+
+                    if (matchCategory && matchAllergy) {
+                        item.classList.remove('d-none');
+                        visibleCount++;
+                    } else {
+                        item.classList.add('d-none');
+                    }
+                });
+
+                if (noResults) {
+                    if (visibleCount === 0) noResults.classList.remove('d-none');
+                    else noResults.classList.add('d-none');
+                }
+            }
+
+            checkboxes.forEach(cb => cb.addEventListener('change', filterProducts));
+            if(allergySwitch) allergySwitch.addEventListener('change', filterProducts);
+        }
     });
+
+    // --- ПОВАР: ВЫДАЧА И ЗАЯВКИ ---
+    function issueOrder(id) {
+        const row = document.getElementById('order-' + id);
+        const btn = row.querySelector('button');
+        btn.className = "btn btn-sm btn-success rounded-pill px-3";
+        btn.innerHTML = '<i class="bi bi-check2"></i> Выдано';
+        btn.disabled = true;
+        row.style.opacity = '0.6';
+        alert("Заказ " + id + " отмечен как выданный!");
+    }
+
+    function submitPurchase(e) {
+        e.preventDefault();
+        const prod = document.getElementById('prodSelect').value;
+        const amount = document.getElementById('prodAmount').value;
+        const list = document.getElementById('requestsList');
+
+        const newItem = document.createElement('div');
+        newItem.className = "list-group-item px-0 border-bottom d-flex justify-content-between align-items-center fade-in";
+        newItem.innerHTML = `<div><h6 class="fw-bold mb-0">${prod} (${amount})</h6><small class="text-muted">Только что</small></div><span class="badge bg-secondary bg-opacity-10 text-secondary">На рассмотрении</span>`;
+
+        list.prepend(newItem);
+        document.getElementById('purchaseForm').reset();
+        alert("Заявка успешно отправлена!");
+    }
 </script>
+
+<style>
+    .fade-in { animation: fadeIn 0.5s; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+</style>
 {% endblock %}

@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, make_response
 from subscript.filework import *
+import os
 
 #global variables
 app = Flask(__name__)
@@ -19,7 +20,7 @@ def landing():
 @app.route('/pricing')
 def pricing():
     return render_template('pricing.html', **commonkwargs(getlogin(request.cookies)))
- 
+
 @app.route('/ultimate_dashboard')
 def ultimate_dashboard():
     return render_template('super_dashboard.html', **commonkwargs(getlogin(request.cookies)))
@@ -68,7 +69,7 @@ def register():
     if (request.method == 'POST'):
         data = request.form.to_dict(flat=False)
         setuser(data['email'][0], {'password': data['password'][0], 'username': data['name'][0], 'description': "empty", \
-            'phone': "N/A", 'rights': int(data['rights'][0]), 'money': 0})
+                                   'phone': "N/A", 'rights': int(data['rights'][0]), 'money': 0})
         email = data['email'][0]
         response = make_response(redirect(url_for('profile'), 302))
         response.set_cookie('account', email)
@@ -80,13 +81,18 @@ def profile():
     email = getlogin(request.cookies)
     if (email == 'placeholder'):
         return redirect(url_for('login'), 302)
+
     if (request.method == 'POST'):
         data = request.form.to_dict(flat=False)
+
+        # 1. Выход
         if (data['commit_type'][0] == 'logout'):
             email = 'placeholder'
             response = make_response(redirect(url_for('landing'), 302))
             response.set_cookie('account', email)
             return response
+
+        # 2. Обновление текстовых данных
         if (data['commit_type'][0] == 'update_data'):
             changes = getuser(email)
             if (len(data['name']) > 0):
@@ -96,6 +102,8 @@ def profile():
             if (len(data['description']) > 0):
                 changes['description'] = data['description'][0]
             setuser(email, changes)
+
+        # 3. Обновление фото
         if (data['commit_type'][0] == 'update_photo'):
             if (request.files['avatar'].filename == ''):
                 if (os.path.exists(f"{base_path}/static/images/users/{email}.jpg")):
@@ -105,6 +113,14 @@ def profile():
                 if (photo.filename != ''):
                     path = f"{base_path}/static/images/users/{email}.jpg"
                     photo.save(path)
+
+        # 4. Обновление аллергии (НОВОЕ)
+        if (data['commit_type'][0] == 'update_health'):
+            changes = getuser(email)
+            # data.get('allergies', []) вернет список выбранных чекбоксов или пустой список
+            changes['allergies'] = data.get('allergies', [])
+            setuser(email, changes)
+
     return render_template('profile.html', **commonkwargs(email))
 
 #start

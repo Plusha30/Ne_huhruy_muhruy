@@ -1,33 +1,32 @@
 {
-    "name": "Smart Watch Series 7",
-    "category": "Electronics",
-    "price": 299,
-    "old_price": 399,
-    "badge": "Sale -20%",
-    "rating": 4.8,
-    "reviews_count": 1204,
-    "description": "Monitor your health, track your workouts, and stay connected. Now with 48-hour battery life and titanium case.",
-    "main_icon": "bi-smartwatch",
-    "gallery": [
-        "bi-smartwatch",
-        "bi-watch",
-        "bi-cpu",
-        "bi-play-circle"
-    ],
-    "specs": {
-        "Display": "1.9 inch OLED",
-        "Battery": "Up to 48 hours",
-        "Connectivity": "Bluetooth 5.3, Wi-Fi",
-        "Waterproof": "Yes, 50m"
+  "name": "Борщ Московский",
+  "category": "Первое",
+  "price": 85,
+  "old_price": 95,
+  "badge": "Хит продаж",
+  "color": "rgb(220, 53, 69)",
+  "description": "Традиционный наваристый борщ на говяжьем бульоне со свеклой, свежей капустой и сметаной. Подается с зеленью.",
+  "main_icon": "bi-fire",
+  "gallery": [
+    "bi-fire",
+    "bi-droplet",
+    "bi-heart-pulse"
+  ],
+  "specs": {
+    "Калорийность": "150 ккал",
+    "Белки": "12 г",
+    "Жиры": "8 г",
+    "Углеводы": "15 г",
+    "Вес порции": "250 г"
+  },
+  "reviews": [
+    {
+      "user": "Алексей В.",
+      "text": "Очень вкусный, как дома!"
     },
-    "reviews": [
-        {
-            "user": "John Doe",
-            "text": "Amazing battery life!"
-        },
-        {
-            "user": "Sarah Smith",
-            "text": "Best watch I ever had."
-        }
-    ]
+    {
+      "user": "Мария И.",
+      "text": "Горячий и сытный, то что нужно зимой."
+    }
+  ]
 }

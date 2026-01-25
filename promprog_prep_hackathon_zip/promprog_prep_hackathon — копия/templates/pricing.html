@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Pricing Plans{% endblock %}
+{% block title %}Абонементы{% endblock %}
 
 {% block content %}
 
@@ -7,105 +7,79 @@
 <section class="text-center py-5">
     <div class="container">
         <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 rounded-pill px-3 py-2 mb-3">
-            Simple Pricing
+            Выгодно
         </span>
         <h1 class="display-title display-4 mb-3">
-            Choose the right plan<br>for your <span class="text-gradient">Growth</span>
+            Абонементы на <span class="text-gradient">Питание</span>
         </h1>
         <p class="text-secondary lead mb-5">
-            Transparent pricing. No hidden fees. Cancel anytime.
+            Экономьте до 20% при покупке питания на месяц.
         </p>
-
-        <!-- Toggle Switch (Месяц / Год) -->
-        <div class="d-flex justify-content-center align-items-center gap-3 mb-5">
-            <span class="fw-bold small">Monthly</span>
-            <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" id="billingSwitch" style="width: 3em; height: 1.5em; cursor: pointer;">
-            </div>
-            <span class="fw-bold small text-muted">Yearly <span class="badge bg-success bg-opacity-10 text-success ms-1">-20%</span></span>
-        </div>
     </div>
 </section>
 
 <!-- PRICING CARDS -->
-<section class="pb-5" style="padding-top: 2rem;">
+<section class="pb-5">
     <div class="container">
-        <div class="row g-4 align-items-center">
+        <div class="row g-4 align-items-center justify-content-center">
 
-            <!-- 1. Starter (Обычная карточка) -->
-            <div class="col-lg-4 order-2 order-lg-1">
+            <!-- 1. Завтраки -->
+            <div class="col-lg-4">
                 <div class="card card-hover border-0 shadow-sm h-100 p-4">
                     <div class="mb-4">
-                        <h5 class="fw-bold text-muted">Starter</h5>
-                        <h2 class="display-4 fw-bold mb-0">$0<span class="fs-6 text-muted fw-normal">/mo</span></h2>
-                        <p class="text-muted small mt-2">Perfect for side projects.</p>
+                        <h5 class="fw-bold text-muted">Только Завтраки</h5>
+                        <h2 class="display-4 fw-bold mb-0">1500₽<span class="fs-6 text-muted fw-normal">/мес</span></h2>
+                        <p class="text-muted small mt-2">Для тех, кто учится в первую смену.</p>
                     </div>
                     <ul class="list-unstyled mb-5">
-                        <li class="check-list-item"><i class="bi bi-check-circle check-icon-circle text-muted" style="font-size: 1.2rem;"></i> 1 Project</li>
-                        <li class="check-list-item"><i class="bi bi-check-circle check-icon-circle text-muted" style="font-size: 1.2rem;"></i> Basic Analytics</li>
-                        <li class="check-list-item"><i class="bi bi-check-circle check-icon-circle text-muted" style="font-size: 1.2rem;"></i> Community Support</li>
+                        <li class="check-list-item"><i class="bi bi-check-circle check-icon-circle text-muted"></i> Каша / Омлет / Запеканка</li>
+                        <li class="check-list-item"><i class="bi bi-check-circle check-icon-circle text-muted"></i> Горячий напиток</li>
+                        <li class="check-list-item"><i class="bi bi-check-circle check-icon-circle text-muted"></i> Фрукт</li>
                     </ul>
-                    <a href="{{ url_for('register') }}" class="btn btn-white border w-100 btn-pill py-2 fw-bold">Get Started</a>
+                    <button class="btn btn-white border w-100 btn-pill py-2 fw-bold">Купить</button>
                 </div>
             </div>
 
-            <!-- 2. PRO BUSINESS (Центральная - ДИЗАЙН КАК НА КАРТИНКЕ) -->
-            <div class="col-lg-4 order-1 order-lg-2 mb-4 mb-lg-0">
-                <!-- Используем специальный класс pricing-card-featured -->
+            <!-- 2. ПОЛНЫЙ ДЕНЬ (Центральная) -->
+            <div class="col-lg-4 mb-4 mb-lg-0">
                 <div class="pricing-card-featured p-4 p-md-5 d-flex flex-column h-100">
-
-                    <!-- Бейдж "Most Popular" сидящий на рамке -->
-                    <div class="popular-badge">Most Popular</div>
+                    <div class="popular-badge">Выбор родителей</div>
 
                     <div class="text-center mb-4 mt-2">
-                        <h4 class="fw-bold text-primary mb-2">Pro Business</h4>
-                        <!-- Цена (меняется JS) -->
+                        <h4 class="fw-bold text-primary mb-2">Завтрак + Обед</h4>
                         <div class="d-flex justify-content-center align-items-end">
-                            <span class="display-3 fw-bold text-dark lh-1 price-text" data-monthly="$29" data-yearly="$24">$29</span>
-                            <span class="text-muted fs-5 mb-2 ms-1">/mo</span>
+                            <span class="display-3 fw-bold text-dark lh-1">3500₽</span>
+                            <span class="text-muted fs-5 mb-2 ms-1">/мес</span>
                         </div>
-                        <p class="text-muted mt-3">Everything you need to scale.</p>
+                        <p class="text-muted mt-3">Полноценное питание на весь день.</p>
                     </div>
 
                     <hr class="border-light mb-4 opacity-50">
 
-                    <!-- Список с синими галочками -->
                     <div class="flex-grow-1 mb-5">
-                        <div class="check-list-item">
-                            <i class="bi bi-check-circle-fill check-icon-circle"></i> Unlimited Projects
-                        </div>
-                        <div class="check-list-item">
-                            <i class="bi bi-check-circle-fill check-icon-circle"></i> Advanced Analytics
-                        </div>
-                        <div class="check-list-item">
-                            <i class="bi bi-check-circle-fill check-icon-circle"></i> Team Collaboration
-                        </div>
-                        <div class="check-list-item">
-                            <i class="bi bi-check-circle-fill check-icon-circle"></i> Priority Support
-                        </div>
+                        <div class="check-list-item"><i class="bi bi-check-circle-fill check-icon-circle"></i> Полный завтрак</div>
+                        <div class="check-list-item"><i class="bi bi-check-circle-fill check-icon-circle"></i> Суп дня</div>
+                        <div class="check-list-item"><i class="bi bi-check-circle-fill check-icon-circle"></i> Горячее с гарниром</div>
+                        <div class="check-list-item"><i class="bi bi-check-circle-fill check-icon-circle"></i> Салат и напиток</div>
                     </div>
 
-                    <!-- Темная кнопка -->
-                    <a href="{{ url_for('register') }}" class="btn-dark-pricing">
-                        Start Free Trial
-                    </a>
+                    <button class="btn-dark-pricing">Оформить подписку</button>
                 </div>
             </div>
 
-            <!-- 3. Enterprise (Обычная карточка) -->
-            <div class="col-lg-4 order-3 order-lg-3">
+            <!-- 3. Льготный -->
+            <div class="col-lg-4">
                 <div class="card card-hover border-0 shadow-sm h-100 p-4">
                     <div class="mb-4">
-                        <h5 class="fw-bold text-muted">Enterprise</h5>
-                        <h2 class="display-4 fw-bold mb-0 price-text" data-monthly="$99" data-yearly="$79">$99<span class="fs-6 text-muted fw-normal">/mo</span></h2>
-                        <p class="text-muted small mt-2">For large scale organizations.</p>
+                        <h5 class="fw-bold text-muted">Льготный</h5>
+                        <h2 class="display-4 fw-bold mb-0">0₽<span class="fs-6 text-muted fw-normal">/мес</span></h2>
+                        <p class="text-muted small mt-2">Для льготных категорий граждан.</p>
                     </div>
                     <ul class="list-unstyled mb-5">
-                        <li class="check-list-item"><i class="bi bi-check-circle-fill text-dark" style="font-size: 1.2rem;"></i> Unlimited Users</li>
-                        <li class="check-list-item"><i class="bi bi-check-circle-fill text-dark" style="font-size: 1.2rem;"></i> Custom Integrations</li>
-                        <li class="check-list-item"><i class="bi bi-check-circle-fill text-dark" style="font-size: 1.2rem;"></i> Dedicated Manager</li>
+                        <li class="check-list-item"><i class="bi bi-check-circle-fill text-dark"></i> Питание за счет бюджета</li>
+                        <li class="check-list-item"><i class="bi bi-check-circle-fill text-dark"></i> Полный комплекс</li>
                     </ul>
-                    <a href="#" class="btn btn-white border w-100 btn-pill py-2 fw-bold">Contact Sales</a>
+                    <button class="btn btn-white border w-100 btn-pill py-2 fw-bold">Подать заявление</button>
                 </div>
             </div>
 
@@ -113,75 +87,4 @@
     </div>
 </section>
 
-<!-- COMPARISON TABLE (Таблица сравнения) -->
-<section class="py-5 bg-white border-top mt-5">
-    <div class="container">
-        <h3 class="text-center fw-bold mb-5">Compare Features</h3>
-        <div class="table-responsive">
-            <table class="table table-hover align-middle">
-                <thead>
-                <tr class="text-center">
-                    <th style="width: 40%;" class="text-start ps-4">Feature</th>
-                    <th style="width: 20%;">Starter</th>
-                    <th style="width: 20%;" class="text-primary fw-bold">Pro</th>
-                    <th style="width: 20%;">Enterprise</th>
-                </tr>
-                </thead>
-                <tbody class="text-center text-secondary">
-                <tr>
-                    <td class="text-start ps-4 fw-medium text-dark">Active Projects</td>
-                    <td>1</td>
-                    <td class="text-primary fw-bold">Unlimited</td>
-                    <td>Unlimited</td>
-                </tr>
-                <tr>
-                    <td class="text-start ps-4 fw-medium text-dark">Storage</td>
-                    <td>5 GB</td>
-                    <td class="text-primary fw-bold">100 GB</td>
-                    <td>1 TB+</td>
-                </tr>
-                <tr>
-                    <td class="text-start ps-4 fw-medium text-dark">API Access</td>
-                    <td><i class="bi bi-dash-lg text-muted"></i></td>
-                    <td><i class="bi bi-check-lg text-success"></i></td>
-                    <td><i class="bi bi-check-lg text-success"></i></td>
-                </tr>
-                <tr>
-                    <td class="text-start ps-4 fw-medium text-dark">Custom Domain</td>
-                    <td><i class="bi bi-dash-lg text-muted"></i></td>
-                    <td><i class="bi bi-check-lg text-success"></i></td>
-                    <td><i class="bi bi-check-lg text-success"></i></td>
-                </tr>
-                <tr>
-                    <td class="text-start ps-4 fw-medium text-dark">SSO / SAML</td>
-                    <td><i class="bi bi-dash-lg text-muted"></i></td>
-                    <td><i class="bi bi-dash-lg text-muted"></i></td>
-                    <td><i class="bi bi-check-lg text-success"></i></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</section>
-
-{% endblock %}
-
-{% block scripts %}
-<script>
-    // Скрипт переключения цен (Monthly / Yearly)
-    const switchEl = document.getElementById('billingSwitch');
-    const prices = document.querySelectorAll('.price-text');
-
-    switchEl.addEventListener('change', function() {
-        prices.forEach(price => {
-            if (this.checked) {
-                // Если включен свитч (Yearly)
-                price.innerHTML = price.dataset.yearly + '<span class="fs-6 text-muted fw-normal">/mo</span>';
-            } else {
-                // Если выключен (Monthly)
-                price.innerHTML = price.dataset.monthly + '<span class="fs-6 text-muted fw-normal">/mo</span>';
-            }
-        });
-    });
-</script>
 {% endblock %}

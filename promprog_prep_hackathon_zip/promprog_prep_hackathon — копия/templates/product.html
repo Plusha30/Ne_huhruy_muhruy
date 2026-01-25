@@ -1,193 +1,150 @@
 {% extends "base.html" %}
-<!-- 1. Динамический заголовок вкладки -->
-{% block title %}{{ product.name }} - Store{% endblock %}
+{% block title %}{{ product.name }} - Меню{% endblock %}
 
 {% block content %}
 <div class="container py-5">
-
-    <!-- Навигация -->
+    <!-- Хлебные крошки -->
     <nav aria-label="breadcrumb" class="mb-4">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ url_for('dashboard') }}" class="text-decoration-none text-muted">Store</a></li>
-            <!-- 2. Динамическая категория -->
-            <li class="breadcrumb-item"><a href="#" class="text-decoration-none text-muted">{{ product.category }}</a></li>
-            <!-- 3. Динамическое имя -->
-            <li class="breadcrumb-item active" aria-current="page">{{ product.name }}</li>
+            <li class="breadcrumb-item"><a href="{{ url_for('dashboard') }}" class="text-decoration-none text-muted">Меню</a></li>
+            <li class="breadcrumb-item active">{{ product.name }}</li>
         </ol>
     </nav>
 
-    <div class="row g-5">
-
-        <!-- ЛЕВАЯ КОЛОНКА: ГАЛЕРЕЯ -->
+    <!-- Карточка товара -->
+    <div class="row g-5 mb-5">
         <div class="col-lg-6">
-            <!-- Основное фото -->
-            <div class="bg-white rounded-4 border p-5 d-flex align-items-center justify-content-center position-relative overflow-hidden shadow-sm mb-3" style="height: 500px;">
-                <!-- 4. Бейдж (Скидка/Новинка) только если он есть -->
-                {% if product.badge %}
-                <span class="badge bg-danger position-absolute top-0 start-0 m-4 px-3 py-2 rounded-pill shadow-sm">{{ product.badge }}</span>
-                {% endif %}
-
-                <span class="position-absolute top-0 end-0 m-4 text-muted"><i class="bi bi-heart fs-4 cursor-pointer"></i></span>
-
-                <!-- 5. Главная иконка меняется в зависимости от товара -->
-                <i id="mainImage" class="bi {{ product.main_icon }} text-secondary opacity-25" style="font-size: 12rem; transition: all 0.3s ease;"></i>
-            </div>
-
-            <!-- Миниатюры (Цикл) -->
-            <div class="row g-2">
-                <!-- 6. Генерируем миниатюры из списка gallery в Python -->
-                {% for icon in product.gallery %}
-                <div class="col-3">
-                    <div class="thumb-box bg-white rounded-3 border p-2 d-flex align-items-center justify-content-center cursor-pointer {% if loop.first %}border-primary border-2{% endif %}"
-                         style="height: 80px;"
-                         onclick="changeImage(this, '{{ icon }}')">
-                        <i class="bi {{ icon }} {% if loop.first %}text-primary{% else %}text-muted opacity-50{% endif %} fs-3"></i>
-                    </div>
-                </div>
-                {% endfor %}
+            <div class="bg-white rounded-4 border p-5 d-flex align-items-center justify-content-center shadow-sm" style="height: 400px;">
+                <i class="bi {{ product.main_icon }}" style="font-size: 10rem; color: {{ product.color }};"></i>
             </div>
         </div>
-
-        <!-- ПРАВАЯ КОЛОНКА: ИНФОРМАЦИЯ -->
         <div class="col-lg-6">
-            <div class="ps-lg-3">
+            <h1 class="fw-bold">{{ product.name }}</h1>
+            <h2 class="text-primary fw-bold mb-3">{{ product.price }} ₽</h2>
+            <p class="lead text-secondary">{{ product.description }}</p>
 
-                <div class="mb-2">
-                    <span class="text-uppercase text-primary fw-bold small tracking-wide">{{ product.category }}</span>
-                </div>
-                <h1 class="display-5 fw-bold mb-3 text-dark">{{ product.name }}</h1>
-
-                <div class="d-flex align-items-center gap-3 mb-4">
-                    <div class="d-flex text-warning small">
-                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i>
-                    </div>
-                    <!-- 7. Рейтинг и отзывы -->
-                    <span class="text-muted small border-start ps-3">{{ product.rating }} ({{ product.reviews_count }} reviews)</span>
-                    <span class="badge bg-success bg-opacity-10 text-success rounded-pill px-2">In Stock</span>
-                </div>
-
-                <div class="mb-4 p-3 bg-light rounded-3 d-inline-block">
-                    <!-- 8. Старая цена (если есть) -->
-                    {% if product.old_price %}
-                    <span class="text-decoration-line-through text-muted fs-5 me-2">${{ product.old_price }}</span>
-                    {% endif %}
-                    <!-- 9. Новая цена -->
-                    <span class="display-6 fw-bold text-dark">${{ product.price }}</span>
-                </div>
-
-                <!-- 10. Описание -->
-                <p class="text-secondary lead mb-4" style="font-size: 1.1rem;">
-                    {{ product.description }}
-                </p>
-
-                <hr class="text-muted opacity-25 my-4">
-
-                <!-- Выбор Цвета (Визуальный) -->
-                <div class="mb-4">
-                    <label class="fw-bold small mb-2 d-block text-uppercase text-muted">Select Option</label>
-                    <div class="d-flex gap-2">
-                        <div class="rounded-circle border border-2 border-primary p-1" style="cursor: pointer;">
-                            <div class="rounded-circle bg-dark" style="width: 32px; height: 32px;"></div>
-                        </div>
-                        <div class="rounded-circle border border-2 border-transparent p-1" style="cursor: pointer;">
-                            <div class="rounded-circle bg-secondary" style="width: 32px; height: 32px; background-color: #94a3b8 !important;"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Действия -->
-                <div class="row g-2 mb-4">
-                    <div class="col-3">
-                        <input type="number" class="form-control form-control-lg text-center fw-bold border-secondary" value="1" min="1">
-                    </div>
-                    <div class="col-9">
-                        <button class="btn btn-primary-custom btn-pill w-100 py-2 fs-5 shadow-sm">
-                            <i class="bi bi-cart-plus me-2"></i> Add to Cart
-                        </button>
-                    </div>
-                </div>
-
-                <div class="d-flex gap-4 text-muted small mt-2">
-                    <div class="d-flex align-items-center gap-2"><i class="bi bi-truck fs-5"></i> Free Shipping</div>
-                    <div class="d-flex align-items-center gap-2"><i class="bi bi-shield-check fs-5"></i> Warranty</div>
-                </div>
-
-            </div>
+            {% if rights == 1 %}
+            <button class="btn btn-primary-custom btn-pill px-5 py-3 shadow-sm">Добавить в заказ</button>
+            {% elif rights == 0 %}
+            <a href="{{ url_for('login') }}" class="btn btn-outline-primary btn-pill px-4">Войдите, чтобы заказать</a>
+            {% endif %}
         </div>
     </div>
 
-    <!-- ТАБЫ (Динамические характеристики) -->
-    <div class="row mt-5 pt-5">
+    <!-- ТАБЫ -->
+    <div class="row">
         <div class="col-12">
             <div class="card border-0 shadow-sm">
                 <div class="card-header bg-white border-bottom">
-                    <ul class="nav nav-tabs card-header-tabs" id="productTabs" role="tablist">
+                    <ul class="nav nav-tabs card-header-tabs" role="tablist">
                         <li class="nav-item">
-                            <button class="nav-link active text-dark fw-bold" data-bs-toggle="tab" data-bs-target="#specs">Specifications</button>
+                            <button class="nav-link text-muted" data-bs-toggle="tab" data-bs-target="#specs">КБЖУ</button>
                         </li>
                         <li class="nav-item">
-                            <button class="nav-link text-muted" data-bs-toggle="tab" data-bs-target="#reviews">Reviews</button>
+                            <button class="nav-link active fw-bold text-dark" data-bs-toggle="tab" data-bs-target="#reviews">Отзывы</button>
                         </li>
                     </ul>
                 </div>
-                <div class="card-body p-4 p-md-5">
+                <div class="card-body p-4">
                     <div class="tab-content">
-                        <!-- 11. Характеристики (Цикл по словарю specs) -->
-                        <div class="tab-pane fade show active" id="specs">
-                            <table class="table table-striped">
+                        <!-- КБЖУ -->
+                        <div class="tab-pane fade" id="specs">
+                            <table class="table table-striped w-50">
                                 <tbody>
                                 {% for key, value in product.specs.items() %}
-                                <tr>
-                                    <td class="fw-bold w-25">{{ key }}</td>
-                                    <td>{{ value }}</td>
-                                </tr>
+                                <tr><td class="fw-bold">{{ key }}</td><td>{{ value }}</td></tr>
                                 {% endfor %}
                                 </tbody>
                             </table>
                         </div>
 
-                        <!-- 12. Отзывы (Цикл по списку reviews) -->
-                        <div class="tab-pane fade" id="reviews">
-                            {% for review in product.reviews %}
-                            <div class="mb-3 border-bottom pb-3">
-                                <div class="d-flex justify-content-between">
-                                    <h6 class="fw-bold">{{ review.user }}</h6>
-                                    <div class="text-warning small"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+                        <!-- ОТЗЫВЫ -->
+                        <div class="tab-pane fade show active" id="reviews">
+
+                            <!-- Список отзывов (Видят все) -->
+                            <div id="reviewsList" class="mb-5">
+                                {% for review in product.reviews %}
+                                <div class="mb-4 border-bottom pb-3">
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <h6 class="fw-bold mb-0">{{ review.user }}</h6>
+                                        <div class="text-warning small">
+                                            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                                        </div>
+                                    </div>
+                                    <p class="text-muted small mb-0">{{ review.text }}</p>
                                 </div>
-                                <p class="text-muted small mb-0">{{ review.text }}</p>
+                                {% endfor %}
                             </div>
-                            {% endfor %}
+
+                            <!-- ФОРМА ОТЗЫВА (ТОЛЬКО ДЛЯ УЧЕНИКА rights == 1) -->
+                            {% if rights == 1 %}
+                            <div class="bg-light p-4 rounded-3 border">
+                                <h5 class="fw-bold mb-3">Оставить отзыв</h5>
+                                <form id="reviewForm" onsubmit="submitReview(event)">
+                                    <div class="mb-3">
+                                        <label class="form-label small text-muted">Ваша оценка</label>
+                                        <div class="rating-input text-warning fs-4 cursor-pointer">
+                                            <i class="bi bi-star" onclick="rate(1)"></i>
+                                            <i class="bi bi-star" onclick="rate(2)"></i>
+                                            <i class="bi bi-star" onclick="rate(3)"></i>
+                                            <i class="bi bi-star" onclick="rate(4)"></i>
+                                            <i class="bi bi-star" onclick="rate(5)"></i>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label small text-muted">Комментарий</label>
+                                        <textarea id="reviewText" class="form-control rounded-3" rows="3" placeholder="Вкусно или нет?" required></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary-custom btn-pill">Отправить</button>
+                                </form>
+                            </div>
+                            {% else %}
+                            <div class="text-muted small">
+                                🔒 Только ученики могут оставлять отзывы о блюдах.
+                            </div>
+                            {% endif %}
+                            <!-- Конец проверки прав -->
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 </div>
 {% endblock %}
 
 {% block scripts %}
 <script>
-    function changeImage(element, iconClass) {
-        const mainImage = document.getElementById('mainImage');
-        // Обновляем иконку
-        mainImage.className = `bi ${iconClass} text-secondary opacity-25`;
-
-        // Анимация
-        mainImage.style.opacity = '0';
-        setTimeout(() => { mainImage.style.opacity = '0.25'; }, 100);
-
-        // Переключение активной рамки
-        document.querySelectorAll('.thumb-box').forEach(thumb => {
-            thumb.classList.remove('border-primary', 'border-2');
-            thumb.querySelector('i').classList.remove('text-primary');
-            thumb.querySelector('i').classList.add('text-muted', 'opacity-50');
+    function rate(stars) {
+        const icons = document.querySelectorAll('.rating-input i');
+        icons.forEach((icon, index) => {
+            if(index < stars) {
+                icon.classList.remove('bi-star');
+                icon.classList.add('bi-star-fill');
+            } else {
+                icon.classList.remove('bi-star-fill');
+                icon.classList.add('bi-star');
+            }
         });
+    }
 
-        element.classList.add('border-primary', 'border-2');
-        element.querySelector('i').classList.remove('text-muted', 'opacity-50');
-        element.querySelector('i').classList.add('text-primary');
+    function submitReview(e) {
+        e.preventDefault();
+        const text = document.getElementById('reviewText').value;
+        const list = document.getElementById('reviewsList');
+        const newReview = document.createElement('div');
+        newReview.className = 'mb-4 border-bottom pb-3';
+        newReview.innerHTML = `
+            <div class="d-flex justify-content-between align-items-center mb-1">
+                <h6 class="fw-bold mb-0">Вы (только что)</h6>
+                <div class="text-warning small"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+            </div>
+            <p class="text-muted small mb-0">${text}</p>
+        `;
+        list.appendChild(newReview);
+        document.getElementById('reviewText').value = '';
+        alert("Спасибо! Ваш отзыв добавлен.");
     }
 </script>
 {% endblock %}

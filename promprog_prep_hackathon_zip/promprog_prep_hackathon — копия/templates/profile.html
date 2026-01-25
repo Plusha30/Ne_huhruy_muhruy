@@ -1,13 +1,13 @@
 {% extends "base.html" %}
-{% block title %}My Profile{% endblock %}
+{% block title %}Мой Профиль{% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="container py-4">
 
     <!-- Header -->
     <div class="mb-5">
-        <h1 class="fw-bold mb-1">Account Settings</h1>
-        <p class="text-secondary">Manage your profile information and security.</p>
+        <h1 class="fw-bold mb-1">Настройки профиля</h1>
+        <p class="text-secondary">Управление личными данными.</p>
     </div>
 
     <div class="row g-5">
@@ -15,23 +15,19 @@
         <div class="col-lg-3">
             <div class="profile-sidebar sticky-top" style="top: 100px;">
                 <nav class="nav flex-column">
-                    <a class="nav-link active" href="#">
-                        <i class="bi bi-person"></i> General
+                    <a class="nav-link active" href="#general">
+                        <i class="bi bi-person"></i> Общее
                     </a>
-                    <a class="nav-link" href="#">
-                        <i class="bi bi-shield-lock"></i> Security
+                    {% if rights == 1 %}
+                    <a class="nav-link" href="#health">
+                        <i class="bi bi-heart-pulse"></i> Здоровье
                     </a>
-                    <a class="nav-link" href="#">
-                        <i class="bi bi-credit-card"></i> Billing
-                    </a>
-                    <a class="nav-link" href="#">
-                        <i class="bi bi-bell"></i> Notifications
-                    </a>
+                    {% endif %}
                     <hr class="my-3 opacity-25">
                     <form action="{{ url_for('profile') }}" method="post">
                         <input name="commit_type" value="logout" hidden>
-                        <button type="submit" class="nav-link text-danger">
-                            <i class="bi bi-box-arrow-right"></i> Sign Out
+                        <button type="submit" class="nav-link text-danger border-0 bg-transparent w-100 text-start">
+                            <i class="bi bi-box-arrow-right"></i> Выйти
                         </button>
                     </form>
                 </nav>
@@ -41,133 +37,138 @@
         <!-- MAIN CONTENT -->
         <div class="col-lg-9">
 
-            <!-- 1. Profile Photo -->
+            <!-- 1. Аватарка -->
             <form id="avatar-form" action="{{ url_for('profile') }}" method="POST" enctype="multipart/form-data">
                 <input name="commit_type" type="text" value="update_photo" hidden>
                 <div class="card card-hover p-4 border-0 mb-4 shadow-sm">
-                    <h5 class="fw-bold mb-4">Profile Photo</h5>
+                    <h5 class="fw-bold mb-4">Фото профиля</h5>
                     <div class="d-flex align-items-center gap-4">
-
-                        <!-- Контейнер для превью -->
                         <div class="avatar-upload" id="avatarPreview"
-                            style="width: 100px; height: 100px; border-radius: 50%; background-color: #f8f9fa; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid #dee2e6;">
-                            <!-- <i class="bi bi-camera" id="cameraIcon" style="font-size: 1.5rem; color: #adb5bd;"></i> -->
+                             style="width: 100px; height: 100px; border-radius: 50%; background-color: #f8f9fa; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid #dee2e6;">
                             <img src="{{ url_for('static', filename=userimg) }}" id="userImage"
-                                style="width: 100%; height: 100%; object-fit: cover;">
+                                 style="width: 100%; height: 100%; object-fit: cover;">
                         </div>
-
                         <div>
-                            <p class="mb-1 fw-bold">Upload new image</p>
-                            <p class="text-muted small mb-3">Max file size 50MB. JPG, PNG supported.</p>
-
-                            <div class="d-flex gap-2">
-                                <!-- Скрытый настоящий инпут -->
-                                <input type="file" id="fileInput" name="avatar" accept="image/png, image/jpeg"
-                                    style="display: none;" required>
-
-                                <!-- Кнопка-триггер -->
-                                <button id="uploadbtn" type="button"
-                                    class="btn btn-sm btn-white border shadow-sm rounded-pill"
-                                    onclick="document.getElementById('fileInput').click();">
-                                    Upload
-                                </button>
-
-                                <button type="submit" id="deleteBtn" class="btn btn-sm btn-link text-danger text-decoration-none" onclick="submitForm();">
-                                    Delete
-                                </button>
-                                <!-- Кнопка удаления -->
-                            </div>
+                            <input type="file" id="fileInput" name="avatar" accept="image/png, image/jpeg" style="display: none;">
+                            <button id="uploadbtn" type="button" class="btn btn-sm btn-white border shadow-sm rounded-pill" onclick="document.getElementById('fileInput').click();">
+                                Загрузить
+                            </button>
                         </div>
                     </div>
                 </div>
             </form>
-
             <script>
-                const fileInput = document.getElementById('fileInput');
-                const userImage = document.getElementById('userImage');
-                const cameraIcon = document.getElementById('cameraIcon');
-                const deleteBtn = document.getElementById('deleteBtn');
-
-                // Функция превью картинки
-                fileInput.addEventListener('change', function () {
-                    const file = this.files[0];
-                    if (file) {
-                        const reader = new FileReader();
-
-                        reader.onload = function (e) {
-                            userImage.src = e.target.result;
-                            userImage.style.display = 'block';
-                            cameraIcon.style.display = 'none';
-                        }
-
-                        reader.readAsDataURL(file);
-
-                        document.getElementById('avatar-form').submit();
-                    }
+                document.getElementById('fileInput').addEventListener('change', function() {
+                    if (this.files[0]) document.getElementById('avatar-form').submit();
                 });
-
-                function submitForm() {
-                    document.getElementById('avatar-form').submit();
-                }
             </script>
 
-            <!-- 2. Personal Info -->
-            <div class="card card-hover p-4 border-0 mb-4 shadow-sm">
-                <h5 class="fw-bold mb-4">Personal Information</h5>
-                Уровень доступа:
-                {% if rights == 1 %}
-                    Школьник
-                {% elif rights == 2 %}
-                    Сотрудник
-                {% elif rights == 3 %}
-                    Администратор
-                {% endif %}
+            <!-- 2. Личные данные -->
+            <div id="general" class="card card-hover p-4 border-0 mb-4 shadow-sm" style="scroll-margin-top: 120px;">
+                <h5 class="fw-bold mb-4">Личная информация</h5>
+                <div class="mb-3">
+                    <span class="badge bg-light text-dark border">
+                        Роль:
+                        {% if rights == 1 %}Ученик{% elif rights == 2 %}Повар{% elif rights == 3 %}Администратор{% endif %}
+                    </span>
+                </div>
                 <form action="{{ url_for('profile') }}" method="post">
                     <input name="commit_type" value="update_data" hidden>
                     <div class="row g-3 mb-3">
                         <div class="col-md-6">
-                            <label class="form-label small fw-bold text-muted">First Name</label>
-                            <input name="name" type="text" class="form-control rounded-3" value="{{username}}"">
+                            <label class="form-label small fw-bold text-muted">Имя</label>
+                            <input name="name" type="text" class="form-control rounded-3" value="{{username}}">
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label small fw-bold text-muted">Phone</label>
+                            <label class="form-label small fw-bold text-muted">Телефон</label>
                             <input name="phone" type="text" class="form-control rounded-3" value="{{phone}}">
                         </div>
                     </div>
+                    {% if rights != 1 %}
                     <div class="mb-3">
-                        <label class="form-label small fw-bold text-muted">Bio / Job Title</label>
+                        <label class="form-label small fw-bold text-muted">Должность / Описание</label>
                         <textarea name="description" class="form-control rounded-3" rows="3">{{description}}</textarea>
                     </div>
+                    {% endif %}
                     <div class="d-flex justify-content-end">
-                        <button type="submit" class="btn btn-primary-custom btn-pill">Save Changes</button>
+                        <button type="submit" class="btn btn-primary-custom btn-pill">Сохранить</button>
                     </div>
                 </form>
             </div>
 
-            <!-- 3. Preferences -->
-            <div class="card card-hover p-4 border-0 shadow-sm">
-                <h5 class="fw-bold mb-4">Preferences</h5>
-                <div class="d-flex align-items-center justify-content-between mb-3 pb-3 border-bottom border-light">
-                    <div>
-                        <p class="mb-0 fw-bold">Email Notifications</p>
-                        <p class="text-muted small mb-0">Receive updates about your projects.</p>
-                    </div>
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" checked>
-                    </div>
+            <!-- 3. ЗДОРОВЬЕ (ТОЛЬКО ДЛЯ УЧЕНИКА rights == 1) -->
+            {% if rights == 1 %}
+            <div id="health" class="card card-hover p-4 border-0 shadow-sm" style="scroll-margin-top: 120px;">
+                <div class="d-flex align-items-center gap-2 mb-4">
+                    <h5 class="fw-bold mb-0">Пищевые ограничения</h5>
+                    <span class="badge bg-warning text-dark bg-opacity-25 border border-warning">Важно</span>
                 </div>
-                <div class="d-flex align-items-center justify-content-between">
-                    <div>
-                        <p class="mb-0 fw-bold">Dark Mode (Beta)</p>
-                        <p class="text-muted small mb-0">Switch interface to dark theme.</p>
+                <p class="text-muted small">Отметьте продукты, которые вам нельзя употреблять. Они будут подсвечены в меню.</p>
+
+                <form action="{{ url_for('profile') }}" method="post">
+                    <input name="commit_type" value="update_health" hidden>
+
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <div class="interest-checkbox-card">
+                                <label class="d-flex align-items-center gap-2 w-100 cursor-pointer">
+                                    <input type="checkbox" name="allergies" value="Лактоза" class="form-check-input mt-0"
+                                           {% if allergies and 'Лактоза' in allergies %}checked{% endif %}>
+                                    <span>Лактоза</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="interest-checkbox-card">
+                                <label class="d-flex align-items-center gap-2 w-100 cursor-pointer">
+                                    <input type="checkbox" name="allergies" value="Орехи" class="form-check-input mt-0"
+                                           {% if allergies and 'Орехи' in allergies %}checked{% endif %}>
+                                    <span>Орехи</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="interest-checkbox-card">
+                                <label class="d-flex align-items-center gap-2 w-100 cursor-pointer">
+                                    <input type="checkbox" name="allergies" value="Глютен" class="form-check-input mt-0"
+                                           {% if allergies and 'Глютен' in allergies %}checked{% endif %}>
+                                    <span>Глютен</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="interest-checkbox-card">
+                                <label class="d-flex align-items-center gap-2 w-100 cursor-pointer">
+                                    <input type="checkbox" name="allergies" value="Цитрусовые" class="form-check-input mt-0"
+                                           {% if allergies and 'Цитрусовые' in allergies %}checked{% endif %}>
+                                    <span>Цитрусовые</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="interest-checkbox-card">
+                                <label class="d-flex align-items-center gap-2 w-100 cursor-pointer">
+                                    <input type="checkbox" name="allergies" value="Рыба" class="form-check-input mt-0"
+                                           {% if allergies and 'Рыба' in allergies %}checked{% endif %}>
+                                    <span>Рыба</span>
+                                </label>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox">
+                    <div class="mt-3 text-end">
+                        <button type="submit" class="btn btn-primary-custom btn-pill">Обновить данные здоровья</button>
                     </div>
-                </div>
+                </form>
             </div>
+            {% endif %}
 
         </div>
     </div>
 </div>
+
+<style>
+    html {
+        scroll-behavior: smooth;
+    }
+</style>
 {% endblock %}

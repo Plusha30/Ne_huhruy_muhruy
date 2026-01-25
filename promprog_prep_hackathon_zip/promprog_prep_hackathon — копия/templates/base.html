@@ -3,12 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Hackathon Platform{% endblock %}</title>
-    <!-- Bootstrap 5 CSS -->
+    <title>{% block title %}Школьная Столовая{% endblock %}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-    <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
@@ -19,44 +16,52 @@
         <div class="container-fluid">
             <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="/">
                 <div class="bg-primary rounded-circle" style="width: 10px; height: 10px;"></div>
-                ProjectName
+                ШколПит
             </a>
             <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse justify-content-center" id="navContent">
                 <ul class="navbar-nav gap-1 gap-lg-4 text-center my-3 my-lg-0">
-                    <li class="nav-item"><a class="nav-link text-dark fw-medium" href="{{ url_for('landing') }}">Home</a></li>
-                    <li class="nav-item"><a class="nav-link text-dark fw-medium" href="{{ url_for('dashboard') }}">Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link text-dark fw-medium" href="{{ url_for('pricing') }}">Pricing</a></li>
-                    <li class="nav-item"><a class="nav-link text-dark fw-medium" href="{{ url_for('ultimate_dashboard') }}">Ultimate</a></li>
+                    <li class="nav-item"><a class="nav-link text-dark fw-medium" href="{{ url_for('landing') }}">Главная</a></li>
+
+                    {% if rights > 0 %}
+                    <li class="nav-item">
+                        <a class="nav-link text-dark fw-medium" href="{{ url_for('dashboard') }}">
+                            {% if rights == 1 %}Меню{% endif %}
+                            {% if rights == 2 %}Кухня{% endif %}
+                            {% if rights == 3 %}Админка{% endif %}
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    {% if rights == 1 %}
+                    <li class="nav-item"><a class="nav-link text-dark fw-medium" href="{{ url_for('pricing') }}">Абонементы</a></li>
+                    {% endif %}
                 </ul>
             </div>
 
-            <!-- ИСПРАВЛЕННЫЙ БЛОК ЛОГИНА -->
-            <div class="d-none d-lg-flex align-items-center gap-3">
-                <!-- Ссылка на логин с аватаркой (сгруппировано) -->
-                <a href="{{ url_for('login') }}" class="d-flex align-items-center text-decoration-none text-dark gap-2" style="transition: opacity 0.2s;">
-                    <!-- Аватарка: круглая, с рамкой, фиксированный размер -->
+            <!-- ПРАВАЯ ЧАСТЬ: ЛОГИН / РЕГИСТРАЦИЯ / ПРОФИЛЬ -->
+            <div class="d-none d-lg-flex align-items-center gap-2">
+                {% if username == "Log in" %}
+                <!-- Если гость: показываем ДВЕ кнопки рядом -->
+                <a href="{{ url_for('login') }}" class="btn btn-sm btn-white border shadow-sm btn-pill px-3">Войти</a>
+                <a href="{{ url_for('register') }}" class="btn btn-sm btn-primary-custom btn-pill px-3">Регистрация</a>
+                {% else %}
+                <!-- Если вошел: показываем аватарку -->
+                <a href="{{ url_for('profile') }}" class="d-flex align-items-center text-decoration-none text-dark gap-2">
                     <img src="{{ url_for('static', filename=userimg) }}"
                          alt="User"
                          class="rounded-circle border bg-light"
                          style="width: 40px; height: 40px; object-fit: cover;">
-
-                    <!-- Имя пользователя -->
                     <span class="fw-bold">{{ username }}</span>
                 </a>
-
-                <!-- Кнопка регистрации -->
-                {% if rights == 0 %}
-                    <a href="{{ url_for('register') }}" class="btn btn-sm btn-primary-custom btn-pill px-4">Sign Up</a>
                 {% endif %}
             </div>
         </div>
     </nav>
 </div>
 
-<!-- Spacer -->
 <div class="navbar-spacer"></div>
 
 <main>
@@ -65,23 +70,12 @@
 
 <footer class="py-5 mt-auto text-center border-top bg-white">
     <div class="container">
-        <p class="text-muted mb-0 small">&copy; 2026 шаблон. Артимович Кирилл, Беззубцев Иван, Кузнецов Дмитрий, Пушкарёв Евгений, Ушаков Денис.</p>
+        <p class="text-muted mb-0 small">&copy; 2026 Школьная Столовая.</p>
     </div>
 </footer>
 
-<!-- JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<script>
-    // Инициализация тултипов
-    document.addEventListener("DOMContentLoaded", function(){
-        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl)
-        });
-    });
-</script>
 {% block scripts %}{% endblock %}
 </body>
 </html>

@@ -1,26 +1,34 @@
 {
-    "1": {
-        "name": "Smart Watch Series 7",
-        "category": "Electronics",
-        "price": 299,
-        "badge": "Sale -20%",
-        "color": "rgb(255, 0, 0)",
-        "main_icon": "bi-smartwatch"
-    },
-    "2": {
-        "name": "Leather Travel Bag",
-        "category": "Accessories",
-        "price": 120,
-        "badge": "New Arrival",
-        "color": "rgb(0, 255, 0)",
-        "main_icon": "bi-handbag"
-    },
-    "3": {
-        "name": "Pro Headphones X",
-        "category": "Audio",
-        "price": 199,
-        "badge": "Best Seller",
-        "color": "rgb(0, 150, 200)",
-        "main_icon": "bi-headphones"
-    }
+  "1": {
+    "name": "Борщ Московский",
+    "category": "Первое",
+    "price": 85,
+    "badge": "Хит продаж",
+    "color": "rgb(220, 53, 69)",
+    "main_icon": "bi-fire"
+  },
+  "2": {
+    "name": "Котлета Пожарская",
+    "category": "Второе",
+    "price": 120,
+    "badge": "Свежее",
+    "color": "rgb(25, 135, 84)",
+    "main_icon": "bi-egg-fried"
+  },
+  "3": {
+    "name": "Компот Вишневый",
+    "category": "Напитки",
+    "price": 35,
+    "badge": "",
+    "color": "rgb(13, 110, 253)",
+    "main_icon": "bi-cup-straw"
+  },
+  "4": {
+    "name": "Салат Витаминный",
+    "category": "Салаты",
+    "price": 55,
+    "badge": "Веган",
+    "color": "rgb(25, 135, 84)",
+    "main_icon": "bi-flower1"
+  }
 }

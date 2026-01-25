@@ -1,33 +1,28 @@
 {
-    "name": "Leather Travel Bag",
-    "category": "Accessories",
+    "name": "Котлета Пожарская с пюре",
+    "category": "Второе",
     "price": 120,
-    "old_price": 150,
-    "badge": "New Arrival",
-    "rating": 4.9,
-    "reviews_count": 85,
-    "description": "Handcrafted from genuine Italian leather. Spacious, durable, and perfect for weekend getaways.",
-    "main_icon": "bi-handbag",
+    "old_price": null,
+    "badge": "Свежее",
+    "color": "rgb(25, 135, 84)",
+    "description": "Сочная куриная котлета в панировке из сухарей. Подается с нежным картофельным пюре и сливочным маслом.",
+    "main_icon": "bi-egg-fried",
     "gallery": [
-        "bi-handbag",
-        "bi-wallet",
-        "bi-briefcase",
-        "bi-gem"
+        "bi-egg-fried",
+        "bi-circle-fill",
+        "bi-award"
     ],
     "specs": {
-        "Material": "Genuine Leather",
-        "Volume": "45 Liters",
-        "Warranty": "5 Years",
-        "Color": "Brown / Black"
+        "Калорийность": "320 ккал",
+        "Белки": "18 г",
+        "Жиры": "14 г",
+        "Углеводы": "30 г",
+        "Вес порции": "200 г"
     },
     "reviews": [
         {
-            "user": "Mike Ross",
-            "text": "Very stylish and robust."
-        },
-        {
-            "user": "Elena K.",
-            "text": "Fits everything I need."
+            "user": "Дмитрий К.",
+            "text": "Пюре без комочков, котлета сочная."
         }
     ]
 }
