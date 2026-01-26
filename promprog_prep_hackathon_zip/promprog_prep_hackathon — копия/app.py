@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, make_response
 from subscript.filework import *
+from subscript.reports import *
 import os
 
 #global variables
@@ -130,5 +131,4 @@ def profile():
 
 #start
 if __name__ == '__main__':
-    print(base_path)
     app.run(port=5237, host="127.0.0.1", debug=True)
