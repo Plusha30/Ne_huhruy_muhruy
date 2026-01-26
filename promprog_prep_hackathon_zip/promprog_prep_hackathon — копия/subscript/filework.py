@@ -29,24 +29,24 @@ def commonkwargs(email):
             'description': 'empty', 'phone': 'N/A', 'rights': 0, 'money': 0}
 
 def getuser(email):
-    users_path = f"users/{email}.json"
+    users_path = f"{base_path}/users/{email}.json"
     if os.path.exists(users_path):
         with open(users_path, 'r', encoding='utf-8') as f:
             return json.loads(f.read())
     return False
 
 def setuser(email, changes):
-    users_path = f"users/{email}.json"
+    users_path = f"{base_path}/users/{email}.json"
     with open(users_path, 'w', encoding='utf-8') as f:
         f.write(json.dumps(changes))
 
 def gettovar(id):
-    tovars_path = f"tovars/{id}.json"
+    tovars_path = f"{base_path}/tovars/{id}.json"
     if os.path.exists(tovars_path):
         with open(tovars_path, 'r', encoding='utf-8') as f:
             return json.loads(f.read())
     return False
 
 def gettovarlist():
-    with open("tovars/tovars.json", 'r', encoding='utf-8') as f:
+    with open(f"{base_path}/tovars/tovars.json", 'r', encoding='utf-8') as f:
         return json.loads(f.read())
