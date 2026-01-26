@@ -38,7 +38,12 @@ def getuser(email):
 def setuser(email, changes):
     users_path = f"{base_path}/users/{email}.json"
     with open(users_path, 'w', encoding='utf-8') as f:
-        f.write(json.dumps(changes))
+        f.write(json.dumps(changes, indent = 4))
+
+def settovar(id, to):
+    users_path = f"{base_path}/tovars/{id}.json"
+    with open(users_path, 'w', encoding='utf-8') as f:
+        f.write(json.dumps(to, indent = 4))
 
 def gettovar(id):
     tovars_path = f"{base_path}/tovars/{id}.json"

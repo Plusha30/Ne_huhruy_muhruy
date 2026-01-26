@@ -80,7 +80,7 @@
                             {% if rights == 1 %}
                             <div class="bg-light p-4 rounded-3 border">
                                 <h5 class="fw-bold mb-3">Оставить отзыв</h5>
-                                <form id="reviewForm" onsubmit="submitReview(event)">
+                                <form id="reviewForm" method="post" action="#">
                                     <div class="mb-3">
                                         <label class="form-label small text-muted">Ваша оценка</label>
                                         <div class="rating-input text-warning fs-4 cursor-pointer">
@@ -93,7 +93,7 @@
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label small text-muted">Комментарий</label>
-                                        <textarea id="reviewText" class="form-control rounded-3" rows="3" placeholder="Вкусно или нет?" required></textarea>
+                                        <textarea name="commentary" id="reviewText" class="form-control rounded-3" rows="3" placeholder="Вкусно или нет?" required></textarea>
                                     </div>
                                     <button type="submit" class="btn btn-primary-custom btn-pill">Отправить</button>
                                 </form>
@@ -127,24 +127,6 @@
                 icon.classList.add('bi-star');
             }
         });
-    }
-
-    function submitReview(e) {
-        e.preventDefault();
-        const text = document.getElementById('reviewText').value;
-        const list = document.getElementById('reviewsList');
-        const newReview = document.createElement('div');
-        newReview.className = 'mb-4 border-bottom pb-3';
-        newReview.innerHTML = `
-            <div class="d-flex justify-content-between align-items-center mb-1">
-                <h6 class="fw-bold mb-0">Вы (только что)</h6>
-                <div class="text-warning small"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
-            </div>
-            <p class="text-muted small mb-0">${text}</p>
-        `;
-        list.appendChild(newReview);
-        document.getElementById('reviewText').value = '';
-        alert("Спасибо! Ваш отзыв добавлен.");
     }
 </script>
 {% endblock %}
