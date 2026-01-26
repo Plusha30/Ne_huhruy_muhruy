@@ -38,16 +38,19 @@ def dashboard():
 def object_detail(id):
     return render_template('object.html', id=id, **commonkwargs(getlogin(request.cookies)))
 
-@app.route('/product/<id>', methods=['GET', 'POST'])
+@app.route('/product/setcommentary/<id>', methods=['POST'])
+def sendcommentary(id):
+    product_data = gettovar(id)
+    data = request.form.to_dict(flat=False)
+    product_data['reviews'].append({'user': getuser(getlogin(request.cookies))["username"], "text": data['commentary'][0], "stars": int(data['stars'][0])})
+    settovar(id, product_data)
+    return redirect(f'/product/{id}', 302)
+
+@app.route('/product/<id>', methods=['GET'])
 def product_detail(id):
     product_data = gettovar(id)
     if not product_data:
         return render_template('404.html', **commonkwargs(getlogin(request.cookies)))
-    if (request.method == 'POST'):
-        data = request.form.to_dict(flat=False)
-        product_data['reviews'].append({'user': getuser(getlogin(request.cookies))["username"], "text": data['commentary'][0], "stars": int(data['stars'][0])})
-        settovar(id, product_data)
-        return render_template('product.html', id=id, product=product_data, **commonkwargs(getlogin(request.cookies)))
     return render_template('product.html', id=id, product=product_data, **commonkwargs(getlogin(request.cookies)))
 
 #login-register-profile
