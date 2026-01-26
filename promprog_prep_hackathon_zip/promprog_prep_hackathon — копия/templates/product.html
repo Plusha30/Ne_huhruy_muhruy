@@ -6,7 +6,8 @@
     <!-- Хлебные крошки -->
     <nav aria-label="breadcrumb" class="mb-4">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ url_for('dashboard') }}" class="text-decoration-none text-muted">Меню</a></li>
+            <li class="breadcrumb-item"><a href="{{ url_for('dashboard') }}"
+                    class="text-decoration-none text-muted">Меню</a></li>
             <li class="breadcrumb-item active">{{ product.name }}</li>
         </ol>
     </nav>
@@ -14,7 +15,8 @@
     <!-- Карточка товара -->
     <div class="row g-5 mb-5">
         <div class="col-lg-6">
-            <div class="bg-white rounded-4 border p-5 d-flex align-items-center justify-content-center shadow-sm" style="height: 400px;">
+            <div class="bg-white rounded-4 border p-5 d-flex align-items-center justify-content-center shadow-sm"
+                style="height: 400px;">
                 <i class="bi {{ product.main_icon }}" style="font-size: 10rem; color: {{ product.color }};"></i>
             </div>
         </div>
@@ -38,10 +40,12 @@
                 <div class="card-header bg-white border-bottom">
                     <ul class="nav nav-tabs card-header-tabs" role="tablist">
                         <li class="nav-item">
-                            <button class="nav-link text-muted" data-bs-toggle="tab" data-bs-target="#specs">КБЖУ</button>
+                            <button class="nav-link text-muted" data-bs-toggle="tab"
+                                data-bs-target="#specs">КБЖУ</button>
                         </li>
                         <li class="nav-item">
-                            <button class="nav-link active fw-bold text-dark" data-bs-toggle="tab" data-bs-target="#reviews">Отзывы</button>
+                            <button class="nav-link active fw-bold text-dark" data-bs-toggle="tab"
+                                data-bs-target="#reviews">Отзывы</button>
                         </li>
                     </ul>
                 </div>
@@ -51,9 +55,12 @@
                         <div class="tab-pane fade" id="specs">
                             <table class="table table-striped w-50">
                                 <tbody>
-                                {% for key, value in product.specs.items() %}
-                                <tr><td class="fw-bold">{{ key }}</td><td>{{ value }}</td></tr>
-                                {% endfor %}
+                                    {% for key, value in product.specs.items() %}
+                                    <tr>
+                                        <td class="fw-bold">{{ key }}</td>
+                                        <td>{{ value }}</td>
+                                    </tr>
+                                    {% endfor %}
                                 </tbody>
                             </table>
                         </div>
@@ -68,7 +75,12 @@
                                     <div class="d-flex justify-content-between align-items-center mb-1">
                                         <h6 class="fw-bold mb-0">{{ review.user }}</h6>
                                         <div class="text-warning small">
-                                            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                                            {% for i in range(0, review.stars) %}
+                                                <i class="bi bi-star-fill"></i>
+                                            {% endfor %}
+                                            {% for i in range(review.stars, 5) %}
+                                                <i class="bi bi-star"></i>
+                                            {% endfor %}
                                         </div>
                                     </div>
                                     <p class="text-muted small mb-0">{{ review.text }}</p>
@@ -93,8 +105,10 @@
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label small text-muted">Комментарий</label>
-                                        <textarea name="commentary" id="reviewText" class="form-control rounded-3" rows="3" placeholder="Вкусно или нет?" required></textarea>
+                                        <textarea name="commentary" id="reviewText" class="form-control rounded-3"
+                                            rows="3" placeholder="Вкусно или нет?" required></textarea>
                                     </div>
+                                    <input type="hidden" id="stars" name="stars" value=5>
                                     <button type="submit" class="btn btn-primary-custom btn-pill">Отправить</button>
                                 </form>
                             </div>
@@ -116,10 +130,12 @@
 
 {% block scripts %}
 <script>
+    var globstars = 5;
     function rate(stars) {
         const icons = document.querySelectorAll('.rating-input i');
+        globstars = stars;
         icons.forEach((icon, index) => {
-            if(index < stars) {
+            if (index < stars) {
                 icon.classList.remove('bi-star');
                 icon.classList.add('bi-star-fill');
             } else {
@@ -128,5 +144,8 @@
             }
         });
     }
+    document.getElementById('reviewForm').addEventListener('submit', function (e) {
+        document.getElementById('stars').value = globstars;
+    });
 </script>
 {% endblock %}
