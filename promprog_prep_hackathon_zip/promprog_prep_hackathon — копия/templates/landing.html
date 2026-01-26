@@ -6,9 +6,8 @@
 <!-- HERO SECTION -->
 <section class="hero-section text-center">
     <div class="container">
-        <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 rounded-pill px-3 py-2 mb-4">
-            Работаем в тестовом режиме 🚀
-        </span>
+        <!-- УБРАНА ВКЛАДКА "ТЕСТОВЫЙ РЕЖИМ" -->
+
         <h1 class="display-title display-3 mb-4">
             Вкусное и полезное<br>
             <span class="text-gradient">школьное питание</span>
@@ -18,35 +17,56 @@
             следите за рационом и оплачивайте картой.
         </p>
 
-        <!-- КНОПКИ (ИЗМЕНЕНО) -->
-        <div class="d-flex justify-content-center gap-3 flex-wrap">
-            {% if rights == 0 %}
-            <!-- Если гость -->
-            <a href="{{ url_for('login') }}" class="btn btn-primary-custom btn-pill btn-lg px-4">
-                Войти
-            </a>
-            <a href="{{ url_for('register') }}" class="btn btn-outline-primary btn-pill btn-lg px-4" style="border-width: 2px;">
-                Регистрация
-            </a>
-            <a href="{{ url_for('dashboard') }}" class="btn btn-white border btn-pill btn-lg px-4">
-                Посмотреть меню
-            </a>
-            {% else %}
-            <!-- Если уже вошел -->
-            <a href="{{ url_for('dashboard') }}" class="btn btn-primary-custom btn-pill btn-lg">
-                Перейти к заказам
-            </a>
-            {% endif %}
-        </div>
+        <!-- УБРАНЫ КНОПКИ ВОЙТИ/РЕГИСТРАЦИЯ/МЕНЮ ИЗ ЦЕНТРА (перенесены в шапку) -->
 
-        <!-- Dashboard Preview -->
+        <!-- ЗАПОЛНЕННЫЙ МАКЕТ ИНТЕРФЕЙСА -->
         <div class="mt-5 mx-auto rounded-4 shadow-lg border bg-white p-2" style="max-width: 900px;">
-            <div class="rounded-3 bg-light overflow-hidden position-relative d-flex align-items-center justify-content-center" style="height: 350px; background: #f8fafc;">
-                <div class="text-center text-muted">
-                    <i class="bi bi-basket3 fs-1 d-block mb-3 opacity-50"></i>
-                    <h4>Интерфейс заказа еды</h4>
-                    <p class="small">Удобно с телефона и компьютера</p>
+            <div class="rounded-3 bg-light overflow-hidden position-relative d-flex align-items-center justify-content-center" style="height: 400px; background: #f1f5f9;">
+
+                <!-- Визуализация интерфейса (карточки) -->
+                <div class="d-flex gap-3 align-items-center" style="transform: scale(0.9);">
+
+                    <!-- Карточка 1 -->
+                    <div class="bg-white p-3 rounded-4 shadow-sm border" style="width: 220px;">
+                        <div class="bg-danger bg-opacity-10 text-danger rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 60px; height: 60px;">
+                            <i class="bi bi-fire fs-3"></i>
+                        </div>
+                        <h6 class="fw-bold mb-1">Борщ</h6>
+                        <p class="text-muted small">150 ккал</p>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <span class="fw-bold">85 ₽</span>
+                            <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 24px; height: 24px;">+</div>
+                        </div>
+                    </div>
+
+                    <!-- Карточка 2 (Центральная, побольше) -->
+                    <div class="bg-white p-4 rounded-4 shadow border" style="width: 260px; transform: scale(1.1); z-index: 2;">
+                        <div class="bg-success bg-opacity-10 text-success rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 80px; height: 80px;">
+                            <i class="bi bi-egg-fried fs-1"></i>
+                        </div>
+                        <h5 class="fw-bold mb-1">Котлета с пюре</h5>
+                        <p class="text-muted small">Хит продаж 🔥</p>
+                        <div class="d-flex justify-content-between align-items-center mt-4">
+                            <span class="fw-bold fs-5">120 ₽</span>
+                            <button class="btn btn-sm btn-primary rounded-pill px-3">В корзину</button>
+                        </div>
+                    </div>
+
+                    <!-- Карточка 3 -->
+                    <div class="bg-white p-3 rounded-4 shadow-sm border" style="width: 220px;">
+                        <div class="bg-info bg-opacity-10 text-info rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 60px; height: 60px;">
+                            <i class="bi bi-cup-straw fs-3"></i>
+                        </div>
+                        <h6 class="fw-bold mb-1">Компот</h6>
+                        <p class="text-muted small">Вишневый</p>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <span class="fw-bold">35 ₽</span>
+                            <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 24px; height: 24px;">+</div>
+                        </div>
+                    </div>
+
                 </div>
+
             </div>
         </div>
     </div>

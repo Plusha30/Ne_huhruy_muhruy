@@ -14,21 +14,30 @@
 <div class="fixed-top p-3 d-flex justify-content-center" style="z-index: 1030;">
     <nav class="navbar navbar-expand-lg navbar-floating w-100" style="max-width: 1000px;">
         <div class="container-fluid">
-            <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="/">
+            <!-- ЛОГОТИП ТЕПЕРЬ НЕ ССЫЛКА (span вместо a), cursor: default -->
+            <span class="navbar-brand fw-bold d-flex align-items-center gap-2" style="cursor: default;">
                 <div class="bg-primary rounded-circle" style="width: 10px; height: 10px;"></div>
                 ШколПит
-            </a>
+            </span>
+
             <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
                 <span class="navbar-toggler-icon"></span>
             </button>
+
             <div class="collapse navbar-collapse justify-content-center" id="navContent">
-                <ul class="navbar-nav gap-1 gap-lg-4 text-center my-3 my-lg-0">
+                <ul class="navbar-nav gap-1 gap-lg-4 text-center my-3 my-lg-0 align-items-center">
                     <li class="nav-item"><a class="nav-link text-dark fw-medium" href="{{ url_for('landing') }}">Главная</a></li>
+
+                    <!-- КНОПКА "ПОСМОТРЕТЬ МЕНЮ" ПЕРЕНЕСЕНА СЮДА -->
+                    <li class="nav-item">
+                        <a class="btn btn-sm btn-primary-custom btn-pill px-3" href="{{ url_for('dashboard') }}">
+                            Посмотреть меню
+                        </a>
+                    </li>
 
                     {% if rights > 0 %}
                     <li class="nav-item">
                         <a class="nav-link text-dark fw-medium" href="{{ url_for('dashboard') }}">
-                            {% if rights == 1 %}Меню{% endif %}
                             {% if rights == 2 %}Кухня{% endif %}
                             {% if rights == 3 %}Админка{% endif %}
                         </a>
@@ -44,11 +53,9 @@
             <!-- ПРАВАЯ ЧАСТЬ: ЛОГИН / РЕГИСТРАЦИЯ / ПРОФИЛЬ -->
             <div class="d-none d-lg-flex align-items-center gap-2">
                 {% if username == "Log in" %}
-                <!-- Если гость: показываем ДВЕ кнопки рядом -->
                 <a href="{{ url_for('login') }}" class="btn btn-sm btn-white border shadow-sm btn-pill px-3">Войти</a>
-                <a href="{{ url_for('register') }}" class="btn btn-sm btn-primary-custom btn-pill px-3">Регистрация</a>
+                <a href="{{ url_for('register') }}" class="btn btn-sm btn-outline-primary btn-pill px-3" style="border-width: 1px;">Регистрация</a>
                 {% else %}
-                <!-- Если вошел: показываем аватарку -->
                 <a href="{{ url_for('profile') }}" class="d-flex align-items-center text-decoration-none text-dark gap-2">
                     <img src="{{ url_for('static', filename=userimg) }}"
                          alt="User"
