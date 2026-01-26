@@ -14,7 +14,7 @@
 <div class="fixed-top p-3 d-flex justify-content-center" style="z-index: 1030;">
     <nav class="navbar navbar-expand-lg navbar-floating w-100" style="max-width: 1000px;">
         <div class="container-fluid">
-            <!-- ЛОГОТИП ТЕПЕРЬ НЕ ССЫЛКА (span вместо a), cursor: default -->
+            <!-- Логотип (без ссылки, чтобы не перезагружать) -->
             <span class="navbar-brand fw-bold d-flex align-items-center gap-2" style="cursor: default;">
                 <div class="bg-primary rounded-circle" style="width: 10px; height: 10px;"></div>
                 ШколПит
@@ -28,14 +28,17 @@
                 <ul class="navbar-nav gap-1 gap-lg-4 text-center my-3 my-lg-0 align-items-center">
                     <li class="nav-item"><a class="nav-link text-dark fw-medium" href="{{ url_for('landing') }}">Главная</a></li>
 
-                    <!-- КНОПКА "ПОСМОТРЕТЬ МЕНЮ" ПЕРЕНЕСЕНА СЮДА -->
+                    <!-- КНОПКА "ПОСМОТРЕТЬ МЕНЮ" (Видна только Гостю (0) и Ученику (1)) -->
+                    {% if rights == 0 or rights == 1 %}
                     <li class="nav-item">
                         <a class="btn btn-sm btn-primary-custom btn-pill px-3" href="{{ url_for('dashboard') }}">
                             Посмотреть меню
                         </a>
                     </li>
+                    {% endif %}
 
-                    {% if rights > 0 %}
+                    <!-- ССЫЛКИ ДЛЯ ПЕРСОНАЛА (Только для Повара (2) и Админа (3)) -->
+                    {% if rights > 1 %}
                     <li class="nav-item">
                         <a class="nav-link text-dark fw-medium" href="{{ url_for('dashboard') }}">
                             {% if rights == 2 %}Кухня{% endif %}
@@ -44,6 +47,7 @@
                     </li>
                     {% endif %}
 
+                    <!-- АБОНЕМЕНТЫ (Только для Ученика (1)) -->
                     {% if rights == 1 %}
                     <li class="nav-item"><a class="nav-link text-dark fw-medium" href="{{ url_for('pricing') }}">Абонементы</a></li>
                     {% endif %}
