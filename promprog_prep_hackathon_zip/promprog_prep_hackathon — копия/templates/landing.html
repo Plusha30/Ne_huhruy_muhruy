@@ -3,10 +3,83 @@
 
 {% block content %}
 
+<style>
+    /* Окно просмотра карусели (скрывает лишнее) */
+    .carousel-wrapper {
+        position: relative;
+        max-width: 900px;
+        margin: 0 auto;
+        overflow: hidden; /* Важно: скрываем то, что вылезает */
+        padding: 20px 0;
+    }
+
+    /* Лента с карточками */
+    .carousel-track {
+        display: flex;
+        gap: 20px; /* Отступ между карточками */
+        width: max-content;
+        transition: transform 0.3s ease-in-out; /* Плавность движения */
+        will-change: transform;
+    }
+
+    /* Карточка еды */
+    .food-visual-card {
+        min-width: 220px; /* Фиксированная ширина */
+        height: 260px;
+        background: white;
+        border-radius: 24px;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem;
+        user-select: none;
+    }
+
+    .food-visual-card:hover {
+        border-color: #3b82f6;
+    }
+
+    /* Кнопки навигации */
+    .nav-btn {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: white;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 20;
+        color: #0f172a;
+        transition: all 0.2s;
+    }
+
+    .nav-btn:hover {
+        background: #f8fafc;
+        color: #3b82f6;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+    }
+
+    .nav-btn:active {
+        transform: translateY(-50%) scale(0.95);
+    }
+
+    .nav-prev { left: 10px; }
+    .nav-next { right: 10px; }
+
+</style>
+
 <!-- HERO SECTION -->
 <section class="hero-section text-center">
     <div class="container">
-        <!-- УБРАНА ВКЛАДКА "ТЕСТОВЫЙ РЕЖИМ" -->
 
         <h1 class="display-title display-3 mb-4">
             Вкусное и полезное<br>
@@ -17,57 +90,81 @@
             следите за рационом и оплачивайте картой.
         </p>
 
-        <!-- УБРАНЫ КНОПКИ ВОЙТИ/РЕГИСТРАЦИЯ/МЕНЮ ИЗ ЦЕНТРА (перенесены в шапку) -->
+        <!-- БЛОК С КАРУСЕЛЬЮ -->
+        <div class="mt-5 position-relative" style="max-width: 1000px; margin: 0 auto;">
 
-        <!-- ЗАПОЛНЕННЫЙ МАКЕТ ИНТЕРФЕЙСА -->
-        <div class="mt-5 mx-auto rounded-4 shadow-lg border bg-white p-2" style="max-width: 900px;">
-            <div class="rounded-3 bg-light overflow-hidden position-relative d-flex align-items-center justify-content-center" style="height: 400px; background: #f1f5f9;">
+            <!-- Кнопка Влево -->
+            <div class="nav-btn nav-prev" onclick="moveSlide(-1)">
+                <i class="bi bi-chevron-left fs-4"></i>
+            </div>
 
-                <!-- Визуализация интерфейса (карточки) -->
-                <div class="d-flex gap-3 align-items-center" style="transform: scale(0.9);">
+            <!-- Окно просмотра -->
+            <div class="carousel-wrapper">
+                <!-- Лента -->
+                <div class="carousel-track" id="track">
 
-                    <!-- Карточка 1 -->
-                    <div class="bg-white p-3 rounded-4 shadow-sm border" style="width: 220px;">
-                        <div class="bg-danger bg-opacity-10 text-danger rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 60px; height: 60px;">
-                            <i class="bi bi-fire fs-3"></i>
+                    <!-- 1. БОРЩ -->
+                    <div class="food-visual-card">
+                        <div class="bg-danger bg-opacity-10 text-danger rounded-circle d-flex align-items-center justify-content-center mb-4" style="width: 80px; height: 80px;">
+                            <i class="bi bi-fire fs-1"></i>
                         </div>
-                        <h6 class="fw-bold mb-1">Борщ</h6>
-                        <p class="text-muted small">150 ккал</p>
-                        <div class="d-flex justify-content-between align-items-center mt-3">
-                            <span class="fw-bold">85 ₽</span>
-                            <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 24px; height: 24px;">+</div>
-                        </div>
+                        <h5 class="fw-bold mb-1">Борщ</h5>
+                        <p class="text-muted small">Первое</p>
                     </div>
 
-                    <!-- Карточка 2 (Центральная, побольше) -->
-                    <div class="bg-white p-4 rounded-4 shadow border" style="width: 260px; transform: scale(1.1); z-index: 2;">
-                        <div class="bg-success bg-opacity-10 text-success rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 80px; height: 80px;">
+                    <!-- 2. КОТЛЕТА -->
+                    <div class="food-visual-card">
+                        <div class="bg-success bg-opacity-10 text-success rounded-circle d-flex align-items-center justify-content-center mb-4" style="width: 80px; height: 80px;">
                             <i class="bi bi-egg-fried fs-1"></i>
                         </div>
                         <h5 class="fw-bold mb-1">Котлета с пюре</h5>
-                        <p class="text-muted small">Хит продаж 🔥</p>
-                        <div class="d-flex justify-content-between align-items-center mt-4">
-                            <span class="fw-bold fs-5">120 ₽</span>
-                            <button class="btn btn-sm btn-primary rounded-pill px-3">В корзину</button>
-                        </div>
+                        <p class="text-muted small">Второе</p>
                     </div>
 
-                    <!-- Карточка 3 -->
-                    <div class="bg-white p-3 rounded-4 shadow-sm border" style="width: 220px;">
-                        <div class="bg-info bg-opacity-10 text-info rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 60px; height: 60px;">
-                            <i class="bi bi-cup-straw fs-3"></i>
+                    <!-- 3. КОМПОТ -->
+                    <div class="food-visual-card">
+                        <div class="bg-info bg-opacity-10 text-info rounded-circle d-flex align-items-center justify-content-center mb-4" style="width: 80px; height: 80px;">
+                            <i class="bi bi-cup-straw fs-1"></i>
                         </div>
-                        <h6 class="fw-bold mb-1">Компот</h6>
-                        <p class="text-muted small">Вишневый</p>
-                        <div class="d-flex justify-content-between align-items-center mt-3">
-                            <span class="fw-bold">35 ₽</span>
-                            <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 24px; height: 24px;">+</div>
+                        <h5 class="fw-bold mb-1">Компот</h5>
+                        <p class="text-muted small">Напитки</p>
+                    </div>
+
+                    <!-- 4. САЛАТ -->
+                    <div class="food-visual-card">
+                        <div class="bg-warning bg-opacity-10 text-warning rounded-circle d-flex align-items-center justify-content-center mb-4" style="width: 80px; height: 80px;">
+                            <i class="bi bi-flower1 fs-1"></i>
                         </div>
+                        <h5 class="fw-bold mb-1">Витаминный</h5>
+                        <p class="text-muted small">Салаты</p>
+                    </div>
+
+                    <!-- 5. ВЫПЕЧКА -->
+                    <div class="food-visual-card">
+                        <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center mb-4" style="width: 80px; height: 80px;">
+                            <i class="bi bi-star-fill fs-1"></i>
+                        </div>
+                        <h5 class="fw-bold mb-1">Булочка</h5>
+                        <p class="text-muted small">Выпечка</p>
+                    </div>
+
+                    <!-- 6. ЧАЙ -->
+                    <div class="food-visual-card">
+                        <div class="bg-secondary bg-opacity-10 text-secondary rounded-circle d-flex align-items-center justify-content-center mb-4" style="width: 80px; height: 80px;">
+                            <i class="bi bi-cup-hot fs-1"></i>
+                        </div>
+                        <h5 class="fw-bold mb-1">Чай черный</h5>
+                        <p class="text-muted small">Напитки</p>
                     </div>
 
                 </div>
-
             </div>
+
+            <!-- Кнопка Вправо -->
+            <div class="nav-btn nav-next" onclick="moveSlide(1)">
+                <i class="bi bi-chevron-right fs-4"></i>
+            </div>
+
         </div>
     </div>
 </section>
@@ -100,5 +197,49 @@
         </div>
     </div>
 </section>
+
+<!-- JS Script для бесконечной прокрутки -->
+<script>
+    const track = document.getElementById('track');
+    const cardWidth = 220; // Ширина карточки
+    const gap = 20;        // Отступ
+    const step = cardWidth + gap; // Шаг сдвига (240px)
+    let isAnimating = false;
+
+    function moveSlide(direction) {
+        if (isAnimating) return; // Защита от быстрого клика
+        isAnimating = true;
+
+        if (direction === 1) {
+            // === ДВИЖЕНИЕ ВПРАВО ===
+            // 1. Сдвигаем ленту влево
+            track.style.transition = 'transform 0.3s ease-in-out';
+            track.style.transform = `translateX(-${step}px)`;
+
+            // 2. После анимации переносим ПЕРВЫЙ элемент в КОНЕЦ
+            setTimeout(() => {
+                track.style.transition = 'none'; // Отключаем анимацию для мгновенного переноса
+                track.appendChild(track.firstElementChild); // Перенос
+                track.style.transform = 'translateX(0)'; // Сброс позиции
+                isAnimating = false;
+            }, 300); // 300мс совпадает с transition в CSS
+
+        } else {
+            // === ДВИЖЕНИЕ ВЛЕВО (Хитрость) ===
+            // 1. Сначала мгновенно берем ПОСЛЕДНИЙ элемент и ставим в НАЧАЛО
+            // Но сдвигаем ленту так, чтобы пользователь не заметил подмены
+            track.style.transition = 'none';
+            track.prepend(track.lastElementChild);
+            track.style.transform = `translateX(-${step}px)`;
+
+            // 2. С небольшой задержкой включаем анимацию и едем в 0
+            setTimeout(() => {
+                track.style.transition = 'transform 0.3s ease-in-out';
+                track.style.transform = 'translateX(0)';
+                setTimeout(() => { isAnimating = false; }, 300);
+            }, 10);
+        }
+    }
+</script>
 
 {% endblock %}
