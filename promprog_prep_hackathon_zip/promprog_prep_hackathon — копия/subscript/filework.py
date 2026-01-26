@@ -52,6 +52,30 @@ def gettovar(id):
             return json.loads(f.read())
     return False
 
+def setquerylist(to):
+    users_path = f"{base_path}/queries.json"
+    with open(users_path, 'w', encoding='utf-8') as f:
+        f.write(json.dumps(to, indent = 4))
+
+def getquerylist():
+    tovars_path = f"{base_path}/queries.json"
+    if os.path.exists(tovars_path):
+        with open(tovars_path, 'r', encoding='utf-8') as f:
+            return json.loads(f.read())
+    return False
+
+def setdatastorage(to):
+    users_path = f"{base_path}/data_storage.json"
+    with open(users_path, 'w', encoding='utf-8') as f:
+        f.write(json.dumps(to, indent = 4))
+
+def getdatastorage():
+    tovars_path = f"{base_path}/data_storage.json"
+    if os.path.exists(tovars_path):
+        with open(tovars_path, 'r', encoding='utf-8') as f:
+            return json.loads(f.read())
+    return False
+
 def gettovarlist():
     with open(f"{base_path}/tovars/tovars.json", 'r', encoding='utf-8') as f:
         return json.loads(f.read())

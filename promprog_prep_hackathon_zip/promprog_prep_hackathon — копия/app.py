@@ -60,13 +60,32 @@ def four04(name):
 def dashboard():
     email = getlogin(request.cookies)
     kwargs = commonkwargs(email)
+    if (kwargs['rights'] < 2):
+        # Загружаем товары корзины и сумму для отображения
+        cart_items, cart_total = get_cart_objects(email)
+        kwargs['cart_items'] = cart_items
+        kwargs['cart_total'] = cart_total
+        return render_template('dashboard.html', tovarlist=gettovarlist(), **kwargs)
+    elif (kwargs['rights'] == 2):
+        return render_template('dashboard.html', querylist=getquerylist(), **kwargs)
 
-    # Загружаем товары корзины и сумму для отображения
-    cart_items, cart_total = get_cart_objects(email)
-    kwargs['cart_items'] = cart_items
-    kwargs['cart_total'] = cart_total
-
-    return render_template('dashboard.html', tovarlist=gettovarlist(), **kwargs)
+@app.route("/remove_food_query/<id>")
+def remove_food_query(id):
+    email = getlogin(request.cookies)
+    if getuser(email)['rights'] == 2:
+        queries = getquerylist()
+        ans = -1
+        for i in range(len(queries)):
+            if (queries[i]['id'] == int(id)):
+                ans = i
+                break
+        if (ans != -1):
+            newqueries = []
+            for i in range(len(queries)):
+                if (i != ans):
+                    newqueries.append(queries[i])
+            setquerylist(newqueries)
+    return redirect(url_for('dashboard'))
 
 # --- НОВЫЕ МАРШРУТЫ ДЛЯ КОРЗИНЫ ---
 @app.route('/add_to_cart/<id>')
