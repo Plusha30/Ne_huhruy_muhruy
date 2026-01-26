@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, make_response
 from subscript.filework import *
-from subscript.reports import *
+#from subscript.reports import *
 import os
 
 #global variables
