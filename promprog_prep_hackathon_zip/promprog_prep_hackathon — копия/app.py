@@ -82,7 +82,7 @@ def dashboard():
         kwargs['cart_total'] = cart_total
         return render_template('dashboard.html', tovarlist=gettovarlist(), **kwargs)
     elif (kwargs['rights'] == 2):
-        return render_template('dashboard.html', querylist=getquerylist(), **kwargs)
+        return render_template('dashboard.html', querylist=getquerylist("student_to_povar.json"), **kwargs)
     else:
         return render_template('dashboard.html', **kwargs)
 
@@ -90,7 +90,7 @@ def dashboard():
 def remove_food_query(id):
     email = getlogin(request.cookies)
     if getuser(email)['rights'] == 2:
-        queries = getquerylist()
+        queries = getquerylist("student_to_povar.json")
         ans = -1
         for i in range(len(queries)):
             if (queries[i]['id'] == int(id)):
@@ -101,7 +101,7 @@ def remove_food_query(id):
             for i in range(len(queries)):
                 if (i != ans):
                     newqueries.append(queries[i])
-            setquerylist(newqueries)
+            setquerylist(name="student_to_povar.json", to=newqueries)
     return redirect(url_for('dashboard'))
 
 # --- НОВЫЕ МАРШРУТЫ ДЛЯ КОРЗИНЫ ---
@@ -133,10 +133,10 @@ def buy_from_cart():
     if (sum > user['money']):
         return redirect(url_for('dashboard'))
     user['money'] -= sum
-    dt = getdatastorage()
+    dt = getquerylist("global.json")
     nowid = dt['total_queries']
     dt['total_queries'] += 1
-    setdatastorage(dt)
+    setquerylist(name="global.json", to=dt)
     tovarlist = gettovarlist()
     names = []
     for i in user['cart']:
