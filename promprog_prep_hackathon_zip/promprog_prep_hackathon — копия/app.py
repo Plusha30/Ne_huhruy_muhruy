@@ -52,9 +52,19 @@ def pricing():
 def ultimate_dashboard():
     return render_template('super_dashboard.html', **commonkwargs(getlogin(request.cookies)))
 
-@app.route('/payment')
+@app.route('/payment', methods=['GET', 'POST'])
 def payment():
-    return render_template('payment.html', **commonkwargs(getlogin(request.cookies)))
+    email = getlogin(request.cookies)
+    kwargs = commonkwargs(email)
+    if (kwargs['rights'] != 1):
+        return redirect('dashboard.html', **kwargs)
+    if (request.method == 'POST'):
+        usernow = getuser(email)
+        data = request.form.to_dict(flat=False)
+        usernow['money'] += int(data['money'][0])
+        setuser(email, usernow)
+        return redirect('dashboard.html', **kwargs)
+    return render_template('payment.html', **kwargs)
 
 @app.errorhandler(404)
 def four04(name):
