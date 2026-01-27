@@ -1,7 +1,8 @@
-from flask import Flask, render_template, request, redirect, url_for, make_response
+from flask import Flask, render_template, request, redirect, url_for, make_response, send_file
 from subscript.filework import *
-#from subscript.reports import *
+from subscript.reports import generate_users_report  # Импортируем нашу функцию
 import os
+from datetime import datetime
 
 #global variables
 app = Flask(__name__)
@@ -225,7 +226,35 @@ def profile():
             setuser(email, changes)
 
     return render_template('profile.html', **commonkwargs(email))
-
+@app.route('/download_report')
+def download_report():
+    """
+    Маршрут для скачивания отчета по пользователям
+    """
+    # Проверяем авторизацию
+    email = getlogin(request.cookies)
+    if email == 'placeholder':
+        return redirect(url_for('login'), 302)
+    
+    # Проверяем права (только администраторы могут скачивать отчеты)
+    user_data = getuser(email)
+    if not user_data or user_data.get('rights', 0) < 2:
+        return "Доступ запрещен. Требуются права модератора или администратора.", 403
+    
+    # Генерируем отчет
+    users_dir = os.path.join(base_path, 'users')  # Путь к папке с пользователями
+    excel_file = generate_users_report(users_dir)
+    
+    # Создаем имя файла с текущей датой и временем
+    filename = f"отчет_пользователи_{datetime.now().strftime('%Y-%m-%d_%H-%M')}.xlsx"
+    
+    # Отправляем файл
+    return send_file(
+        excel_file,
+        as_attachment=True,
+        download_name=filename,
+        mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
 #start
 if __name__ == '__main__':
     app.run(port=5237, host="127.0.0.1", debug=True)
