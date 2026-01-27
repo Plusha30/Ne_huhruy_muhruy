@@ -1,0 +1,292 @@
+{% extends "base.html" %}
+
+{% block title %}RetroArcade - Магазин старых игровых автоматов{% endblock %}
+
+{% block content %}
+<div class="main-content">
+    <!-- БОКОВАЯ ПАНЕЛЬ ФИЛЬТРОВ -->
+    <aside class="sidebar">
+        <form method="GET" action="{{ url_for('index') }}" id="filter-form">
+            {% if request.args.get('search') %}
+                <input type="hidden" name="search" value="{{ request.args.get('search') }}">
+            {% endif %}
+            {% if request.args.get('category') %}
+                <input type="hidden" name="category" value="{{ request.args.get('category') }}">
+            {% endif %}
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">
+                    <i class="fas fa-filter"></i> Фильтры
+                </h3>
+                <div class="filter-group">
+                    <label class="filter-option">
+                        <input type="checkbox" name="in_stock" value="1"
+                               {% if request.args.get('in_stock') %}checked{% endif %}>
+                        <span>В наличии</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">
+                    <i class="fas fa-tag"></i> Цена
+                </h3>
+                <input type="range" class="price-slider" name="max_price"
+                       min="0" max="500000" value="{{ request.args.get('max_price', 250000) }}">
+                <div class="price-values">
+                    <span>0 ₽</span>
+                    <span class="price-value">{{ request.args.get('max_price', 250000) }} ₽</span>
+                    <span>500 000 ₽</span>
+                </div>
+                <input type="hidden" name="min_price" value="{{ request.args.get('min_price', 0) }}">
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">
+                    <i class="fas fa-calendar"></i> Год выпуска
+                </h3>
+                <input type="range" class="price-slider" name="max_year"
+                       min="1970" max="2024" value="{{ request.args.get('max_year', 2024) }}">
+                <div class="price-values">
+                    <span>1970</span>
+                    <span class="price-value">{{ request.args.get('max_year', 2024) }}</span>
+                    <span>2024</span>
+                </div>
+                <input type="hidden" name="min_year" value="{{ request.args.get('min_year', 1970) }}">
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">
+                    <i class="fas fa-industry"></i> Производитель
+                </h3>
+                <div class="filter-group">
+                    {% set selected_brands = request.args.getlist('brand') %}
+                    {% for brand in available_brands %}
+                    <label class="filter-option">
+                        <input type="checkbox" name="brand" value="{{ brand }}"
+                               {% if brand in selected_brands %}checked{% endif %}>
+                        <span>{{ brand }}</span>
+                    </label>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">
+                    <i class="fas fa-star"></i> Состояние
+                </h3>
+                <div class="filter-group">
+                    <label class="filter-option">
+                        <input type="radio" name="condition" value="excellent"
+                               {% if request.args.get('condition') == 'excellent' %}checked{% endif %}>
+                        <span>Отличное</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="radio" name="condition" value="good"
+                               {% if request.args.get('condition') == 'good' %}checked{% endif %}>
+                        <span>Хорошее</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="radio" name="condition" value="any"
+                               {% if not request.args.get('condition') or request.args.get('condition') == 'any' %}checked{% endif %}>
+                        <span>Любое</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="sidebar-actions">
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    <i class="fas fa-check"></i> Применить фильтры
+                </button>
+                <a href="{{ url_for('index') }}" class="btn btn-outline" style="width: 100%; margin-top: 10px; text-align: center;">
+                    <i class="fas fa-redo"></i> Сбросить фильтры
+                </a>
+            </div>
+        </form>
+    </aside>
+
+    <!-- СЕТКА ТОВАРОВ -->
+    <section class="products-container">
+        <div class="products-header">
+            <h2 class="section-title">
+                {% if request.args.get('category') %}
+                    {% if request.args.get('category') == 'classic' %}Классические автоматы
+                    {% elif request.args.get('category') == 'pinball' %}Пинбол-машины
+                    {% elif request.args.get('category') == 'racing' %}Гоночные симуляторы
+                    {% else %}Все товары{% endif %}
+                {% else %}
+                    Каталог игровых автоматов
+                {% endif %}
+                <span style="font-size: 0.9rem; color: var(--gray); margin-left: 10px;">
+                    ({{ products|length }} товаров)
+                </span>
+            </h2>
+
+            <select class="sort-select" id="sort-select">
+                <option value="">По популярности</option>
+                <option value="price_asc" {% if request.args.get('sort') == 'price_asc' %}selected{% endif %}>По возрастанию цены</option>
+                <option value="price_desc" {% if request.args.get('sort') == 'price_desc' %}selected{% endif %}>По убыванию цены</option>
+                <option value="year_desc" {% if request.args.get('sort') == 'year_desc' %}selected{% endif %}>По году выпуска</option>
+            </select>
+        </div>
+
+        <div class="products-grid">
+    {% if products %}
+        {% for product in products %}
+        <div class="product-card">
+            {% if product.in_stock < 2 %}
+                <div class="product-badge hot">Хит</div>
+            {% elif product.price < 150000 %}
+                <div class="product-badge discount">Скидка</div>
+            {% elif loop.index <= 3 %}
+                <div class="product-badge new">Новинка</div>
+            {% endif %}
+
+            <a href="{{ url_for('product_page', product_id=product.id) }}">
+                <div class="product-image">
+                    {% if product.image %}
+                        <img src="{{ url_for('static', filename=product.image) }}"
+                             alt="{{ product.name }}"
+                             onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1534423861386-85a16f5d13fd?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80';">
+                    {% else %}
+                        <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: var(--gray);">
+                            <i class="fas fa-gamepad" style="font-size: 2rem;"></i>
+                        </div>
+                    {% endif %}
+                </div>
+            </a>
+
+            <div class="product-info">
+                <a href="{{ url_for('product_page', product_id=product.id) }}" style="text-decoration: none;">
+                    <h3 class="product-title">{{ product.name }}</h3>
+                </a>
+                <div class="product-category">
+                    <i class="fas fa-tag"></i>
+                    {% if product.category == 'classic' %}Классический
+                    {% elif product.category == 'pinball' %}Пинбол
+                    {% elif product.category == 'racing' %}Гоночный
+                    {% else %}{{ product.category_name }}{% endif %}
+                </div>
+                <p class="product-description">
+                    {{ product.description[:80] }}{% if product.description|length > 80 %}...{% endif %}
+                </p>
+                <div class="product-footer">
+                    <div class="product-price">{{ product.price|int }} ₽</div>
+                    <div class="product-actions">
+                        <button class="action-btn" title="В корзину" onclick="addToCart('{{ product.id }}')">
+                            <i class="fas fa-cart-plus"></i>
+                        </button>
+                        <button class="action-btn" title="Избранное" onclick="toggleFavorite('{{ product.id }}')">
+                            <i class="far fa-heart"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div style="grid-column: 1 / -1; text-align: center; padding: 40px 20px;">
+            <i class="fas fa-gamepad" style="font-size: 3rem; color: var(--gray-light); margin-bottom: 20px;"></i>
+            <h3 style="color: var(--gray); margin-bottom: 10px;">Товары не найдены</h3>
+            <p style="color: var(--gray); margin-bottom: 20px;">Попробуйте изменить параметры фильтров</p>
+            <a href="{{ url_for('index') }}" class="btn btn-primary">
+                <i class="fas fa-redo"></i> Сбросить фильтры
+            </a>
+        </div>
+    {% endif %}
+</div>
+    </section>
+</div>
+
+<!-- БАННЕРЫ -->
+<div class="banners">
+    <div class="banner">
+        <div class="banner-content">
+            <h3 class="banner-title">Бесплатная доставка</h3>
+            <p class="banner-text">По всей России от 50 000 ₽</p>
+            <a href="{{ url_for('advice_page') }}" class="btn btn-outline" style="background: rgba(255,255,255,0.1); color: white; border-color: white; padding: 8px 16px; font-size: 0.9rem;">
+                Подробнее
+            </a>
+        </div>
+    </div>
+
+    <div class="banner secondary">
+        <div class="banner-content">
+            <h3 class="banner-title">Гарантия 1 год</h3>
+            <p class="banner-text">Обслуживание и поддержка</p>
+            <a href="{{ url_for('advice_page') }}" class="btn btn-outline" style="background: rgba(255,255,255,0.1); color: white; border-color: white; padding: 8px 16px; font-size: 0.9rem;">
+                Подробнее
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ИНФОРМАЦИОННЫЕ БЛОКИ -->
+<div class="info-blocks">
+    <div class="info-block">
+        <div class="info-block-header">
+            <div class="info-block-icon">
+                <i class="fas fa-history"></i>
+            </div>
+            <h4 class="info-block-title">История автоматов</h4>
+        </div>
+        <div class="info-block-content">
+            <ul>
+                <li><i class="fas fa-check"></i> Аркадные игры 1970-х</li>
+                <li><i class="fas fa-check"></i> Золотой век автоматов</li>
+                <li><i class="fas fa-check"></i> Эволюция технологий</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="info-block secondary">
+        <div class="info-block-header">
+            <div class="info-block-icon">
+                <i class="fas fa-star"></i>
+            </div>
+            <h4 class="info-block-title">Топ-5 автоматов</h4>
+        </div>
+        <div class="info-block-content">
+            <ul>
+                <li><i class="fas fa-trophy"></i> Pac-Man (1980)</li>
+                <li><i class="fas fa-trophy"></i> Space Invaders (1978)</li>
+                <li><i class="fas fa-trophy"></i> Donkey Kong (1981)</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="info-block accent">
+        <div class="info-block-header">
+            <div class="info-block-icon">
+                <i class="fas fa-tools"></i>
+            </div>
+            <h4 class="info-block-title">Советы</h4>
+        </div>
+        <div class="info-block-content">
+            <ul>
+                <li><i class="fas fa-check-circle"></i> Проверка компонентов</li>
+                <li><i class="fas fa-check-circle"></i> Оригинальность деталей</li>
+                <li><i class="fas fa-check-circle"></i> Габариты размещения</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Сортировка
+    const sortSelect = document.getElementById('sort-select');
+    if (sortSelect) {
+        sortSelect.addEventListener('change', function() {
+            const form = document.getElementById('filter-form');
+            const hiddenInput = document.createElement('input');
+            hiddenInput.type = 'hidden';
+            hiddenInput.name = 'sort';
+            hiddenInput.value = this.value;
+            form.appendChild(hiddenInput);
+            form.submit();
+        });
+    }
+</script>
+{% endblock %}

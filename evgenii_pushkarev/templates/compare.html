@@ -1,0 +1,774 @@
+{% extends "base.html" %}
+
+{% block title %}Сравнение товаров - RetroArcade{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Стили для страницы сравнения */
+    .compare-container {
+        background: white;
+        border-radius: var(--radius);
+        padding: 20px;
+        box-shadow: var(--shadow);
+        margin: 20px 0;
+        overflow: hidden;
+    }
+
+    .page-header {
+        text-align: center;
+        margin-bottom: 25px;
+    }
+
+    .page-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--dark);
+        margin-bottom: 8px;
+        line-height: 1.3;
+    }
+
+    .page-subtitle {
+        color: var(--gray);
+        font-size: 0.9rem;
+    }
+
+    .compare-controls {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        margin-bottom: 25px;
+        padding: 15px;
+        background: var(--gray-light);
+        border-radius: var(--radius);
+    }
+
+    .products-selected {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 600;
+        flex-wrap: wrap;
+    }
+
+    .selected-count {
+        background: var(--primary);
+        color: white;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.9rem;
+        flex-shrink: 0;
+    }
+
+    .compare-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    /* Таблица сравнения */
+    .compare-table-wrapper {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        border-radius: var(--radius);
+        border: 1px solid var(--gray-light);
+        margin: 0 -20px;
+        width: calc(100% + 40px);
+        position: relative;
+    }
+
+    .compare-table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 800px;
+    }
+
+    .compare-table th, .compare-table td {
+        padding: 12px 10px;
+        text-align: left;
+        border-bottom: 1px solid var(--gray-light);
+        vertical-align: top;
+        font-size: 0.9rem;
+    }
+
+    .compare-table th {
+        background: var(--gray-light);
+        font-weight: 600;
+        color: var(--dark);
+        position: sticky;
+        top: 0;
+        z-index: 2;
+    }
+
+    /* Первые ячейки в строках sticky */
+    .compare-table tr > *:first-child {
+        position: sticky;
+        left: 0;
+        background: white;
+        z-index: 1;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Заголовки групп характеристик */
+    .compare-table td[colspan] {
+        background: var(--gray-light) !important;
+        z-index: 3 !important;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1) !important;
+        font-weight: 600;
+        color: var(--dark);
+        padding: 16px 10px !important;
+        border-top: 2px solid var(--gray-dark);
+        border-bottom: 2px solid var(--gray-dark);
+    }
+
+    /* Первый заголовок таблицы */
+    .compare-table thead th:first-child {
+        z-index: 5;
+        background: var(--gray-light);
+    }
+
+    /* Обычные заголовки характеристик */
+    .compare-table th.feature-name {
+        background: var(--gray-light);
+        z-index: 4;
+    }
+
+    /* Улучшаем отображение при горизонтальной прокрутке */
+    .compare-table td:first-child {
+        min-width: 150px;
+        max-width: 200px;
+        word-wrap: break-word;
+        background: white;
+    }
+
+    /* При наведении на строку */
+    .compare-table tbody tr:hover td:first-child {
+        background: rgba(74, 111, 165, 0.03);
+    }
+
+    .product-column {
+        width: 250px;
+        min-width: 200px;
+        background: white;
+        border-right: 1px solid var(--gray-light);
+    }
+
+    .product-header {
+        text-align: center;
+        padding: 15px;
+        border-bottom: 1px solid var(--gray-light);
+    }
+
+    .product-image {
+        width: 100px;
+        height: 100px;
+        object-fit: contain;
+        margin: 0 auto 12px;
+        border-radius: 8px;
+        background: var(--gray-light);
+        padding: 8px;
+    }
+
+    .product-title {
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--dark);
+        margin-bottom: 6px;
+        line-height: 1.3;
+    }
+
+    .product-price {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: var(--primary);
+        margin-bottom: 12px;
+    }
+
+    .product-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .product-actions .btn {
+        width: 100%;
+        justify-content: center;
+        padding: 8px;
+        font-size: 0.8rem;
+    }
+
+    .feature-cell {
+        font-size: 0.85rem;
+        color: var(--gray-dark);
+    }
+
+    .feature-cell.yes {
+        color: var(--success);
+        font-weight: 600;
+    }
+
+    .feature-cell.no {
+        color: var(--danger);
+        font-weight: 600;
+    }
+
+    .feature-cell.na {
+        color: var(--gray);
+        font-style: italic;
+    }
+
+    .empty-compare {
+        text-align: center;
+        padding: 40px 15px;
+    }
+
+    .empty-icon {
+        font-size: 3rem;
+        color: var(--gray-light);
+        margin-bottom: 15px;
+    }
+
+    .empty-title {
+        font-size: 1.3rem;
+        color: var(--dark);
+        margin-bottom: 8px;
+    }
+
+    .empty-text {
+        color: var(--gray);
+        margin-bottom: 25px;
+        font-size: 0.95rem;
+    }
+
+    .recommendations {
+        margin-top: 30px;
+        padding-top: 25px;
+        border-top: 1px solid var(--gray-light);
+    }
+
+    .recommendations-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: var(--dark);
+        margin-bottom: 15px;
+        text-align: center;
+    }
+
+    /* Рекомендации: на ПК - 4 колонки, на мобильных - 2 */
+    .recommendations .products-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+    }
+
+    .product-image-small {
+        height: 140px;
+        background: linear-gradient(135deg, #f1f3f5, #e9ecef);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    .product-image-small img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .product-info-small {
+        padding: 15px;
+    }
+
+    .product-title-small {
+        font-size: 0.95rem;
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: var(--dark);
+        line-height: 1.4;
+    }
+
+    .product-price-small {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--primary);
+        margin-bottom: 10px;
+    }
+
+    /* Специальные классы для сравнения */
+    .best-value {
+        position: relative;
+        background: linear-gradient(135deg, rgba(255, 193, 7, 0.1), rgba(255, 193, 7, 0.05));
+    }
+
+    .best-value::before {
+        content: '🏆 Лучшее';
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: var(--warning);
+        color: var(--dark);
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        z-index: 1;
+    }
+
+    .highlight {
+        background: rgba(40, 167, 69, 0.1);
+        font-weight: 600;
+    }
+
+    .warning {
+        background: rgba(255, 193, 7, 0.1);
+        font-weight: 600;
+    }
+
+    /* Адаптивность для сравнения */
+    @media (max-width: 1200px) {
+        .recommendations .products-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    @media (max-width: 992px) {
+        .recommendations .products-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .compare-table-wrapper {
+            margin: 0 -15px;
+            width: calc(100% + 30px);
+        }
+
+        .compare-table th, .compare-table td {
+            padding: 10px 8px;
+            font-size: 0.85rem;
+        }
+
+        .compare-table td:first-child,
+        .compare-table td[colspan] {
+            min-width: 120px;
+            max-width: 150px;
+            font-size: 0.85rem;
+            padding: 12px 8px !important;
+        }
+
+        .compare-table th:first-child {
+            min-width: 120px;
+            max-width: 150px;
+        }
+
+        .product-column {
+            width: 200px;
+            min-width: 180px;
+        }
+
+        .product-image {
+            width: 80px;
+            height: 80px;
+        }
+
+        .product-title {
+            font-size: 0.95rem;
+        }
+
+        .product-price {
+            font-size: 1.1rem;
+        }
+
+        .recommendations .products-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 576px) {
+        .compare-container {
+            padding: 15px;
+        }
+
+        .page-title {
+            font-size: 1.3rem;
+        }
+
+        .compare-controls {
+            padding: 12px;
+        }
+
+        .products-selected {
+            justify-content: center;
+            text-align: center;
+        }
+
+        .compare-actions {
+            width: 100%;
+        }
+
+        .compare-actions .btn {
+            flex: 1;
+            min-width: 140px;
+            justify-content: center;
+        }
+
+        .compare-table td:first-child,
+        .compare-table td[colspan] {
+            min-width: 100px;
+            max-width: 130px;
+            font-size: 0.8rem;
+            padding: 10px 6px !important;
+        }
+
+        .compare-table th:first-child {
+            min-width: 100px;
+            max-width: 130px;
+            font-size: 0.85rem;
+        }
+
+        .empty-compare .btn {
+            width: 100%;
+            margin-bottom: 8px;
+            justify-content: center;
+        }
+
+        .compare-table {
+            min-width: 700px;
+        }
+
+        .product-column {
+            width: 180px;
+            min-width: 160px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .page-title {
+            font-size: 1.2rem;
+        }
+
+        .page-subtitle {
+            font-size: 0.85rem;
+        }
+
+        .product-actions {
+            gap: 6px;
+        }
+
+        .product-actions .btn {
+            font-size: 0.75rem;
+            padding: 6px;
+        }
+
+        .feature-cell {
+            font-size: 0.8rem;
+        }
+
+        .compare-table td:first-child {
+            font-size: 0.75rem;
+            min-width: 90px;
+            max-width: 120px;
+        }
+
+        .recommendations .products-grid {
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="compare-container">
+    <div class="page-header">
+        <h1 class="page-title">Сравнение товаров</h1>
+        <p class="page-subtitle">Сравните характеристики разных игровых автоматов для выбора оптимального варианта</p>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ 'success' if category == 'success' else 'error' if category == 'error' else 'info' }}">
+                    <i class="fas fa-{{ 'check-circle' if category == 'success' else 'exclamation-circle' if category == 'error' else 'info-circle' }}"></i>
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="compare-controls">
+        <div class="products-selected">
+            <div class="selected-count">{{ compare_products|length }}</div>
+            <span>Товаров выбрано для сравнения</span>
+        </div>
+
+        <div class="compare-actions">
+            <a href="{{ url_for('index') }}" class="btn btn-outline">
+                <i class="fas fa-plus"></i> Добавить товар
+            </a>
+            <a href="{{ url_for('clear_compare_route') }}" class="btn btn-primary"
+               onclick="return confirm('Вы уверены, что хотите очистить список сравнения?');">
+                <i class="fas fa-trash"></i> Очистить
+            </a>
+        </div>
+    </div>
+
+    {% if compare_products %}
+        <div class="compare-table-wrapper">
+            <table class="compare-table">
+                <thead>
+                    <tr>
+                        <th class="product-column feature-name">Характеристика</th>
+                        {% for product in compare_products %}
+                        <th class="product-column {% if loop.index == 2 %}best-value{% endif %}">
+                            <div class="product-header">
+                                <img src="{{ url_for('static', filename=product.image) }}"
+                                     alt="{{ product.name }}"
+                                     class="product-image"
+                                     onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1534423861386-85a16f5d13fd?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80';">
+                                <h3 class="product-title">{{ product.name }}</h3>
+                                <div class="product-price">{{ product.price }} ₽</div>
+                                <div class="product-actions">
+                                    <a href="{{ url_for('product_page', product_id=product.id) }}" class="btn btn-outline">
+                                        <i class="fas fa-eye"></i> Подробнее
+                                    </a>
+                                    <button class="btn btn-primary" onclick="addToCart('{{ product.id }}')">
+                                        <i class="fas fa-cart-plus"></i> В корзину
+                                    </button>
+                                </div>
+                            </div>
+                        </th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Основные характеристики -->
+                    <tr>
+                        <td class="feature-name">Категория</td>
+                        {% for product in compare_products %}
+                        <td class="feature-cell">{{ product.category_name }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td class="feature-name">Производитель</td>
+                        {% for product in compare_products %}
+                        <td class="feature-cell">{{ product.manufacturer }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td class="feature-name">Год выпуска</td>
+                        {% for product in compare_products %}
+                        <td class="feature-cell {% if product.year|int >= 2000 %}highlight{% endif %}">
+                            {{ product.year }}
+                        </td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td class="feature-name">Цена</td>
+                        {% for product in compare_products %}
+                        <td class="feature-cell {% if product.price == compare_products|map(attribute='price')|min %}highlight{% endif %}">
+                            {{ product.price }} ₽
+                        </td>
+                        {% endfor %}
+                    </tr>
+
+                    <!-- Технические характеристики -->
+                    <tr>
+                        <td class="feature-name" colspan="{{ compare_products|length + 1 }}">
+                            <strong>Технические характеристики</strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="feature-name">Габариты</td>
+                        {% for product in compare_products %}
+                        <td class="feature-cell">{{ product.dimensions or "—" }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td class="feature-name">Вес</td>
+                        {% for product in compare_products %}
+                        <td class="feature-cell {% if product.weight and 'кг' in product.weight and product.weight.split('кг')[0]|float < 100 %}highlight{% endif %}">
+                            {{ product.weight or "—" }}
+                        </td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td class="feature-name">Экран</td>
+                        {% for product in compare_products %}
+                        <td class="feature-cell">{{ product.screen or "—" }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td class="feature-name">Напряжение</td>
+                        {% for product in compare_products %}
+                        <td class="feature-cell">{{ product.voltage or "—" }}</td>
+                        {% endfor %}
+                    </tr>
+
+                    <!-- Состояние и комплектация -->
+                    <tr>
+                        <td class="feature-name" colspan="{{ compare_products|length + 1 }}">
+                            <strong>Состояние и комплектация</strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="feature-name">Состояние</td>
+                        {% for product in compare_products %}
+                        <td class="feature-cell yes">
+                            <i class="fas fa-check-circle"></i> Отличное
+                        </td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td class="feature-name">В наличии</td>
+                        {% for product in compare_products %}
+                        <td class="feature-cell {% if product.in_stock > 0 %}yes{% else %}no{% endif %}">
+                            {% if product.in_stock > 0 %}
+                                <i class="fas fa-check-circle"></i> Да ({{ product.in_stock }} шт.)
+                            {% else %}
+                                <i class="fas fa-times-circle"></i> Нет
+                            {% endif %}
+                        </td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td class="feature-name">Гарантия</td>
+                        {% for product in compare_products %}
+                        <td class="feature-cell yes">
+                            <i class="fas fa-check-circle"></i> 12 месяцев
+                        </td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td class="feature-name">Комплектующие</td>
+                        {% for product in compare_products %}
+                        <td class="feature-cell">
+                            {% if product.components %}
+                                {{ product.components[:40] }}{% if product.components|length > 40 %}...{% endif %}
+                            {% else %}
+                                Стандартная комплектация
+                            {% endif %}
+                        </td>
+                        {% endfor %}
+                    </tr>
+
+                    <!-- Особенности -->
+                    <tr>
+                        <td class="feature-name" colspan="{{ compare_products|length + 1 }}">
+                            <strong>Особенности</strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="feature-name">Особенности</td>
+                        {% for product in compare_products %}
+                        <td class="feature-cell">
+                            {% if product.features %}
+                                {{ product.features[:50] }}{% if product.features|length > 50 %}...{% endif %}
+                            {% else %}
+                                Классический автомат
+                            {% endif %}
+                        </td>
+                        {% endfor %}
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Рекомендации -->
+        <div class="recommendations">
+            <h3 class="recommendations-title">Наши рекомендации</h3>
+            <div class="products-grid">
+                {% for product in compare_products %}
+                <div class="product-card">
+                    <div class="product-image-small">
+                        <img src="{{ url_for('static', filename=product.image) }}"
+                             alt="{{ product.name }}"
+                             onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1534423861386-85a16f5d13fd?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80';">
+                    </div>
+                    <div class="product-info-small">
+                        <h4 class="product-title-small">{{ product.name }}</h4>
+                        <div class="product-price-small">{{ product.price }} ₽</div>
+                        <div style="display: flex; gap: 8px;">
+                            <a href="{{ url_for('product_page', product_id=product.id) }}" class="btn btn-outline" style="flex: 1; font-size: 0.8rem; padding: 6px;">
+                                Подробнее
+                            </a>
+                            <button class="btn btn-primary" onclick="addToCart('{{ product.id }}')" style="flex: 1; font-size: 0.8rem; padding: 6px;">
+                                В корзину
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    {% else %}
+        <!-- Если нет товаров для сравнения -->
+        <div class="empty-compare">
+            <div class="empty-icon">
+                <i class="fas fa-balance-scale"></i>
+            </div>
+            <h3 class="empty-title">Нет товаров для сравнения</h3>
+            <p class="empty-text">
+                Добавьте товары для сравнения на страницах товаров, чтобы увидеть их характеристики рядом.
+                Это поможет вам сделать правильный выбор!
+            </p>
+            <div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
+                <a href="{{ url_for('index') }}" class="btn btn-primary" style="width: 100%; max-width: 250px; justify-content: center;">
+                    <i class="fas fa-shopping-bag"></i> Перейти к покупкам
+                </a>
+                <a href="{{ url_for('index') }}?category=classic" class="btn btn-outline" style="width: 100%; max-width: 250px; justify-content: center;">
+                    <i class="fas fa-gamepad"></i> Классические автоматы
+                </a>
+                <a href="{{ url_for('index') }}?category=pinball" class="btn btn-outline" style="width: 100%; max-width: 250px; justify-content: center;">
+                    <i class="fas fa-bowling-ball"></i> Пинбол-машины
+                </a>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Подсветка лучших значений
+    document.addEventListener('DOMContentLoaded', function() {
+        const priceCells = document.querySelectorAll('td.feature-cell:nth-child(2)');
+        let minPrice = Infinity;
+        let minPriceCell = null;
+
+        priceCells.forEach(cell => {
+            const priceText = cell.textContent.replace(' ₽', '').trim();
+            const price = parseInt(priceText.replace(/\s/g, ''));
+            if (price < minPrice) {
+                minPrice = price;
+                minPriceCell = cell;
+            }
+        });
+
+        if (minPriceCell) {
+            minPriceCell.classList.add('highlight');
+            minPriceCell.innerHTML = '🏆 ' + minPriceCell.innerHTML;
+        }
+
+        // Анимация появления таблицы
+        const tableRows = document.querySelectorAll('.compare-table tbody tr');
+        tableRows.forEach((row, index) => {
+            setTimeout(() => {
+                row.style.opacity = '0';
+                row.style.transform = 'translateY(10px)';
+                row.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+
+                setTimeout(() => {
+                    row.style.opacity = '1';
+                    row.style.transform = 'translateY(0)';
+                }, 50);
+            }, index * 50);
+        });
+    });
+</script>
+{% endblock %}

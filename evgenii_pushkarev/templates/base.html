@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}RetroArcade - Магазин старых игровых автоматов{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        /* Скрываем кнопку мобильного поиска на ПК */
+        .mobile-search-btn {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-search-btn {
+                display: flex;
+            }
+
+            /* Скрываем кнопку поиска внутри формы на мобильных */
+            .search-bar .search-btn {
+                display: none;
+            }
+
+            /* Показываем кнопку поиска в форме когда строка поиска активна */
+            .search-bar.active .search-btn {
+                display: flex;
+            }
+
+            /* Скрываем строку поиска по умолчанию на мобильных */
+            .search-bar {
+                display: none;
+            }
+
+            /* Показываем строку поиска когда она активна */
+            .search-bar.active {
+                display: flex;
+            }
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- ШАПКА -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="RetroArcade" class="logo-img">
+                    <div class="logo-text">Retro<span>Arcade</span></div>
+                </div>
+
+                <button class="icon-btn mobile-search-btn" id="mobile-search-toggle" aria-label="Поиск">
+                    <i class="fas fa-search"></i>
+                </button>
+
+                <div class="search-bar" id="search-bar">
+                    <form method="GET" action="{{ url_for('index') }}" style="display: flex; width: 100%;">
+                        <input type="text" name="search" placeholder="Поиск игровых автоматов..."
+                               value="{{ request.args.get('search', '') }}">
+                        <button type="submit" class="search-btn" aria-label="Найти">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </form>
+                </div>
+
+                <div class="header-actions">
+                    <a href="{{ url_for('account') }}" class="icon-btn" title="Избранное">
+                        <i class="far fa-heart"></i>
+                    </a>
+                    <a href="{{ url_for('account') }}" class="icon-btn" title="Корзина">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">3</span>
+                    </a>
+                    <a href="{{ url_for('compare') }}" class="icon-btn" title="Сравнение товаров">
+                        <i class="fas fa-balance-scale"></i>
+                        {% if compare_count > 0 %}
+                        <span class="cart-count compare-count">{{ compare_count }}</span>
+                        {% endif %}
+                    </a>
+
+                    <button class="icon-btn" id="mobile-menu-toggle" aria-label="Меню">
+                        <i class="fas fa-bars"></i>
+                    </button>
+
+                    <div class="auth-buttons" id="auth-buttons">
+                        {% if current_user %}
+                            <a href="{{ url_for('account') }}" class="btn btn-outline">
+                                <i class="fas fa-user"></i> {{ current_user }}
+                            </a>
+                            <a href="{{ url_for('logout') }}" class="btn btn-primary">
+                                <i class="fas fa-sign-out-alt"></i> Выйти
+                            </a>
+                        {% else %}
+                            <a href="{{ url_for('login') }}" class="btn btn-outline">Войти</a>
+                            <a href="{{ url_for('register') }}" class="btn btn-primary">Регистрация</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- НАВИГАЦИЯ -->
+    <nav class="nav">
+        <div class="container">
+            <div class="nav-content">
+                <div class="categories-tabs">
+                    <a href="{{ url_for('index') }}" class="category-tab {% if not request.args.get('category') %}active{% endif %}"
+                       data-category="all">
+                        <i class="fas fa-gamepad"></i> Все автоматы
+                    </a>
+                    <a href="{{ url_for('index') }}?category=classic" class="category-tab {% if request.args.get('category') == 'classic' %}active{% endif %}"
+                       data-category="classic">
+                        <i class="fas fa-joystick"></i> Классические
+                    </a>
+                    <a href="{{ url_for('index') }}?category=pinball" class="category-tab {% if request.args.get('category') == 'pinball' %}active{% endif %}"
+                       data-category="pinball">
+                        <i class="fas fa-bowling-ball"></i> Пинбол
+                    </a>
+                    <a href="{{ url_for('index') }}?category=racing" class="category-tab {% if request.args.get('category') == 'racing' %}active{% endif %}"
+                       data-category="racing">
+                        <i class="fas fa-car"></i> Гонки
+                    </a>
+                </div>
+
+                <div class="nav-actions">
+                    <select class="language-select">
+                        <option>Русский</option>
+                        <option>English</option>
+                    </select>
+                    <div class="mobile-language">Русский</div>
+                    <a href="{{ url_for('add_product') }}" class="add-product-btn">
+                        <i class="fas fa-plus"></i> Добавить товар
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ОСНОВНОЙ КОНТЕНТ -->
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- ФУТЕР -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>RetroArcade</h3>
+                    <ul class="footer-links">
+                        <li><a href="{{ url_for('advice_page') }}">О компании</a></li>
+                        <li><a href="{{ url_for('advice_page') }}">Контакты</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h3>Категории</h3>
+                    <ul class="footer-links">
+                        <li>
+                            <a href="{{ url_for('index') }}?category=classic">
+                                <i class="fas fa-gamepad"></i> Классические
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('index') }}?category=pinball">
+                                <i class="fas fa-bowling-ball"></i> Пинбол
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('index') }}?category=racing">
+                                <i class="fas fa-car"></i> Гонки
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h3>Помощь</h3>
+                    <ul class="footer-links">
+                        <li><a href="{{ url_for('advice_page') }}"><i class="fas fa-shipping-fast"></i> Доставка</a></li>
+                        <li><a href="{{ url_for('advice_page') }}"><i class="fas fa-shield-alt"></i> Гарантия</a></li>
+                        <li><a href="{{ url_for('advice_page') }}"><i class="fas fa-question-circle"></i> Вопросы</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h3>Контакты</h3>
+                    <ul class="footer-links">
+                        <li><a href="tel:+79991234567"><i class="fas fa-phone"></i> +7 (999) 123-45-67</a></li>
+                        <li><a href="mailto:info@retroarcade.ru"><i class="fas fa-envelope"></i> info@retroarcade.ru</a></li>
+                    </ul>
+
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-vk"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-telegram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2024 RetroArcade. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Общие скрипты для всех страниц
+        document.addEventListener('DOMContentLoaded', function() {
+            // Мобильное меню
+            const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+            const authButtons = document.getElementById('auth-buttons');
+
+            if (mobileMenuToggle) {
+                mobileMenuToggle.addEventListener('click', function() {
+                    authButtons.classList.toggle('active');
+                });
+            }
+
+            // Мобильный поиск
+            const mobileSearchToggle = document.getElementById('mobile-search-toggle');
+            const searchBar = document.getElementById('search-bar');
+
+            if (mobileSearchToggle) {
+                mobileSearchToggle.addEventListener('click', function() {
+                    searchBar.classList.toggle('active');
+                    if (searchBar.classList.contains('active')) {
+                        searchBar.querySelector('input').focus();
+                        // Скрываем кнопку лупы на мобильных, когда строка поиска активна
+                        mobileSearchToggle.style.display = 'none';
+                    } else {
+                        // Показываем кнопку лупы на мобильных, когда строка поиска скрыта
+                        mobileSearchToggle.style.display = 'flex';
+                    }
+                });
+            }
+
+            // Закрытие поиска при клике вне
+            document.addEventListener('click', function(event) {
+                if (!event.target.closest('#search-bar') && !event.target.closest('#mobile-search-toggle')) {
+                    searchBar.classList.remove('active');
+                    // Показываем кнопку лупы на мобильных
+                    if (mobileSearchToggle && window.innerWidth <= 768) {
+                        mobileSearchToggle.style.display = 'flex';
+                    }
+                }
+            });
+
+            // Обработка отправки формы поиска
+            const searchForm = searchBar ? searchBar.querySelector('form') : null;
+            if (searchForm) {
+                searchForm.addEventListener('submit', function() {
+                    // При отправке формы на мобильных скрываем строку поиска
+                    if (window.innerWidth <= 768) {
+                        searchBar.classList.remove('active');
+                        if (mobileSearchToggle) {
+                            mobileSearchToggle.style.display = 'flex';
+                        }
+                    }
+                });
+            }
+
+            // Добавление в корзину
+            window.addToCart = function(productId) {
+                alert('Товар добавлен в корзину!');
+                const cartCount = document.querySelector('.cart-count');
+                let count = parseInt(cartCount.textContent);
+                cartCount.textContent = count + 1;
+
+                const btn = event?.currentTarget;
+                if (btn) {
+                    const originalColor = btn.style.backgroundColor;
+                    const originalColorIcon = btn.style.color;
+                    btn.style.backgroundColor = 'var(--success)';
+                    btn.style.color = 'white';
+                    setTimeout(() => {
+                        btn.style.backgroundColor = originalColor;
+                        btn.style.color = originalColorIcon;
+                    }, 500);
+                }
+            };
+
+            // Добавление в избранное
+            window.toggleFavorite = function(productId) {
+                const button = event?.currentTarget;
+                if (!button) return;
+
+                const icon = button.querySelector('i');
+
+                if (icon.classList.contains('far')) {
+                    icon.classList.remove('far');
+                    icon.classList.add('fas');
+                    icon.style.color = '#dc3545';
+                    alert('Товар добавлен в избранное!');
+                } else {
+                    icon.classList.remove('fas');
+                    icon.classList.add('far');
+                    icon.style.color = '';
+                    alert('Товар удален из избранного!');
+                }
+            };
+
+            // Динамическое обновление значений слайдеров
+            document.querySelectorAll('.price-slider').forEach(slider => {
+                slider.addEventListener('input', function() {
+                    const value = parseInt(this.value).toLocaleString('ru-RU');
+                    const valueElement = this.parentNode.querySelector('.price-value');
+                    if (valueElement) {
+                        if (this.name === 'max_price') {
+                            valueElement.textContent = value + ' ₽';
+                        } else {
+                            valueElement.textContent = value;
+                        }
+                    }
+                });
+            });
+
+            // Автоматическая отправка формы при изменении фильтров на мобильных
+            if (window.innerWidth <= 768) {
+                document.querySelectorAll('#filter-form input').forEach(input => {
+                    input.addEventListener('change', function() {
+                        const form = document.getElementById('filter-form');
+                        if (form) form.submit();
+                    });
+                });
+            }
+
+            // Инициализация слайдеров
+            const priceSlider = document.querySelector('input[name="max_price"]');
+            const yearSlider = document.querySelector('input[name="max_year"]');
+
+            if (priceSlider) {
+                priceSlider.dispatchEvent(new Event('input'));
+            }
+            if (yearSlider) {
+                yearSlider.dispatchEvent(new Event('input'));
+            }
+        });
+    </script>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

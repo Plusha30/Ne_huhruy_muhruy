@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+
+{% block title %}Вход - RetroArcade{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Стили для страницы входа */
+    .login-container {
+        background: white;
+        border-radius: var(--radius);
+        padding: 40px;
+        box-shadow: var(--shadow);
+        margin: 30px auto;
+        max-width: 450px;
+    }
+
+    .page-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .page-title {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--dark);
+        margin-bottom: 10px;
+    }
+
+    .page-subtitle {
+        color: var(--gray);
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: var(--dark);
+        font-size: 0.95rem;
+    }
+
+    input {
+        width: 100%;
+        padding: 14px 16px;
+        border: 1px solid var(--gray-light);
+        border-radius: var(--radius);
+        font-size: 1rem;
+        transition: var(--transition);
+        background: white;
+    }
+
+    input:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.1);
+    }
+
+    .submit-btn {
+        background: var(--primary);
+        color: white;
+        padding: 16px;
+        border: none;
+        border-radius: var(--radius);
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+        width: 100%;
+        margin-top: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .submit-btn:hover {
+        background: var(--primary-dark);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-hover);
+    }
+
+    .remember-forgot {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .remember {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .forgot {
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 600;
+        transition: var(--transition);
+    }
+
+    .forgot:hover {
+        color: var(--primary-dark);
+    }
+
+    .links {
+        text-align: center;
+        margin-top: 25px;
+        padding-top: 25px;
+        border-top: 1px solid var(--gray-light);
+    }
+
+    .links a {
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 600;
+        transition: var(--transition);
+    }
+
+    .links a:hover {
+        color: var(--primary-dark);
+    }
+
+    /* Адаптивность */
+    @media (max-width: 576px) {
+        .login-container {
+            padding: 30px 20px;
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+        }
+
+        .remember-forgot {
+            flex-direction: column;
+            gap: 10px;
+            align-items: flex-start;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="login-container">
+    <div class="page-header">
+        <h1 class="page-title">Вход в аккаунт</h1>
+        <p class="page-subtitle">Войдите в свой аккаунт RetroArcade</p>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ 'success' if category == 'success' else 'error' if category == 'error' else 'info' }}">
+                    <i class="fas fa-{{ 'check-circle' if category == 'success' else 'exclamation-circle' if category == 'error' else 'info-circle' }}"></i>
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('login') }}">
+        <div class="form-group">
+            <label for="username">
+                <i class="fas fa-user"></i> Имя пользователя
+            </label>
+            <input type="text" id="username" name="username" required placeholder="Введите имя пользователя">
+        </div>
+
+        <div class="form-group">
+            <label for="password">
+                <i class="fas fa-lock"></i> Пароль
+            </label>
+            <input type="password" id="password" name="password" required placeholder="Введите ваш пароль">
+        </div>
+
+        <button type="submit" class="submit-btn">
+            <i class="fas fa-sign-in-alt"></i> Войти
+        </button>
+    </form>
+
+    <div class="links">
+        <p>Нет аккаунта? <a href="{{ url_for('register') }}">Зарегистрироваться</a></p>
+        <p><a href="{{ url_for('index') }}"><i class="fas fa-arrow-left"></i> Вернуться на главную</a></p>
+    </div>
+</div>
+{% endblock %}
