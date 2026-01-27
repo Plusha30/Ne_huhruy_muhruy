@@ -4,7 +4,8 @@
         "products": [
             "Молоко", "Чай"
         ],
-        "name": "Человек",
+        "name": "student",
+        "userid": "student@student",
         "time": "12:12"
     }
 ]
