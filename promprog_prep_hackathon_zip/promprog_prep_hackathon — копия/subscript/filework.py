@@ -59,7 +59,6 @@ def setquerylist(name, to):
 
 def getquerylist(name):
     tovars_path = f"{base_path}/queries/{name}"
-    print(tovars_path)
     if os.path.exists(tovars_path):
         with open(tovars_path, 'r', encoding='utf-8') as f:
             return json.loads(f.read())

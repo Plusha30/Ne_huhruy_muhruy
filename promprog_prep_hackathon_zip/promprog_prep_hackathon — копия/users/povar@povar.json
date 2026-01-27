@@ -4,5 +4,7 @@
     "description": "empty",
     "phone": "N/A",
     "rights": 2,
-    "money": 0
+    "money": 0,
+    "cart": [],
+    "to_take": []
 }

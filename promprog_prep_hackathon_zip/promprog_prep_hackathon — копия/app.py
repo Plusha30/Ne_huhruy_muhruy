@@ -80,28 +80,33 @@ def dashboard():
         cart_items, cart_total = get_cart_objects(email)
         kwargs['cart_items'] = cart_items
         kwargs['cart_total'] = cart_total
-        return render_template('dashboard.html', tovarlist=gettovarlist(), **kwargs)
+        return render_template('dashboard.html', tovarlist=gettovarlist(), takequeries=getuser(email)['to_take'], **kwargs)
     elif (kwargs['rights'] == 2):
-        return render_template('dashboard.html', querylist=getquerylist("student_to_povar.json"), **kwargs)
+        return render_template('dashboard.html', querylist=getquerylist("student_to_povar.json"), **kwargs) 
     else:
         return render_template('dashboard.html', **kwargs)
 
-@app.route("/remove_food_query/<id>")
-def remove_food_query(id):
+@app.route("/send_food/<id>")
+def sendfood(id):
     email = getlogin(request.cookies)
-    if getuser(email)['rights'] == 2:
-        queries = getquerylist("student_to_povar.json")
-        ans = -1
-        for i in range(len(queries)):
-            if (queries[i]['id'] == int(id)):
-                ans = i
-                break
-        if (ans != -1):
-            newqueries = []
-            for i in range(len(queries)):
-                if (i != ans):
-                    newqueries.append(queries[i])
-            setquerylist(name="student_to_povar.json", to=newqueries)
+    kwargs = commonkwargs(email)
+    id = int(id)
+    if (kwargs['rights'] != 2):
+        return redirect(url_for('dashboard'))
+    older = getquerylist("student_to_povar.json")
+    for i in older:
+        if (i['id'] == id):
+            thatmail = i['userid']
+            user = getuser(thatmail)
+            user['to_take'].append(i)
+            older = getquerylist("student_to_povar.json")
+            newer = []
+            for j in older:
+                if j['id'] != id:
+                    newer.append(j)
+            setquerylist(name="student_to_povar.json", to=newer)
+            setuser(thatmail, user)
+            return redirect(url_for('dashboard'))
     return redirect(url_for('dashboard'))
 
 # --- НОВЫЕ МАРШРУТЫ ДЛЯ КОРЗИНЫ ---
@@ -214,7 +219,8 @@ def register():
             'phone': "N/A",
             'rights': int(data['rights'][0]),
             'money': 0,
-            'cart': []
+            'cart': [],
+            'to_take': []
         })
         email = data['email'][0]
         response = make_response(redirect(url_for('profile'), 302))
@@ -268,6 +274,7 @@ def profile():
             setuser(email, changes)
 
     return render_template('profile.html', **commonkwargs(email))
+
 @app.route('/download_report')
 def download_report():
     """

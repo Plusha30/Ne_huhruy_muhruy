@@ -10,5 +10,16 @@
         "\u0426\u0438\u0442\u0440\u0443\u0441\u043e\u0432\u044b\u0435",
         "\u0420\u044b\u0431\u0430"
     ],
-    "cart": []
+    "cart": [],
+    "to_take": [
+        {
+            "id": 0,
+            "products": [
+                "\u0411\u043e\u0440\u0449 \u041c\u043e\u0441\u043a\u043e\u0432\u0441\u043a\u0438\u0439"
+            ],
+            "name": "student",
+            "userid": "student@student",
+            "time": "14:23"
+        }
+    ]
 }

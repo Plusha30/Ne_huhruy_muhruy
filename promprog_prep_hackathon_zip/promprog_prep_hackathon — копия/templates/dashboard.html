@@ -345,7 +345,7 @@
                                     {% endfor %}
                                 </td>
                                 <td class="text-muted small">{{query['time']}}</td>
-                                <form id="give{{query['id']}}" action="/remove_food_query/{{query['id']}}" method="get">
+                                <form id="give{{query['id']}}" action="/send_food/{{query['id']}}" method="get">
                                     <td class="text-end pe-4">
                                         <button class="btn btn-sm btn-primary-custom btn-pill px-3">Выдать</button>
                                     </td>
