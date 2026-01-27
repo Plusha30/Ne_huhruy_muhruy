@@ -22,6 +22,7 @@
 
                 <!-- Тело карточки -->
                 <div class="card-body p-5">
+                    <form action="{{url_for('payment')}}" method="post">
                     <!-- Текущий баланс -->
                     <div class="bg-light rounded-3 p-4 mb-4">
                         <div class="d-flex justify-content-between align-items-center">
@@ -42,9 +43,9 @@
 
                         <!-- Произвольная сумма -->
                         <div class="mb-4">
-                            <label class="form-label fw-bold">Или введите свою сумму</label>
+                            <label class="form-label fw-bold">Введите свою сумму</label>
                             <div class="input-group input-group-lg">
-                                <input required type="number" id="customAmount" class="form-control rounded-3" placeholder="0" min="100" max="10000" step="100">
+                                <input required name="money" type="number" id="customAmount" class="form-control rounded-3" placeholder="0" min="100" max="10000" step="100">
                                 <span class="input-group-text rounded-3 bg-light">₽</span>
                             </div>
                         </div>
@@ -97,8 +98,12 @@
                     </div>
 
                     <!-- Кнопка оплаты -->
-                    <button class="btn btn-primary-custom btn-pill w-100 py-3 fs-5 fw-bold" id="payButton">
+                    <button type="submit" class="btn btn-primary-custom btn-pill w-100 py-3 fs-5 fw-bold" id="payButton">
                         <i class="bi bi-lock me-2"></i>Пополнить на <span id="displayAmount">0</span> ₽
+                    </button>
+
+                    <button type="submit" class="btn btn-primary-custom btn-pill w-100 py-3 fs-5 fw-bold" id="payButton1">
+                        <i class="bi bi-lock me-2"></i>Пополнить на <span id="displayAmount">кучу денег</span> ₽
                     </button>
 
                     <!-- Информация -->
@@ -108,6 +113,7 @@
                             Оплата защищена SSL-шифрованием. Средства зачисляются мгновенно.
                         </small>
                     </div>
+                    </form>
                 </div>
             </div>
 

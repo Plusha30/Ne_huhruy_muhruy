@@ -21,11 +21,13 @@
     "reviews": [
         {
             "user": "student",
-            "text": "1234"
+            "text": "1234",
+            "stars": 2
         },
         {
             "user": "student",
-            "text": "1234"
+            "text": "1234",
+            "stars": 4
         }
     ]
 }
