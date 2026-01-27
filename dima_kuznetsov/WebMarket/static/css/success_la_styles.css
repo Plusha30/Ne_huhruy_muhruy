@@ -1,0 +1,52 @@
+.success-container {
+    max-width: 500px;
+    margin: 80px auto;
+    padding: 0 20px;
+    text-align: center;
+}
+
+.success-card {
+    background: white;
+    padding: 48px 32px;
+    border-radius: 16px;
+    box-shadow: 0 12px 36px rgba(2,6,23,0.08);
+    border: 1px solid rgba(0,0,0,0.04);
+}
+
+.success-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+}
+
+.success-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin: 0 0 16px 0;
+}
+
+.success-message {
+    color: #64748b;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 32px;
+}
+
+.btn-success {
+    display: inline-block;
+    padding: 14px 32px;
+    background: linear-gradient(90deg, #111827, #1b2430);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-success:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(2,6,23,0.15);
+}

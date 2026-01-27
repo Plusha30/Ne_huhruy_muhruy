@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>EliteDrive</title>
+  <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/index_icon.ico') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="logo" href="{{ url_for('index') }}">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="EliteDrive Logo" class="logo-img">
+        <strong class="logo-text">EliteDrive</strong>
+      </a>
+
+      <div class="header-right">
+        <nav class="user-links">
+            <a href="{{ url_for('profile') }}" class="account-link">Профиль/Войти </a>
+            <a href="{{ url_for('register') }}" class="account-link"> Регистрация </a>
+            <a href="{{ url_for('add_product') }}" class="account-link"> Добавить товар</a>
+        </nav>
+      </div>
+    </div>
+    
+
+    <section class="slideshow" aria-label="Слайд-шоу акций" tabindex="0">
+        <input type="radio" name="slider" id="r1" checked>
+        <input type="radio" name="slider" id="r2">
+        <input type="radio" name="slider" id="r3">
+
+        <div class="slide s1" id="s1">
+            <div class="slide-content">
+            <h2>Суперкары — весенние скидки</h2>
+            <p>До 15% на выбранные модели. Только в этом месяце.</p>
+            </div>
+        </div>
+
+        <div class="slide s2" id="s2">
+            <div class="slide-content">
+            <h2>Топовые мотоциклы</h2>
+            <p>Быстрее ветра — новые поставки</p>
+            </div>
+        </div>
+
+        <div class="slide s3" id="s3">
+            <div class="slide-content">
+            <h2>Спорт-кары — коллекция</h2>
+            <p>Идеальное сочетание стиля и динамики</p>
+            </div>
+        </div>
+
+        <div class="slide-nav" role="tablist" aria-label="Навигация слайдера">
+            <label for="r1" class="nav-btn" aria-controls="s1" aria-label="Слайд 1">●</label>
+            <label for="r2" class="nav-btn" aria-controls="s2" aria-label="Слайд 2">●</label>
+            <label for="r3" class="nav-btn" aria-controls="s3" aria-label="Слайд 3">●</label>
+        </div>
+    </section>
+
+  </header>
+
+  <aside class="left-menu" aria-label="Категории">
+    <div class="lang-switch">Язык: <select aria-hidden="true"><option>RU</option><option>EN</option></select></div>
+    <ul class="categories">
+      <li><a href="{{ url_for('create_category_page', category='supercars') }}" class="cat-item"><span class="cat-icon">🏎️</span> Суперкары</a></li>
+      <li><a href="{{ url_for('create_category_page', category='sportscars') }}" class="cat-item"><span class="cat-icon">🚗</span> Спорт-кары</a></li>
+      <li><a href="{{ url_for('create_category_page', category='motorcycles') }}" class="cat-item"><span class="cat-icon">🏍️</span> Топ-мотоциклы</a></li>
+    </ul>
+  </aside>
+
+  <main class="main-content">
+    <section class="articles">
+      <article class="article article-1">
+        <div class="article-image">
+          <img src="{{ url_for('static', filename='images/article1.jpg') }}" alt="Статья 1 — суперкар">
+        </div>
+        <div class="article-body">
+          <h3>Новая линейка суперкаров</h3>
+          <p>
+            Представляем лимитированную серию суперкаров 2025 года. Передовые технологии, ручная сборка и
+            безупречный дизайн. Узнайте, почему это будущее автомобильной элиты.
+          </p>
+        </div>
+      </article>
+
+      <article class="article article-2">
+        <div class="badge">Популярное</div>
+        <h3>Лучшие спорт-кары сезона</h3>
+        <p class="article-2-text">Короткий обзор новинок, ставших хитами продаж: характеристики, тест-драйвы и обзор цен.</p>
+      </article>
+
+      <article class="article article-3">
+        <h3>Мотоциклетные легенды</h3>
+        <div class="article-3-overlay">
+          <blockquote class="quote">«Свобода — это дорога, и лучше всего она ощущается на мотоцикле»</blockquote>
+          <ul class="custom-list">
+            <li>Лимитированные модели</li>
+            <li>Надёжность и дизайн</li>
+            <li>Поддержка и аксессуары</li>
+          </ul>
+          <a class="read-more" href="{{ url_for('create_category_page', category='sportscars') }}">Читать далее</a>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p class="author">© 2025 EliteDrive — разработчик: Кузнецов Дмитрий</p>
+
+      <div class="sponsors">
+        <div class="sponsor-column">
+          <a href="#" class="sponsor"><img src="{{ url_for('static', filename='images/sponsor1.webp') }}" alt=""></a>
+          <a href="#" class="sponsor"><img src="{{ url_for('static', filename='images/sponsor2.png') }}" alt=""></a>
+          <a href="#" class="sponsor"><img src="{{ url_for('static', filename='images/sponsor3.svg') }}" alt=""></a>
+        </div>
+        <div class="sponsor-column">
+          <a href="#" class="sponsor"><img src="{{ url_for('static', filename='images/sponsor4.svg') }}" alt=""></a>
+          <a href="#" class="sponsor"><img src="{{ url_for('static', filename='images/sponsor5.png') }}" alt=""></a>
+          <a href="#" class="sponsor"><img src="{{ url_for('static', filename='images/sponsor6.png') }}" alt=""></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // минимальный js, нужный, чтобы карусель изображений и сама листалась, и её можно было листать самому
+    (function(){
+      const INTERVAL_MS = 3000;
+      const slideshow = document.querySelector('.slideshow');
+      if(!slideshow) return;
+      const radios = Array.from(document.querySelectorAll('input[name="slider"]'));
+      if(radios.length === 0) return;
+      let current = radios.findIndex(r => r.checked);
+      if(current === -1) current = 0;
+      let timer = null;
+      let isPaused = false;
+      function goTo(index) {
+        index = ((index % radios.length) + radios.length) % radios.length;
+        radios[index].checked = true;
+        current = index;
+      }
+      function next() {
+        goTo(current + 1);
+      }
+      function start() {
+        if(timer) clearInterval(timer);
+        timer = setInterval(() => { if(!isPaused) next(); }, INTERVAL_MS);
+      }
+      function stop() {
+        if(timer) { clearInterval(timer); timer = null; }
+      }
+      function pause() { isPaused = true; }
+      function resume() { isPaused = false; }
+      start();
+      slideshow.addEventListener('mouseenter', () => { pause(); });
+      slideshow.addEventListener('mouseleave', () => { resume(); });
+      slideshow.addEventListener('focusin', () => { pause(); });
+      slideshow.addEventListener('focusout', () => { resume(); });
+      const navLabels = Array.from(document.querySelectorAll('.slide-nav label[for]'));
+      navLabels.forEach(lbl => {
+        lbl.addEventListener('click', (e) => {
+          const id = lbl.getAttribute('for');
+          const idx = radios.findIndex(r => r.id === id);
+          if(idx >= 0) {
+            goTo(idx);
+            pause();
+            clearTimeout(lbl._resumeTimeout);
+            lbl._resumeTimeout = setTimeout(() => { resume(); }, INTERVAL_MS);
+          }
+        });
+      });
+      radios.forEach((r, i) => {
+        r.addEventListener('change', () => {
+          if(r.checked) current = i;
+        });
+      });
+      window.addEventListener('beforeunload', stop);
+    })();
+  </script>
+</body>
+</html>

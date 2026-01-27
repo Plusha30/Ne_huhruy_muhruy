@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <title>Редактирование профиля - EliteDrive</title>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/index_icon.ico') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/edit_profile_styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-inner">
+            <a class="logo" href="{{ url_for('index') }}">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="EliteDrive Logo" class="logo-img">
+                <strong class="logo-text">EliteDrive</strong>
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <div class="form-container">
+            <h1 style="margin-bottom: 30px; color: #0f172a;">Редактирование профиля</h1>
+            
+            {% if error %}
+            <div style="background: #fee; color: #c33; padding: 10px; border-radius: 5px; margin-bottom: 20px;">
+                {{ error }}
+            </div>
+            {% endif %}
+            
+            <form method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label>Текущая аватарка:</label>
+                    <img src="{{ url_for('static', filename='images/avatars/' + user.avatar) }}" alt="Текущая аватарка" class="current-avatar">
+                </div>
+                
+                <div class="form-group">
+                    <label for="avatar">Новая аватарка:</label>
+                    <input type="file" id="avatar" name="avatar" accept="image/*">
+                    <small>Оставьте пустым, чтобы сохранить текущую</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="first_name">Имя:</label>
+                    <input type="text" id="first_name" name="first_name" value="{{ user.first_name }}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="last_name">Фамилия:</label>
+                    <input type="text" id="last_name" name="last_name" value="{{ user.last_name }}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">Телефон:</label>
+                    <input type="tel" id="phone" name="phone" value="{{ user.phone or '' }}">
+                </div>
+                
+                <div class="form-group">
+                    <label for="birthdate">Дата рождения:</label>
+                    <input type="date" id="birthdate" name="birthdate" value="{{ user.birthdate or '' }}">
+                </div>
+                
+                <div class="form-group">
+                    <label>Пол:</label>
+                    <div>
+                        <input type="radio" name="gender" id="male" value="male" {% if user.gender == 'male' %}checked{% endif %}>
+                        <label for="male">Мужской</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="gender" id="female" value="female" {% if user.gender == 'female' %}checked{% endif %}>
+                        <label for="female">Женский</label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="new_password">Новый пароль:</label>
+                    <input type="password" id="new_password" name="new_password" placeholder="Оставьте пустым, чтобы не менять">
+                    <small>Минимум 6 символов</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="confirm_password">Подтвердите новый пароль:</label>
+                    <input type="password" id="confirm_password" name="confirm_password" placeholder="Подтвердите новый пароль">
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+                    <a href="{{ url_for('profile') }}" class="btn btn-secondary">Отмена</a>
+                </div>
+            </form>
+        </div>
+    </main>
+</body>
+</html>

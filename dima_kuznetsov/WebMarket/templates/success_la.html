@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Регистрация успешна - EliteDrive</title>
+  <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/index_icon.ico') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/success_la_styles.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+  <header class="site-header" style="background: transparent; box-shadow: none;">
+    <div class="header-inner">
+      <a class="logo" href="{{ url_for('index') }}">
+        <img src="{{ url_for('static', filename='images/logo-negate.png') }}" alt="EliteDrive Logo" class="logo-img">
+        <strong class="logo-text">EliteDrive</strong>
+      </a>
+    </div>
+  </header>
+
+  <main class="success-container">
+    <div class="success-card">
+      <div class="success-icon">🎉</div>
+      <h1 class="success-title">Регистрация успешна!</h1>
+      <p class="success-message">
+        Ваш аккаунт был успешно создан. Теперь вы можете войти в систему и начать пользоваться всеми возможностями EliteDrive.
+      </p>
+      <a href="{{ url_for('login') }}" class="btn-success">Войти в аккаунт</a>
+    </div>
+  </main>
+</body>
+</html>
