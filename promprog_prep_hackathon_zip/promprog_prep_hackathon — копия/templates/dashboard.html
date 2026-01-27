@@ -4,9 +4,25 @@
 {% endblock %}
 
 {% block content %}
+
+<!-- СТИЛИ: Скрываем полосу прокрутки -->
+<style>
+    /* Скрываем скроллбар для Chrome, Safari и Opera */
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+    /* Скрываем скроллбар для IE, Edge и Firefox */
+    .no-scrollbar {
+        -ms-overflow-style: none;  /* IE и Edge */
+        scrollbar-width: none;  /* Firefox */
+    }
+</style>
+
 <div class="container pb-5">
 
-    <!-- 1. ЗАГОЛОВОК СТРАНИЦЫ -->
+    <!-- ================================================================================= -->
+    <!-- 1. ЗАГОЛОВОК СТРАНИЦЫ (ОБЩИЙ ДЛЯ ВСЕХ РОЛЕЙ)                                      -->
+    <!-- ================================================================================= -->
     <div class="d-flex flex-wrap justify-content-between align-items-end mb-5 gap-3">
         <div>
             <h1 class="fw-bold mb-1">
@@ -23,7 +39,7 @@
             </p>
         </div>
 
-        <!-- КНОПКИ ДЕЙСТВИЙ -->
+        <!-- КНОПКИ ДЕЙСТВИЙ В ЗАГОЛОВКЕ -->
         {% if rights == 1 %}
         <div class="d-flex gap-2">
             <a href="{{ url_for('pricing') }}" class="btn btn-primary-custom btn-pill shadow-sm">
@@ -40,77 +56,115 @@
         {% endif %}
     </div>
 
-    <!-- ============================================== -->
-    <!-- 2. РОЛЬ: УЧЕНИК (1) И ГОСТЬ (0) - МЕНЮ     -->
-    <!-- ============================================== -->
+    <!-- ================================================================================= -->
+    <!-- 2. РОЛЬ: УЧЕНИК (1) И ГОСТЬ (0) - МЕНЮ И ЗАКАЗЫ                                   -->
+    <!-- ================================================================================= -->
     {% if rights == 1 or rights == 0 %}
 
-    <div class="row g-4">
-        <!-- ЛЕВАЯ КОЛОНКА -->
+    <!-- Блок активного заказа (Только для авторизованного ученика) -->
+    {% if rights == 1 %}
+    <div class="card border-0 shadow-sm p-4 mb-5" id="activeOrderCard">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+            <div class="d-flex align-items-center gap-3">
+                <div class="bg-warning bg-opacity-10 text-warning p-3 rounded-circle">
+                    <i class="bi bi-clock-history fs-4"></i>
+                </div>
+                <div>
+                    <h5 class="fw-bold mb-0">Ваш заказ готов к выдаче!</h5>
+                    <p class="text-muted small mb-0">Заказ №482: Борщ, Компот.</p>
+                </div>
+            </div>
+            <button onclick="confirmOrder(this)" class="btn btn-success btn-pill px-4">
+                <i class="bi bi-qr-code me-2"></i>Я получил еду
+            </button>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="row g-4 align-items-start">
+
+        <!-- ЛЕВАЯ КОЛОНКА: ФИЛЬТРЫ И КОРЗИНА -->
         <div class="col-lg-3">
-            <div class="sticky-top" style="top: 100px;">
+
+            <!--
+               ФИКСАЦИЯ МЕНЮ (STICKY)
+               class="no-scrollbar" -> Скрывает серую полосу справа.
+               top: 20px -> Отступ сверху при скролле.
+               max-height: 95vh -> Высота почти во весь экран.
+               padding-bottom: 100px -> ВАЖНО: Дополнительное место снизу, чтобы "Аллергены" не обрезались.
+            -->
+            <div class="no-scrollbar" style="position: sticky; top: 20px; max-height: 95vh; overflow-y: auto; padding-bottom: 100px;">
 
                 <!-- 2.1 ФИЛЬТРЫ -->
                 <div class="filters-sidebar shadow-sm mb-4">
                     <div class="mb-4">
                         <span class="filter-group-title">КАТЕГОРИИ</span>
                         <div class="d-flex flex-column gap-2">
-                            <div class="form-check"><input class="form-check-input filter-checkbox" type="checkbox"
-                                    value="Первое" checked id="c1"><label class="form-check-label cursor-pointer"
-                                    for="c1">Первое</label></div>
-                            <div class="form-check"><input class="form-check-input filter-checkbox" type="checkbox"
-                                    value="Второе" checked id="c2"><label class="form-check-label cursor-pointer"
-                                    for="c2">Второе</label></div>
-                            <div class="form-check"><input class="form-check-input filter-checkbox" type="checkbox"
-                                    value="Напитки" checked id="c3"><label class="form-check-label cursor-pointer"
-                                    for="c3">Напитки</label></div>
-                            <div class="form-check"><input class="form-check-input filter-checkbox" type="checkbox"
-                                    value="Салаты" checked id="c4"><label class="form-check-label cursor-pointer"
-                                    for="c4">Салаты</label></div>
-                            <div class="form-check"><input class="form-check-input filter-checkbox" type="checkbox"
-                                    value="Фрукты" checked id="c5"><label class="form-check-label cursor-pointer"
-                                    for="c5">Фрукты</label></div>
-                            <div class="form-check"><input class="form-check-input filter-checkbox" type="checkbox"
-                                    value="Выпечка" checked id="c6"><label class="form-check-label cursor-pointer"
-                                    for="c6">Выпечка</label></div>
+                            <div class="form-check">
+                                <input class="form-check-input filter-checkbox" type="checkbox" value="Первое" checked id="c1">
+                                <label class="form-check-label cursor-pointer" for="c1">Первое</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input filter-checkbox" type="checkbox" value="Второе" checked id="c2">
+                                <label class="form-check-label cursor-pointer" for="c2">Второе</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input filter-checkbox" type="checkbox" value="Напитки" checked id="c3">
+                                <label class="form-check-label cursor-pointer" for="c3">Напитки</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input filter-checkbox" type="checkbox" value="Салаты" checked id="c4">
+                                <label class="form-check-label cursor-pointer" for="c4">Салаты</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input filter-checkbox" type="checkbox" value="Фрукты" checked id="c5">
+                                <label class="form-check-label cursor-pointer" for="c5">Фрукты</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input filter-checkbox" type="checkbox" value="Выпечка" checked id="c6">
+                                <label class="form-check-label cursor-pointer" for="c6">Выпечка</label>
+                            </div>
                         </div>
                     </div>
 
-                    {% if rights == 1 %}
                     <div class="mb-4">
                         <span class="filter-group-title">ЗДОРОВЬЕ</span>
                         <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="allergyFilter" {% if allergies
-                                %}checked{% endif %}>
+                            <input class="form-check-input" type="checkbox" id="allergyFilter" {% if allergies %}checked{% endif %}>
                             <label class="form-check-label fw-bold" for="allergyFilter">Скрыть аллергены</label>
                         </div>
                     </div>
 
+                    <!-- Список аллергенов пользователя -->
+                    {% if rights == 1 %}
                     <div class="p-3 bg-light rounded-3 border">
                         <small class="fw-bold text-muted">Ваши аллергены:</small>
                         <div class="d-flex gap-1 flex-wrap mt-2">
-                            {% if allergies %}{% for alg in allergies %}<span
-                                class="badge bg-danger bg-opacity-10 text-danger border border-danger">{{ alg
-                                }}</span>{% endfor %}{% else %}<span class="text-muted small">Нет данных</span>{% endif
-                            %}
+                            {% if allergies %}
+                            {% for alg in allergies %}
+                            <span class="badge bg-danger bg-opacity-10 text-danger border border-danger">{{ alg }}</span>
+                            {% endfor %}
+                            {% else %}
+                            <span class="text-muted small">Нет данных</span>
+                            {% endif %}
                         </div>
-                        <a href="{{ url_for('profile') }}"
-                            class="d-block small text-primary text-decoration-none mt-2">Изменить в профиле</a>
+                        <a href="{{ url_for('profile') }}" class="d-block small text-primary text-decoration-none mt-2">Изменить в профиле</a>
                     </div>
                     {% endif %}
                 </div>
 
-                <!-- 2.2 КОРЗИНА (ВАШ ЗАКАЗ) - НОВЫЙ БЛОК -->
+                <!-- 2.2 КОРЗИНА (ВАШ ЗАКАЗ) -->
                 {% if rights == 1 %}
-                <div class="card border-0 shadow-sm p-3 bg-white">
+                <div class="card border-0 shadow-sm p-3 bg-white mb-4">
                     <div class="d-flex align-items-center gap-2 mb-3 border-bottom pb-2">
-                        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center"
-                            style="width: 32px; height: 32px;"><i class="bi bi-basket2"></i></div>
+                        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
+                            <i class="bi bi-basket2"></i>
+                        </div>
                         <h5 class="fw-bold mb-0">Ваш заказ</h5>
                     </div>
 
                     {% if cart_items %}
-                    <div class="d-flex flex-column gap-2 mb-3" style="max-height: 200px; overflow-y: auto;">
+                    <div class="d-flex flex-column gap-2 mb-3">
                         {% for item in cart_items %}
                         <div class="d-flex justify-content-between align-items-center small">
                             <span>{{ item.name }}</span>
@@ -126,8 +180,7 @@
 
                     <div class="d-grid gap-2">
                         <button class="btn btn-success btn-sm rounded-pill">Оплатить</button>
-                        <a href="{{ url_for('clear_cart') }}"
-                            class="btn btn-light border btn-sm rounded-pill text-danger">Очистить</a>
+                        <a href="{{ url_for('clear_cart') }}" class="btn btn-light border btn-sm rounded-pill text-danger">Очистить</a>
                     </div>
                     {% else %}
                     <div class="text-center py-3 text-muted small">
@@ -140,13 +193,15 @@
             </div>
         </div>
 
-        <!-- СЕТКА ТОВАРОВ (СПРАВА) -->
+        <!-- ПРАВАЯ КОЛОНКА: СЕТКА ТОВАРОВ -->
         <div class="col-lg-9">
             <div class="row g-4" id="productsGrid">
                 {% if tovarlist %}
                 {% for id, item in tovarlist.items() %}
 
+                <!-- ПРОВЕРКА АЛЛЕРГИЙ -->
                 {% set ns = namespace(is_dangerous=false, danger_reason="") %}
+
                 {% if allergies and item.allergens %}
                 {% for prod_allergen in item.allergens %}
                 {% if prod_allergen in allergies %}
@@ -156,67 +211,59 @@
                 {% endfor %}
                 {% endif %}
 
-                <div class="col-md-4 col-sm-6 product-item" data-category="{{ item.category }}"
-                    data-allergen="{{ 'true' if ns.is_dangerous else 'false' }}">
+                <div class="col-md-4 col-sm-6 product-item"
+                     data-category="{{ item.category }}"
+                     data-allergen="{{ 'true' if ns.is_dangerous else 'false' }}">
 
-                    <!-- Ссылка на товар -->
-                    <div
-                        class="product-card h-100 d-flex flex-column position-relative bg-white rounded-4 border overflow-hidden">
+                    <a href="{{ url_for('product_detail', id=id) }}" class="card-link h-100">
+                        <div class="product-card h-100 d-flex flex-column position-relative bg-white rounded-4 border overflow-hidden">
 
-                        {% if ns.is_dangerous %}
-                        <div class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 d-flex align-items-center justify-content-center danger-overlay"
-                            style="z-index: 10; display: none;">
-                            <span class="badge bg-danger fs-6 shadow"><i
-                                    class="bi bi-exclamation-triangle-fill me-1"></i> Содержит: {{ ns.danger_reason
-                                }}</span>
-                        </div>
-                        {% endif %}
-
-                        <a href="{{ url_for('product_detail', id=id) }}" class="text-decoration-none text-dark">
-                            <div class="product-img-wrapper d-flex align-items-center justify-content-center bg-light"
-                                style="height: 180px;">
-                                {% if item.badge %}
-                                <span
-                                    class="product-badge text-white position-absolute top-0 start-0 m-3 px-2 py-1 rounded-pill small"
-                                    style="background-color: {{ item.color }};">{{ item.badge }}</span>
-                                {% endif %}
-                                <i class="bi {{ item.main_icon }}"
-                                    style="font-size: 4rem; color: {{ item.color }}; opacity: 0.8;"></i>
-                            </div>
-                        </a>
-
-                        <div class="p-3 d-flex flex-column flex-grow-1">
-                            <div class="text-muted small mb-1">{{ item.category }}</div>
-                            <h6 class="fw-bold mb-2 text-truncate">{{ item.name }}</h6>
-
-                            {% if item.allergens %}
-                            <div class="mb-2">
-                                {% for alg in item.allergens %}
-                                {% if alg in allergies %}
-                                <span class="badge bg-danger bg-opacity-10 text-danger border border-danger"
-                                    style="font-size: 0.65rem;">{{ alg }}</span>
-                                {% else %}
-                                <span class="badge bg-light text-secondary border" style="font-size: 0.65rem;">{{ alg
-                                    }}</span>
-                                {% endif %}
-                                {% endfor %}
+                            <!-- Предупреждение об аллергии (скрыто JS, если фильтр включен) -->
+                            {% if ns.is_dangerous %}
+                            <div class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 d-flex align-items-center justify-content-center danger-overlay" style="z-index: 10; display: none;">
+                                    <span class="badge bg-danger fs-6 shadow">
+                                        <i class="bi bi-exclamation-triangle-fill me-1"></i> Содержит: {{ ns.danger_reason }}
+                                    </span>
                             </div>
                             {% endif %}
 
-                            <div class="mt-auto d-flex justify-content-between align-items-center pt-2">
-                                <span class="fw-bold text-primary fs-5">{{ item.price }} ₽</span>
-
-                                <!-- КНОПКА ДОБАВЛЕНИЯ В КОРЗИНУ -->
-                                {% if rights == 1 %}
-                                <a href="{{ url_for('add_to_cart', id=id) }}"
-                                    class="btn btn-sm btn-light border rounded-circle shadow-sm hover-primary d-flex align-items-center justify-content-center"
-                                    style="width: 32px; height: 32px;">
-                                    <i class="bi bi-plus-lg"></i>
-                                </a>
+                            <div class="product-img-wrapper d-flex align-items-center justify-content-center bg-light" style="height: 180px;">
+                                {% if item.badge %}
+                                <span class="product-badge text-white position-absolute top-0 start-0 m-3 px-2 py-1 rounded-pill small" style="background-color: {{ item.color }};">{{ item.badge }}</span>
                                 {% endif %}
+                                <i class="bi {{ item.main_icon }}" style="font-size: 4rem; color: {{ item.color }}; opacity: 0.8;"></i>
+                            </div>
+
+                            <div class="p-3 d-flex flex-column flex-grow-1">
+                                <div class="text-muted small mb-1">{{ item.category }}</div>
+                                <h6 class="fw-bold mb-2 text-truncate">{{ item.name }}</h6>
+
+                                <!-- Список аллергенов на карточке -->
+                                {% if item.allergens %}
+                                <div class="mb-2">
+                                    {% for alg in item.allergens %}
+                                    {% if alg in allergies %}
+                                    <span class="badge bg-danger bg-opacity-10 text-danger border border-danger" style="font-size: 0.65rem;">{{ alg }}</span>
+                                    {% else %}
+                                    <span class="badge bg-light text-secondary border" style="font-size: 0.65rem;">{{ alg }}</span>
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+
+                                <div class="mt-auto d-flex justify-content-between align-items-center pt-2">
+                                    <span class="fw-bold text-primary fs-5">{{ item.price }} ₽</span>
+
+                                    <!-- КНОПКА ДОБАВЛЕНИЯ В КОРЗИНУ -->
+                                    {% if rights == 1 %}
+                                    <a href="{{ url_for('add_to_cart', id=id) }}" class="btn btn-sm btn-light border rounded-circle shadow-sm hover-primary d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
+                                        <i class="bi bi-plus-lg"></i>
+                                    </a>
+                                    {% endif %}
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
                 {% endfor %}
                 {% else %}
@@ -235,9 +282,9 @@
     {% endif %}
 
 
-    <!-- ============================================== -->
-    <!-- 3. РОЛЬ 2: ПОВАР / СОТРУДНИК                   -->
-    <!-- ============================================== -->
+    <!-- ================================================================================= -->
+    <!-- 3. РОЛЬ 2: ПОВАР / СОТРУДНИК (ИНТЕРФЕЙС КУХНИ)                                    -->
+    <!-- ================================================================================= -->
     {% if rights == 2 %}
 
     <!-- KPI КАРТОЧКИ -->
@@ -245,7 +292,8 @@
         <div class="col-md-4">
             <div class="card border-0 shadow-sm p-3 h-100">
                 <div class="d-flex align-items-center gap-3">
-                    <div class="bg-success bg-opacity-10 text-success p-3 rounded-3"><i class="bi bi-check2-circle"></i>
+                    <div class="bg-success bg-opacity-10 text-success p-3 rounded-3">
+                        <i class="bi bi-check2-circle"></i>
                     </div>
                     <div>
                         <h3 class="fw-bold mb-0">142</h3>
@@ -257,7 +305,8 @@
         <div class="col-md-4">
             <div class="card border-0 shadow-sm p-3 h-100">
                 <div class="d-flex align-items-center gap-3">
-                    <div class="bg-warning bg-opacity-10 text-warning p-3 rounded-3"><i class="bi bi-clock-history"></i>
+                    <div class="bg-warning bg-opacity-10 text-warning p-3 rounded-3">
+                        <i class="bi bi-clock-history"></i>
                     </div>
                     <div>
                         <h3 class="fw-bold mb-0">15</h3>
@@ -269,8 +318,9 @@
         <div class="col-md-4">
             <div class="card border-0 shadow-sm p-3 h-100">
                 <div class="d-flex align-items-center gap-3">
-                    <div class="bg-danger bg-opacity-10 text-danger p-3 rounded-3"><i
-                            class="bi bi-exclamation-triangle"></i></div>
+                    <div class="bg-danger bg-opacity-10 text-danger p-3 rounded-3">
+                        <i class="bi bi-exclamation-triangle"></i>
+                    </div>
                     <div>
                         <h3 class="fw-bold mb-0">2</h3>
                         <small class="text-muted">Малый остаток на складе</small>
@@ -305,47 +355,52 @@
         <div class="card-body p-4">
             <div class="tab-content">
 
-                <!-- 3.1 ВЫДАЧА -->
+                <!-- 3.1 ВЫДАЧА (ТЕПЕРЬ С ЦИКЛОМ из app.py!) -->
                 <div class="tab-pane fade show active" id="orders">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h5 class="fw-bold mb-0">Текущая очередь</h5>
                         <div class="input-group w-auto">
                             <span class="input-group-text bg-light border-end-0"><i class="bi bi-search"></i></span>
-                            <input type="text" class="form-control bg-light border-start-0"
-                                placeholder="Поиск ученика...">
+                            <input type="text" class="form-control bg-light border-start-0" placeholder="Поиск ученика...">
                         </div>
                     </div>
                     <div class="table-modern-container">
                         <table class="table-modern">
                             <thead>
-                                <tr>
-                                    <th class="ps-4">Ученик</th>
-                                    <th>Состав заказа</th>
-                                    <th>Время</th>
-                                    <th class="text-end pe-4">Действие</th>
-                                </tr>
+                            <tr>
+                                <th class="ps-4">Ученик</th>
+                                <th>Состав заказа</th>
+                                <th>Время</th>
+                                <th class="text-end pe-4">Действие</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                {% for query in querylist %}
-                                <tr id="order-{{query.id}}">
-                                    <td class="ps-4 fw-bold">{{query['name']}}</td>
-                                    <td>
+                            {% if querylist %}
+                            {% for query in querylist %}
+                            <tr id="order-{{query.id}}">
+                                <td class="ps-4 fw-bold">{{query['name']}}</td>
+                                <td>
                                     {% for item in range(0, query['products']|length) %}
-                                        {% if item != query['products']|length - 1 %}
-                                            {{query['products'][item] + ','}}
-                                        {% else %}
-                                            {{query['products'][item]}}
-                                        {% endif %}
+                                    {% if item != query['products']|length - 1 %}
+                                    {{query['products'][item] + ','}}
+                                    {% else %}
+                                    {{query['products'][item]}}
+                                    {% endif %}
                                     {% endfor %}
+                                </td>
+                                <td class="text-muted small">{{query['time']}}</td>
+                                <form id="give{{query['id']}}" action="/remove_food_query/{{query['id']}}" method="get">
+                                    <td class="text-end pe-4">
+                                        <button class="btn btn-sm btn-primary-custom btn-pill px-3">Выдать</button>
                                     </td>
-                                    <td class="text-muted small">{{query['time']}}</td>
-                                    <form id="give{{query['id']}}" action="/remove_food_query/{{query['id']}}" method="get">
-                                        <td class="text-end pe-4">
-                                            <button class="btn btn-sm btn-primary-custom btn-pill px-3">Выдать</button>
-                                        </td>
-                                    </form>
-                                </tr>
-                                {% endfor %}
+                                </form>
+                            </tr>
+                            {% endfor %}
+                            {% else %}
+                            <tr>
+                                <td colspan="4" class="text-center text-muted py-4">Нет активных заказов</td>
+                            </tr>
+                            {% endif %}
                             </tbody>
                         </table>
                     </div>
@@ -382,8 +437,7 @@
                             <div class="border rounded-3 p-3">
                                 <div class="d-flex justify-content-between mb-2">
                                     <span class="fw-bold">Мясо / Говядина (кг)</span>
-                                    <span
-                                        class="badge bg-warning bg-opacity-10 text-warning text-dark">Заканчивается</span>
+                                    <span class="badge bg-warning bg-opacity-10 text-warning text-dark">Заканчивается</span>
                                 </div>
                                 <div class="progress mb-2" style="height: 8px;">
                                     <div class="progress-bar bg-warning" style="width: 30%"></div>
@@ -425,16 +479,13 @@
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label small fw-bold text-muted">Количество (кг/л/шт)</label>
-                                        <input type="number" class="form-control rounded-3" id="prodAmount"
-                                            placeholder="Например: 50" required>
+                                        <input type="number" class="form-control rounded-3" id="prodAmount" placeholder="Например: 50" required>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label small fw-bold text-muted">Комментарий</label>
-                                        <textarea class="form-control rounded-3" rows="2"
-                                            placeholder="Срочно к среде..."></textarea>
+                                        <textarea class="form-control rounded-3" rows="2" placeholder="Срочно к среде..."></textarea>
                                     </div>
-                                    <button type="submit" class="btn btn-primary-custom btn-pill w-100">Отправить
-                                        администратору</button>
+                                    <button type="submit" class="btn btn-primary-custom btn-pill w-100">Отправить администратору</button>
                                 </form>
                             </div>
                         </div>
@@ -442,20 +493,12 @@
                         <div class="col-lg-7">
                             <h5 class="fw-bold mb-3">История заявок</h5>
                             <div class="list-group list-group-flush" id="requestsList">
-                                <div
-                                    class="list-group-item px-0 border-bottom d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <h6 class="fw-bold mb-0">Молоко (50 л)</h6><small class="text-muted">10 мин
-                                            назад</small>
-                                    </div>
+                                <div class="list-group-item px-0 border-bottom d-flex justify-content-between align-items-center">
+                                    <div><h6 class="fw-bold mb-0">Молоко (50 л)</h6><small class="text-muted">10 мин назад</small></div>
                                     <span class="badge bg-secondary bg-opacity-10 text-secondary">На рассмотрении</span>
                                 </div>
-                                <div
-                                    class="list-group-item px-0 border-bottom d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <h6 class="fw-bold mb-0">Мясо / Говядина (30 кг)</h6><small
-                                            class="text-muted">Вчера</small>
-                                    </div>
+                                <div class="list-group-item px-0 border-bottom d-flex justify-content-between align-items-center">
+                                    <div><h6 class="fw-bold mb-0">Мясо / Говядина (30 кг)</h6><small class="text-muted">Вчера</small></div>
                                     <span class="badge bg-success bg-opacity-10 text-success">Одобрено</span>
                                 </div>
                             </div>
@@ -469,9 +512,9 @@
     {% endif %}
 
 
-    <!-- ============================================== -->
-    <!-- 4. РОЛЬ 3: АДМИНИСТРАТОР                   -->
-    <!-- ============================================== -->
+    <!-- ================================================================================= -->
+    <!-- 4. РОЛЬ 3: АДМИНИСТРАТОР                                                          -->
+    <!-- ================================================================================= -->
     {% if rights == 3 %}
 
     <!-- ТАБЫ АДМИНА -->
@@ -485,8 +528,7 @@
                 </li>
                 <li class="nav-item">
                     <button class="nav-link text-secondary" data-bs-toggle="tab" data-bs-target="#admin-requests">
-                        <i class="bi bi-inbox-fill me-2"></i>Заявки на закупку <span
-                            class="badge bg-danger rounded-circle ms-1">2</span>
+                        <i class="bi bi-inbox-fill me-2"></i>Заявки на закупку <span class="badge bg-danger rounded-circle ms-1">2</span>
                     </button>
                 </li>
                 <li class="nav-item">
@@ -542,39 +584,35 @@
                     <div class="table-modern-container">
                         <table class="table-modern">
                             <thead>
-                                <tr>
-                                    <th class="ps-4">Продукт</th>
-                                    <th>Количество</th>
-                                    <th>Повар</th>
-                                    <th>Дата</th>
-                                    <th class="text-end pe-4">Решение</th>
-                                </tr>
+                            <tr>
+                                <th class="ps-4">Продукт</th>
+                                <th>Количество</th>
+                                <th>Повар</th>
+                                <th>Дата</th>
+                                <th class="text-end pe-4">Решение</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                <tr id="req-1">
-                                    <td class="ps-4 fw-bold">Молоко 3.2%</td>
-                                    <td>50 л</td>
-                                    <td>Петров В.В.</td>
-                                    <td class="text-muted small">Сегодня, 09:00</td>
-                                    <td class="text-end pe-4">
-                                        <button onclick="approveRequest('req-1')"
-                                            class="btn btn-sm btn-success rounded-pill px-3 me-2">Согласовать</button>
-                                        <button onclick="rejectRequest('req-1')"
-                                            class="btn btn-sm btn-outline-danger rounded-pill px-3">Откл.</button>
-                                    </td>
-                                </tr>
-                                <tr id="req-2">
-                                    <td class="ps-4 fw-bold">Говядина (вырезка)</td>
-                                    <td>30 кг</td>
-                                    <td>Петров В.В.</td>
-                                    <td class="text-muted small">Вчера</td>
-                                    <td class="text-end pe-4">
-                                        <button onclick="approveRequest('req-2')"
-                                            class="btn btn-sm btn-success rounded-pill px-3 me-2">Согласовать</button>
-                                        <button onclick="rejectRequest('req-2')"
-                                            class="btn btn-sm btn-outline-danger rounded-pill px-3">Откл.</button>
-                                    </td>
-                                </tr>
+                            <tr id="req-1">
+                                <td class="ps-4 fw-bold">Молоко 3.2%</td>
+                                <td>50 л</td>
+                                <td>Петров В.В.</td>
+                                <td class="text-muted small">Сегодня, 09:00</td>
+                                <td class="text-end pe-4">
+                                    <button onclick="approveRequest('req-1')" class="btn btn-sm btn-success rounded-pill px-3 me-2">Согласовать</button>
+                                    <button onclick="rejectRequest('req-1')" class="btn btn-sm btn-outline-danger rounded-pill px-3">Откл.</button>
+                                </td>
+                            </tr>
+                            <tr id="req-2">
+                                <td class="ps-4 fw-bold">Говядина (вырезка)</td>
+                                <td>30 кг</td>
+                                <td>Петров В.В.</td>
+                                <td class="text-muted small">Вчера</td>
+                                <td class="text-end pe-4">
+                                    <button onclick="approveRequest('req-2')" class="btn btn-sm btn-success rounded-pill px-3 me-2">Согласовать</button>
+                                    <button onclick="rejectRequest('req-2')" class="btn btn-sm btn-outline-danger rounded-pill px-3">Откл.</button>
+                                </td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
@@ -591,14 +629,25 @@
                                         <i class="bi bi-file-earmark-spreadsheet fs-3"></i>
                                     </div>
                                     <div>
-                                        <h6 class="fw-bold mb-0">Отчет по пользователям</h6>
-                                        <small class="text-muted">Все зарегистрированные пользователи системы</small>
+                                        <h6 class="fw-bold mb-0">Финансовый отчет</h6>
+                                        <small class="text-muted">Доходы и расходы за месяц</small>
                                     </div>
                                 </div>
-                                <a href="{{ url_for('download_report') }}" 
-                                class="btn btn-outline-primary btn-pill w-100 mt-auto">
-                                    Скачать Excel
-                                </a>
+                                <button onclick="downloadReport('Финансовый отчет')" class="btn btn-outline-primary btn-pill w-100 mt-auto">Скачать Excel</button>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card border-0 shadow-sm p-4 h-100">
+                                <div class="d-flex align-items-center gap-3 mb-3">
+                                    <div class="bg-success bg-opacity-10 text-success p-3 rounded-circle">
+                                        <i class="bi bi-file-earmark-pdf fs-3"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="fw-bold mb-0">Отчет по питанию</h6>
+                                        <small class="text-muted">Количество выданных порций и льготники</small>
+                                    </div>
+                                </div>
+                                <button onclick="downloadReport('Отчет по питанию')" class="btn btn-outline-success btn-pill w-100 mt-auto">Скачать PDF</button>
                             </div>
                         </div>
                     </div>
@@ -611,9 +660,9 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         // Инициализация графика Админа
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
             const ctx = document.getElementById('attendanceChart');
-            if (ctx) {
+            if(ctx) {
                 new Chart(ctx, {
                     type: 'bar',
                     data: {
@@ -668,7 +717,7 @@
 
     // --- УЧЕНИК: ПОДТВЕРЖДЕНИЕ ЗАКАЗА ---
     function confirmOrder(btn) {
-        if (confirm("Вы действительно получили еду?")) {
+        if(confirm("Вы действительно получили еду?")) {
             const card = document.getElementById('activeOrderCard');
             // Меняем содержимое на успех
             card.innerHTML = `<div class="d-flex align-items-center gap-3 text-success justify-content-center w-100"><i class="bi bi-check-circle-fill fs-3"></i><h5 class="mb-0">Приятного аппетита!</h5></div>`;
@@ -678,13 +727,13 @@
     }
 
     // --- УЧЕНИК: ФИЛЬТРАЦИЯ МЕНЮ ---
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function() {
         const checkboxes = document.querySelectorAll('.filter-checkbox');
         const allergySwitch = document.getElementById('allergyFilter');
         const items = document.querySelectorAll('.product-item');
         const noResults = document.getElementById('noResults');
 
-        if (checkboxes.length > 0) {
+        if(checkboxes.length > 0) {
             function filterProducts() {
                 const activeCategories = Array.from(checkboxes).filter(cb => cb.checked).map(cb => cb.value);
                 let visibleCount = 0;
@@ -711,14 +760,14 @@
             }
 
             checkboxes.forEach(cb => cb.addEventListener('change', filterProducts));
-            if (allergySwitch) allergySwitch.addEventListener('change', filterProducts);
+            if(allergySwitch) allergySwitch.addEventListener('change', filterProducts);
 
             // Запускаем фильтрацию при загрузке
             filterProducts();
         }
     });
 
-    /* --- ПОВАР: ВЫДАЧА И ЗАЯВКИ ---
+    // --- ПОВАР: ВЫДАЧА И ЗАЯВКИ ---
     function issueOrder(id) {
         const row = document.getElementById('order-' + id);
         const btn = row.querySelector('button');
@@ -727,7 +776,7 @@
         btn.disabled = true;
         row.style.opacity = '0.6';
         alert("Заказ " + id + " отмечен как выданный!");
-    }*/
+    }
 
     function submitPurchase(e) {
         e.preventDefault();
@@ -746,21 +795,8 @@
 </script>
 
 <style>
-    .fade-in {
-        animation: fadeIn 0.5s;
-    }
-
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(-10px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
+    .fade-in { animation: fadeIn 0.5s; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
     .hover-primary:hover {
         background-color: #3b82f6 !important;
