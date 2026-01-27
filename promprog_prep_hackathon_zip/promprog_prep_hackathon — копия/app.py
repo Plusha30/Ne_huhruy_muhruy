@@ -51,6 +51,10 @@ def pricing():
 def ultimate_dashboard():
     return render_template('super_dashboard.html', **commonkwargs(getlogin(request.cookies)))
 
+@app.route('/payment')
+def payment():
+    return render_template('payment.html', **commonkwargs(getlogin(request.cookies)))
+
 @app.errorhandler(404)
 def four04(name):
     return render_template('404.html', **commonkwargs(getlogin(request.cookies)))
@@ -68,6 +72,8 @@ def dashboard():
         return render_template('dashboard.html', tovarlist=gettovarlist(), **kwargs)
     elif (kwargs['rights'] == 2):
         return render_template('dashboard.html', querylist=getquerylist(), **kwargs)
+    else:
+        return render_template('dashboard.html', **kwargs)
 
 @app.route("/remove_food_query/<id>")
 def remove_food_query(id):
