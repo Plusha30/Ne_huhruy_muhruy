@@ -75,15 +75,17 @@ def four04(name):
 def dashboard():
     email = getlogin(request.cookies)
     kwargs = commonkwargs(email)
-    if (kwargs['rights'] < 2):
+    if (kwargs['rights'] == 0):
+        return render_template('dashboard.html', tovarlist=gettovarlist(), **kwargs)
+    elif (kwargs['rights'] == 1):
         # Загружаем товары корзины и сумму для отображения
         cart_items, cart_total = get_cart_objects(email)
         kwargs['cart_items'] = cart_items
         kwargs['cart_total'] = cart_total
         return render_template('dashboard.html', tovarlist=gettovarlist(), takequeries=getuser(email)['to_take'], **kwargs)
     elif (kwargs['rights'] == 2):
-        return render_template('dashboard.html', querylist=getquerylist("student_to_povar.json"), **kwargs) 
-    else:
+        return render_template('dashboard.html', querylist=getquerylist("student_to_povar.json"), productlist=getquerylist("povar.json"), **kwargs) 
+    elif (kwargs['rights'] == 3):
         return render_template('dashboard.html', **kwargs)
 
 @app.route("/send_food/<id>")
@@ -123,6 +125,18 @@ def gotfood(id):
             new_to_take.append(i)
     user['to_take'] = new_to_take
     setuser(email, user)
+    return redirect(url_for('dashboard'))
+
+@app.route("/update_inventory", methods=['POST'])
+def updateinventory():
+    email = getlogin(request.cookies)
+    kwargs = commonkwargs(email)
+    if (kwargs['rights'] != 2):
+        return redirect(url_for('dashboard'))
+    data = request.form.to_dict(flat=False)
+    nowhave = getquerylist('povar.json')
+    nowhave[data['product_name'][0]]['cnt'] = int(data['current_count'][0])
+    setquerylist(name='povar.json', to=nowhave)
     return redirect(url_for('dashboard'))
 
 # --- НОВЫЕ МАРШРУТЫ ДЛЯ КОРЗИНЫ ---

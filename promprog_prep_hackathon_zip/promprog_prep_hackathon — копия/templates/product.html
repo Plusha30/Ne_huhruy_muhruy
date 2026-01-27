@@ -26,7 +26,7 @@
             <p class="lead text-secondary">{{ product.description }}</p>
 
             {% if rights == 1 %}
-            <button class="btn btn-primary-custom btn-pill px-5 py-3 shadow-sm">Добавить в заказ</button>
+            <a class="btn btn-primary-custom btn-pill px-5 py-3 shadow-sm" href="{{ url_for('add_to_cart', id=id) }}">Добавить в заказ</a>
             {% elif rights == 0 %}
             <a href="{{ url_for('login') }}" class="btn btn-outline-primary btn-pill px-4">Войдите, чтобы заказать</a>
             {% endif %}

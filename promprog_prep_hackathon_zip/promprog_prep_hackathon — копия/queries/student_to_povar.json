@@ -43,5 +43,14 @@
         "name": "student",
         "userid": "student@student",
         "time": "14:23"
+    },
+    {
+        "id": 8,
+        "products": [
+            "\u0421\u0430\u043b\u0430\u0442 \u0412\u0438\u0442\u0430\u043c\u0438\u043d\u043d\u044b\u0439"
+        ],
+        "name": "student",
+        "userid": "student@student",
+        "time": "19:23"
     }
 ]
