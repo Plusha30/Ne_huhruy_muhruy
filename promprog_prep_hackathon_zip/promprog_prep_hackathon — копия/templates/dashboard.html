@@ -26,7 +26,7 @@
         <!-- КНОПКИ ДЕЙСТВИЙ -->
         {% if rights == 1 %}
         <div class="d-flex gap-2">
-            <a href="{{ url_for('pricing') }}" class="btn btn-primary-custom btn-pill shadow-sm">
+            <a href="{{ url_for('payment') }}" class="btn btn-primary-custom btn-pill shadow-sm">
                 <i class="bi bi-wallet2 me-2"></i>Пополнить
             </a>
         </div>
@@ -128,7 +128,7 @@
                         </div>
 
                         <div class="d-grid gap-2">
-                            <button class="btn btn-success btn-sm rounded-pill">Оплатить</button>
+                            <a href="{{ url_for('buy_from_cart') }}" class="btn btn-success btn-sm rounded-pill">Оплатить</button>
                             <a href="{{ url_for('clear_cart') }}"
                                class="btn btn-light border btn-sm rounded-pill text-danger">Очистить</a>
                         </div>
