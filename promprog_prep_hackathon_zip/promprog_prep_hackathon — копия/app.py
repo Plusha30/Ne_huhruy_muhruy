@@ -109,6 +109,22 @@ def sendfood(id):
             return redirect(url_for('dashboard'))
     return redirect(url_for('dashboard'))
 
+@app.route("/got_food/<id>", methods=['POST'])
+def gotfood(id):
+    email = getlogin(request.cookies)
+    kwargs = commonkwargs(email)
+    id = int(id)
+    if (kwargs['rights'] != 1):
+        return redirect(url_for('dashboard'))
+    user = getuser(email)
+    new_to_take = []
+    for i in user['to_take']:
+        if (i['id'] != id):
+            new_to_take.append(i)
+    user['to_take'] = new_to_take
+    setuser(email, user)
+    return redirect(url_for('dashboard'))
+
 # --- НОВЫЕ МАРШРУТЫ ДЛЯ КОРЗИНЫ ---
 @app.route('/add_to_cart/<id>')
 def add_to_cart(id):
@@ -146,7 +162,7 @@ def buy_from_cart():
     names = []
     for i in user['cart']:
         names.append(tovarlist[i]['name'])
-    qu = getquerylist()
+    qu = getquerylist("student_to_povar.json")
     qu.append({
         "id": nowid,
         "products": names,
@@ -154,7 +170,7 @@ def buy_from_cart():
         "userid": email,
         "time": f'{datetime.now().hour}:{datetime.now().minute}'
     })
-    setquerylist(qu)
+    setquerylist(name="student_to_povar.json", to=qu)
     setuser(email, user)
     return redirect(url_for('clear_cart'))
 
