@@ -57,13 +57,13 @@ def payment():
     email = getlogin(request.cookies)
     kwargs = commonkwargs(email)
     if (kwargs['rights'] != 1):
-        return redirect('dashboard.html', **kwargs)
+        return redirect(url_for('dashboard'))
     if (request.method == 'POST'):
         usernow = getuser(email)
         data = request.form.to_dict(flat=False)
         usernow['money'] += int(data['money'][0])
         setuser(email, usernow)
-        return redirect('dashboard.html', **kwargs)
+        return redirect(url_for('dashboard'))
     return render_template('payment.html', **kwargs)
 
 @app.errorhandler(404)
@@ -120,6 +120,38 @@ def add_to_cart(id):
     setuser(email, user)
 
     return redirect(url_for('dashboard'))
+
+@app.route('/buy_from_cart')
+def buy_from_cart():
+    email = getlogin(request.cookies)
+    if email == 'placeholder':
+        return redirect(url_for('login'))
+    user = getuser(email)
+    sum = 0
+    for i in user['cart']:
+        sum += gettovar(int(i))['price']
+    if (sum > user['money']):
+        return redirect(url_for('dashboard'))
+    user['money'] -= sum
+    dt = getdatastorage()
+    nowid = dt['total_queries']
+    dt['total_queries'] += 1
+    setdatastorage(dt)
+    tovarlist = gettovarlist()
+    names = []
+    for i in user['cart']:
+        names.append(tovarlist[i]['name'])
+    qu = getquerylist()
+    qu.append({
+        "id": nowid,
+        "products": names,
+        "name": user['username'],
+        "userid": email,
+        "time": f'{datetime.now().hour}:{datetime.now().minute}'
+    })
+    setquerylist(qu)
+    setuser(email, user)
+    return redirect(url_for('clear_cart'))
 
 @app.route('/clear_cart')
 def clear_cart():

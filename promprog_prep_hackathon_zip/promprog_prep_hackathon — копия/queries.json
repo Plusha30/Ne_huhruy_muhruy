@@ -2,10 +2,20 @@
     {
         "id": 0,
         "products": [
-            "Молоко", "Чай"
+            "\u041c\u043e\u043b\u043e\u043a\u043e",
+            "\u0427\u0430\u0439"
         ],
         "name": "student",
         "userid": "student@student",
         "time": "12:12"
+    },
+    {
+        "id": 3,
+        "products": [
+            "\u0411\u043e\u0440\u0449 \u041c\u043e\u0441\u043a\u043e\u0432\u0441\u043a\u0438\u0439"
+        ],
+        "name": "student",
+        "userid": "student@student",
+        "time": "13:59"
     }
 ]
