@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, send_file, session
 from flask_session import Session
 from subscript.filework import *
-from subscript.reports import generate_users_report  # Импортируем нашу функцию
+from subscript.reports import generate_users_report
 from subscript.email import sendmail
 from random import randint
 import os
