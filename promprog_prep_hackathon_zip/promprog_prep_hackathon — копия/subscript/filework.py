@@ -5,6 +5,7 @@ import os
 import json
 
 base_path = str(pathlib.Path(__file__).parent.resolve())[:-10]
+SESSION_PATH = f'{base_path}/sessions'
 #Осторожно, костыль. [:-10] возвращает корневую папку всего проекта, несмотря на то, что этот файл лежит в папке subscript
 #Возможно есть решение покрасивее. Но это тоже работает.
 

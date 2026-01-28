@@ -17,6 +17,7 @@ app = Flask(__name__)
 app.secret_key = secrets.token_hex(32)
 app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024
 app.config['SESSION_TYPE'] = 'filesystem'  # or 'redis', 'mongodb', etc.
+app.config['SESSION_FILE_DIR'] = SESSION_PATH
 app.config['SESSION_PERMANENT'] = False
 app.config.update(
     SESSION_COOKIE_SECURE=True,    # HTTPS only
