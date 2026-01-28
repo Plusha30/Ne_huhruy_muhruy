@@ -65,6 +65,7 @@ def confirm_mail():
             'cart': [],
             'to_take': []
         })
+        session['temp_password'] = False
         email = session['temp_email']
         setlogin(email)
         return redirect(url_for('profile'), 302)

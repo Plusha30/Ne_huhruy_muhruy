@@ -8,6 +8,7 @@ import subscript.account_routes as account_r
 import subscript.student_routes as student_r
 import subscript.product_routes as product_r
 import subscript.povar_routes as povar_r
+import subscript.admin_routes as admin_r
 import os
 import secrets
 from datetime import datetime
@@ -29,7 +30,7 @@ Session(app)
 #simple_routes.py
 app.add_url_rule('/', view_func=simple_r.landing)
 app.add_url_rule('/pricing', view_func=simple_r.pricing)
-app.add_url_rule('/ultimate_dashboard', view_func=simple_r.ultimate_dashboard)
+#app.add_url_rule('/ultimate_dashboard', view_func=simple_r.ultimate_dashboard)
 #account_routes.py
 app.add_url_rule('/login', view_func=account_r.login, methods=['GET', 'POST'])
 app.add_url_rule('/register', view_func=account_r.register, methods=['GET', 'POST'])
@@ -47,14 +48,17 @@ app.add_url_rule('/product/<id>', view_func=product_r.product_detail, methods=['
 #povar_routes.py
 app.add_url_rule('/send_food/<id>', view_func=povar_r.sendfood)
 app.add_url_rule('/update_inventory', view_func=povar_r.updateinventory, methods=['POST'])
+app.add_url_rule('/buy_to_admin', view_func=povar_r.buy_to_admin, methods=['POST'])
+#admin_routes.py
+app.add_url_rule('/set_admin_query', view_func=admin_r.set_admin_query, methods=['POST'])
 
 @app.errorhandler(404)
 def four04():
     return render_template('404.html', **commonkwargs(getlogin(reset_auth=False)))
 
-@app.errorhandler(Exception)
-def four04(error):
-    return render_template('404.html', **commonkwargs(getlogin(reset_auth=False)))
+#@app.errorhandler(Exception)
+#def four04(error):
+#    return render_template('404.html', **commonkwargs(getlogin(reset_auth=False)))
 
 @app.route('/dashboard')
 def dashboard():
@@ -68,9 +72,11 @@ def dashboard():
         kwargs['cart_total'] = cart_total
         return render_template('dashboard.html', tovarlist=gettovarlist(), takequeries=getuser(email)['to_take'], **kwargs)
     elif (kwargs['rights'] == 2):
-        return render_template('dashboard.html', querylist=getquerylist("student_to_povar.json"), productlist=getquerylist("povar.json"), **kwargs) 
+        return render_template('dashboard.html', **kwargs, querylist=getquerylist("student_to_povar.json"),\
+                                                           productlist=getquerylist("povar.json"),
+                                                           toadmin=getquerylist("povar_to_admin.json"))                 
     elif (kwargs['rights'] == 3):
-        return render_template('dashboard.html', **kwargs)
+        return render_template('dashboard.html', **kwargs, toadmin=getquerylist("povar_to_admin.json"))
 
 @app.route('/download_report')
 def download_report():

@@ -319,7 +319,7 @@
                             class="bi bi-exclamation-triangle"></i></div>
                     <div>
                         <h3 class="fw-bold mb-0">2</h3>
-                        <small class="text-muted">Малый остаток на складе</small>
+                        <small class="text-muted">Проблем с вами</small>
                     </div>
                 </div>
             </div>
@@ -331,7 +331,7 @@
         <div class="card-header bg-white border-bottom pt-3 px-4">
             <ul class="nav nav-tabs card-header-tabs" id="cookTabs" role="tablist">
                 <li class="nav-item">
-                    <button class="nav-link active fw-bold text-dark" data-bs-toggle="tab" data-bs-target="#orders">
+                    <button class="nav-link text-secondary" data-bs-toggle="tab" data-bs-target="#orders">
                         <i class="bi bi-list-check me-2"></i>Выдача блюд
                     </button>
                 </li>
@@ -351,8 +351,13 @@
         <div class="card-body p-4">
             <div class="tab-content">
 
+                <!-- 3.0 СТРАНИЦА "ПРИСУТПИМ" -->
+                <div class="tab-pane fade" id="begin">
+                    <h1 style="margin-left: auto; margin-right: auto; margin-left: auto; margin-right: auto;">Давайте приступим</h1>
+                </div>
+
                 <!-- 3.1 ВЫДАЧА -->
-                <div class="tab-pane fade show active" id="orders">
+                <div class="tab-pane fade" id="orders">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h5 class="fw-bold mb-0">Текущая очередь</h5>
                     </div>
@@ -428,10 +433,10 @@
                         <div class="col-lg-5 mb-4 mb-lg-0">
                             <div class="bg-light p-4 rounded-4">
                                 <h5 class="fw-bold mb-3">Создать заявку</h5>
-                                <form id="purchaseForm" onsubmit="submitPurchase(event)">
+                                <form id="purchaseForm" action="{{ url_for('buy_to_admin') }}" method="post">
                                     <div class="mb-3">
                                         <label class="form-label small fw-bold text-muted">Продукт</label>
-                                        <select class="form-select rounded-3" id="prodSelect" name="prodSelect">
+                                        <select class="form-select rounded-3" id="prod" name="prod" required>
                                             {% for product in productlist %}
                                             <option value="{{product}}">{{product}}</option>
                                             {% endfor %}
@@ -440,7 +445,7 @@
                                     <div class="mb-3">
                                         <label class="form-label small fw-bold text-muted">Количество (кг/л/шт)</label>
                                         <input type="number" class="form-control rounded-3" id="prodAmount"
-                                            placeholder="Например: 50" required>
+                                            name="volume" placeholder="Например: 50" required>
                                     </div>
                                     <button type="submit" class="btn btn-primary-custom btn-pill w-100">Отправить
                                         администратору</button>
@@ -451,22 +456,23 @@
                         <div class="col-lg-7">
                             <h5 class="fw-bold mb-3">История заявок</h5>
                             <div class="list-group list-group-flush" id="requestsList">
+                                {% for i in range(toadmin|length - 1, [-1, toadmin|length - 7]|max, -1) %}
                                 <div
                                     class="list-group-item px-0 border-bottom d-flex justify-content-between align-items-center">
                                     <div>
-                                        <h6 class="fw-bold mb-0">Молоко (50 л)</h6><small class="text-muted">10 мин
-                                            назад</small>
+                                        <h6 class="fw-bold mb-0">{{ toadmin[i]["prod"] }} ({{ toadmin[i]["volume"] }})
+                                        </h6><small class="text-muted">{{ toadmin[i]["when"] }}
+                                        </small>
                                     </div>
+                                    {% if toadmin[i]['status'] == 0 %}
                                     <span class="badge bg-secondary bg-opacity-10 text-secondary">На рассмотрении</span>
-                                </div>
-                                <div
-                                    class="list-group-item px-0 border-bottom d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <h6 class="fw-bold mb-0">Мясо / Говядина (30 кг)</h6><small
-                                            class="text-muted">Вчера</small>
-                                    </div>
+                                    {% elif toadmin[i]['status'] == 1 %}
                                     <span class="badge bg-success bg-opacity-10 text-success">Одобрено</span>
+                                    {% elif toadmin[i]['status'] == -1 %}
+                                    <span class="badge bg-danger bg-opacity-10 text-danger">Отклонено</span>
+                                    {% endif %}
                                 </div>
+                                {% endfor %}
                             </div>
                         </div>
                     </div>
@@ -488,7 +494,7 @@
         <div class="card-header bg-white border-bottom pt-3 px-4">
             <ul class="nav nav-tabs card-header-tabs" role="tablist">
                 <li class="nav-item">
-                    <button class="nav-link active fw-bold text-dark" data-bs-toggle="tab" data-bs-target="#stats">
+                    <button class="nav-link text-secondary" data-bs-toggle="tab" data-bs-target="#stats">
                         <i class="bi bi-bar-chart-fill me-2"></i>Статистика
                     </button>
                 </li>
@@ -509,8 +515,13 @@
         <div class="card-body p-4">
             <div class="tab-content">
 
+                <!-- 4.0 СТРАНИЦА "ПРИСУТПИМ" -->
+                <div class="tab-pane fade" id="begin">
+                    <h1 style="margin-left: auto; margin-right: auto; margin-left: auto; margin-right: auto;">Давайте приступим</h1>
+                </div>
+
                 <!-- 4.1 СТАТИСТИКА -->
-                <div class="tab-pane fade show active" id="stats">
+                <div class="tab-pane fade" id="stats">
                     <!-- KPI Cards -->
                     <div class="row g-4 mb-4">
                         <div class="col-md-4">
@@ -560,30 +571,27 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr id="req-1">
-                                    <td class="ps-4 fw-bold">Молоко 3.2%</td>
-                                    <td>50 л</td>
-                                    <td>Петров В.В.</td>
-                                    <td class="text-muted small">Сегодня, 09:00</td>
-                                    <td class="text-end pe-4">
-                                        <button onclick="approveRequest('req-1')"
-                                            class="btn btn-sm btn-success rounded-pill px-3 me-2">Согласовать</button>
-                                        <button onclick="rejectRequest('req-1')"
-                                            class="btn btn-sm btn-outline-danger rounded-pill px-3">Откл.</button>
-                                    </td>
+                                {% for item in toadmin %}
+                                {% if item['status'] == 0 %}
+                                <tr id="req-{{item['id']}}">
+                                    <form id="req-form-{{item['id']}}" action="{{ url_for('set_admin_query') }}"
+                                        method="post">
+                                        <input value="{{item['id']}}" type="text" name="id" id="id{{item['id']}}"
+                                            hidden>
+                                        <td class="ps-4 fw-bold">{{item['prod']}}</td>
+                                        <td>{{item['volume']}}</td>
+                                        <td>{{item['person']}}</td>
+                                        <td class="text-muted small">{{item['when']}}</td>
+                                        <td class="text-end pe-4">
+                                            <button name="result" value=1 type="submit"
+                                                class="btn btn-sm btn-success rounded-pill px-3 me-2">Согласовать</button>
+                                            <button name="result" value=-1 type="submit"
+                                                class="btn btn-sm btn-outline-danger rounded-pill px-3">Откл.</button>
+                                        </td>
+                                    </form>
                                 </tr>
-                                <tr id="req-2">
-                                    <td class="ps-4 fw-bold">Говядина (вырезка)</td>
-                                    <td>30 кг</td>
-                                    <td>Петров В.В.</td>
-                                    <td class="text-muted small">Вчера</td>
-                                    <td class="text-end pe-4">
-                                        <button onclick="approveRequest('req-2')"
-                                            class="btn btn-sm btn-success rounded-pill px-3 me-2">Согласовать</button>
-                                        <button onclick="rejectRequest('req-2')"
-                                            class="btn btn-sm btn-outline-danger rounded-pill px-3">Откл.</button>
-                                    </td>
-                                </tr>
+                                {% endif %}
+                                {% endfor %}
                             </tbody>
                         </table>
                     </div>
@@ -643,21 +651,6 @@
                 });
             }
         });
-
-        // Функции Админа
-        function approveRequest(id) {
-            const row = document.getElementById(id);
-            row.style.backgroundColor = "#dcfce7";
-            const cell = row.querySelector('.text-end');
-            cell.innerHTML = '<span class="text-success fw-bold"><i class="bi bi-check-lg"></i> Согласовано</span>';
-        }
-
-        function rejectRequest(id) {
-            const row = document.getElementById(id);
-            row.style.opacity = "0.5";
-            const cell = row.querySelector('.text-end');
-            cell.innerHTML = '<span class="text-danger fw-bold">Отклонено</span>';
-        }
 
         function downloadReport(name) {
             alert("Генерация отчета: " + name + "...\nЗагрузка начнется автоматически.");
@@ -758,21 +751,6 @@
         }
     });
 
-    function submitPurchase(e) {
-        e.preventDefault();
-        const prod = document.getElementById('prodSelect').value;
-        const amount = document.getElementById('prodAmount').value;
-        const list = document.getElementById('requestsList');
-
-        const newItem = document.createElement('div');
-        newItem.className = "list-group-item px-0 border-bottom d-flex justify-content-between align-items-center fade-in";
-        newItem.innerHTML = `<div><h6 class="fw-bold mb-0">${prod} (${amount})</h6><small class="text-muted">Только что</small></div><span class="badge bg-secondary bg-opacity-10 text-secondary">На рассмотрении</span>`;
-
-        list.prepend(newItem);
-        document.getElementById('purchaseForm').reset();
-        alert("Заявка успешно отправлена!");
-    }
-
     // --- ПОВАР: ОБНОВЛЕНИЕ СКЛАДА ---
     document.addEventListener('DOMContentLoaded', function () {
         const editModal = document.getElementById('editModal');
@@ -797,6 +775,98 @@
             });
         }
     });
+
+    // ============================================
+    // СОХРАНЕНИЕ АКТИВНОЙ ВКЛАДКИ ПРИ ПЕРЕЗАГРУЗКЕ
+    // ============================================
+
+    // Функция для сохранения активной вкладки
+    function saveActiveTab(tabId) {
+        const rights = {{ rights|tojson }}; // Права из шаблона
+        localStorage.setItem(`dashboard_tab_${rights}`, tabId);
+    }
+
+    // Функция для восстановления активной вкладки
+    function restoreActiveTab() {
+        const rights = {{ rights|tojson }};
+        let savedTabId = localStorage.getItem(`dashboard_tab_${rights}`);
+        if (!savedTabId) {
+            savedTabId = "begin";
+        };
+        
+        // Находим кнопку вкладки по data-bs-target
+        const tabButton = document.querySelector(`[data-bs-target="#${savedTabId}"]`);
+        if (!tabButton) return;
+
+        // Находим соответствующую панель
+        const tabPane = document.querySelector(`#${savedTabId}`);
+        if (!tabPane) return;
+
+        // Проверяем, активна ли уже эта вкладка
+        if (tabButton.classList.contains('active')) return;
+
+        // Временно отключаем все transition для табов
+        const allPanes = document.querySelectorAll('.tab-pane');
+        allPanes.forEach(pane => {
+            pane.classList.add('no-transition');
+        });
+
+        // Убираем активность со всех вкладок и панелей
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.classList.remove('active');
+            link.setAttribute('aria-selected', 'false');
+        });
+
+        document.querySelectorAll('.tab-pane').forEach(pane => {
+            pane.classList.remove('show', 'active');
+        });
+
+        // Активируем сохраненную вкладку
+        tabButton.classList.add('active');
+        tabButton.setAttribute('aria-selected', 'true');
+
+        // Активируем панель МОМЕНТАЛЬНО
+        tabPane.classList.add('show', 'active');
+
+        // Восстанавливаем transition через небольшой таймаут
+        setTimeout(() => {
+            allPanes.forEach(pane => {
+                pane.classList.remove('no-transition');
+            });
+        }, 50);
+    }
+
+    // Обработчики событий для вкладок повара
+    document.addEventListener('DOMContentLoaded', function () {
+        // Восстанавливаем активную вкладку при загрузке страницы
+        setTimeout(restoreActiveTab, 10); // Небольшая задержка для гарантии загрузки DOM
+
+        // Сохраняем активную вкладку при клике
+        document.querySelectorAll('button[data-bs-toggle="tab"]').forEach(button => {
+            button.addEventListener('click', function () {
+                const target = this.getAttribute('data-bs-target');
+                if (target) {
+                    const tabId = target.substring(1); // Убираем символ #
+                    saveActiveTab(tabId);
+                }
+            });
+        });
+
+        // Также сохраняем при изменении через Bootstrap
+        document.querySelectorAll('[data-bs-toggle="tab"]').forEach(element => {
+            element.addEventListener('shown.bs.tab', function (event) {
+                const target = event.target.getAttribute('data-bs-target');
+                if (target) {
+                    const tabId = target.substring(1);
+                    saveActiveTab(tabId);
+                }
+            });
+        });
+    });
+
+    // Для роли админа (rights == 3) - те же обработчики, но для другой структуры
+    // (используем ту же логику, так как структура аналогична)
+
 </script>
 
 <style>
@@ -820,6 +890,10 @@
         background-color: #3b82f6 !important;
         border-color: #3b82f6 !important;
         color: white !important;
+    }
+
+    .tab-pane.no-transition {
+        transition: none !important;
     }
 </style>
 {% endblock %}

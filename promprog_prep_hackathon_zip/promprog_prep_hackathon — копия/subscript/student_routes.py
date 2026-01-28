@@ -59,9 +59,9 @@ def clear_cart():
 
 def buy_from_cart():
     email = getlogin()
-    if email == 'placeholder':
-        return redirect(url_for('login'))
     user = getuser(email)
+    if email == 'placeholder' or user['rights'] != 1:
+        return redirect(url_for('login'))
     sum = 0
     for i in user['cart']:
         sum += gettovar(int(i))['price']
@@ -69,8 +69,8 @@ def buy_from_cart():
         return redirect(url_for('dashboard'))
     user['money'] -= sum
     dt = getquerylist("global.json")
-    nowid = dt['total_queries']
-    dt['total_queries'] += 1
+    nowid = dt['total_student_queries']
+    dt['total_student_queries'] += 1
     setquerylist(name="global.json", to=dt)
     tovarlist = gettovarlist()
     names = []

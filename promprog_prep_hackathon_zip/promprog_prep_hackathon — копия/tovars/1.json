@@ -39,6 +39,11 @@
             "user": "student",
             "text": "dsa",
             "stars": 5
+        },
+        {
+            "user": "student",
+            "text": "dadada",
+            "stars": 1
         }
     ]
 }

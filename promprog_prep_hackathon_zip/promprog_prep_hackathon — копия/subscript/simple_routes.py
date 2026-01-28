@@ -10,5 +10,5 @@ def landing():
 def pricing():
     return render_template('pricing.html', **commonkwargs(getlogin()))
 
-def ultimate_dashboard():
-    return render_template('super_dashboard.html', **commonkwargs(getlogin()))
+#def ultimate_dashboard():
+#    return render_template('super_dashboard.html', **commonkwargs(getlogin()))
