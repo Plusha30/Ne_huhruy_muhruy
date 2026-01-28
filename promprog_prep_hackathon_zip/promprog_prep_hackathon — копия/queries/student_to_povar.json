@@ -1,23 +1,5 @@
 [
     {
-        "id": 0,
-        "products": [
-            "\u0411\u043e\u0440\u0449 \u041c\u043e\u0441\u043a\u043e\u0432\u0441\u043a\u0438\u0439"
-        ],
-        "name": "student",
-        "userid": "student@student",
-        "time": "14:23"
-    },
-    {
-        "id": 1,
-        "products": [
-            "\u0411\u043e\u0440\u0449 \u041c\u043e\u0441\u043a\u043e\u0432\u0441\u043a\u0438\u0439"
-        ],
-        "name": "student",
-        "userid": "student@student",
-        "time": "14:23"
-    },
-    {
         "id": 2,
         "products": [
             "\u0411\u043e\u0440\u0449 \u041c\u043e\u0441\u043a\u043e\u0432\u0441\u043a\u0438\u0439"

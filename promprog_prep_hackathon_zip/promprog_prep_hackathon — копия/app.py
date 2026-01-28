@@ -1,18 +1,39 @@
-from flask import Flask, render_template, request, redirect, url_for, make_response, send_file
+from flask import Flask, render_template, request, redirect, url_for, send_file, session
+from flask_session import Session
 from subscript.filework import *
 from subscript.reports import generate_users_report  # Импортируем нашу функцию
+from subscript.email import sendmail
+from random import randint
 import os
+import secrets
 from datetime import datetime
 
 #global variables
 app = Flask(__name__)
+app.secret_key = secrets.token_hex(32)
 app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024
+app.config['SESSION_TYPE'] = 'filesystem'  # or 'redis', 'mongodb', etc.
+app.config['SESSION_PERMANENT'] = False
+app.config.update(
+    SESSION_COOKIE_SECURE=True,    # HTTPS only
+    SESSION_COOKIE_HTTPONLY=True,  # No JavaScript access
+    SESSION_COOKIE_SAMESITE='Lax'  # CSRF protection
+)
+Session(app)
+Debug_mode = True #эта переменная при состоянии True вместо отправки кода на почту выводит его в print()
+                   #вызвано тем, что слишком много писем с mail.ru почты приводит к блокировке почты из-за спама
+                   #(может уже нет, так как я написал в поддержку, но это не факт)
 
-#cookie work
-def getlogin(rq):
-    if (rq.get('account')):
-        return rq.get('account')
-    return "placeholder"
+#session work
+def getlogin(reset_auth = True):
+    if session.get('user', '') == '':
+        session['user'] = 'placeholder'
+    if (reset_auth):
+        session['auth'] = False
+    return session['user']
+
+def setlogin(email):
+    session['user'] = email
 
 # --- НОВАЯ ФУНКЦИЯ: ПОЛУЧЕНИЕ ОБЪЕКТОВ КОРЗИНЫ ---
 def get_cart_objects(email):
@@ -42,19 +63,19 @@ def get_cart_objects(email):
 #basic routes
 @app.route('/')
 def landing():
-    return render_template('landing.html', **commonkwargs(getlogin(request.cookies)))
+    return render_template('landing.html', **commonkwargs(getlogin()))
 
 @app.route('/pricing')
 def pricing():
-    return render_template('pricing.html', **commonkwargs(getlogin(request.cookies)))
+    return render_template('pricing.html', **commonkwargs(getlogin()))
 
 @app.route('/ultimate_dashboard')
 def ultimate_dashboard():
-    return render_template('super_dashboard.html', **commonkwargs(getlogin(request.cookies)))
+    return render_template('super_dashboard.html', **commonkwargs(getlogin()))
 
 @app.route('/payment', methods=['GET', 'POST'])
 def payment():
-    email = getlogin(request.cookies)
+    email = getlogin()
     kwargs = commonkwargs(email)
     if (kwargs['rights'] != 1):
         return redirect(url_for('dashboard'))
@@ -68,12 +89,12 @@ def payment():
 
 @app.errorhandler(404)
 def four04(name):
-    return render_template('404.html', **commonkwargs(getlogin(request.cookies)))
+    return render_template('404.html', **commonkwargs(getlogin(reset_auth=False)))
 
 # --- ОБНОВЛЕННЫЙ DASHBOARD С КОРЗИНОЙ ---
 @app.route('/dashboard')
 def dashboard():
-    email = getlogin(request.cookies)
+    email = getlogin()
     kwargs = commonkwargs(email)
     if (kwargs['rights'] == 0):
         return render_template('dashboard.html', tovarlist=gettovarlist(), **kwargs)
@@ -90,7 +111,7 @@ def dashboard():
 
 @app.route("/send_food/<id>")
 def sendfood(id):
-    email = getlogin(request.cookies)
+    email = getlogin()
     kwargs = commonkwargs(email)
     id = int(id)
     if (kwargs['rights'] != 2):
@@ -113,7 +134,7 @@ def sendfood(id):
 
 @app.route("/got_food/<id>", methods=['POST'])
 def gotfood(id):
-    email = getlogin(request.cookies)
+    email = getlogin()
     kwargs = commonkwargs(email)
     id = int(id)
     if (kwargs['rights'] != 1):
@@ -129,7 +150,7 @@ def gotfood(id):
 
 @app.route("/update_inventory", methods=['POST'])
 def updateinventory():
-    email = getlogin(request.cookies)
+    email = getlogin()
     kwargs = commonkwargs(email)
     if (kwargs['rights'] != 2):
         return redirect(url_for('dashboard'))
@@ -142,7 +163,7 @@ def updateinventory():
 # --- НОВЫЕ МАРШРУТЫ ДЛЯ КОРЗИНЫ ---
 @app.route('/add_to_cart/<id>')
 def add_to_cart(id):
-    email = getlogin(request.cookies)
+    email = getlogin()
     if email == 'placeholder':
         return redirect(url_for('login'))
 
@@ -158,7 +179,7 @@ def add_to_cart(id):
 
 @app.route('/buy_from_cart')
 def buy_from_cart():
-    email = getlogin(request.cookies)
+    email = getlogin()
     if email == 'placeholder':
         return redirect(url_for('login'))
     user = getuser(email)
@@ -190,7 +211,7 @@ def buy_from_cart():
 
 @app.route('/clear_cart')
 def clear_cart():
-    email = getlogin(request.cookies)
+    email = getlogin()
     if email != 'placeholder':
         user = getuser(email)
         user['cart'] = [] # Очищаем список
@@ -199,14 +220,14 @@ def clear_cart():
 
 @app.route('/object/<int:id>')
 def object_detail(id):
-    return render_template('object.html', id=id, **commonkwargs(getlogin(request.cookies)))
+    return render_template('object.html', id=id, **commonkwargs(getlogin()))
 
 @app.route('/product/setcommentary/<id>', methods=['POST'])
 def sendcommentary(id):
     product_data = gettovar(id)
     data = request.form.to_dict(flat=False)
     # Сохраняем отзыв вместе со звездами
-    product_data['reviews'].append({'user': getuser(getlogin(request.cookies))["username"], "text": data['commentary'][0], "stars": int(data['stars'][0])})
+    product_data['reviews'].append({'user': getuser(getlogin())["username"], "text": data['commentary'][0], "stars": int(data['stars'][0])})
     settovar(id, product_data)
     return redirect(f'/product/{id}', 302)
 
@@ -214,53 +235,81 @@ def sendcommentary(id):
 def product_detail(id):
     product_data = gettovar(id)
     if not product_data:
-        return render_template('404.html', **commonkwargs(getlogin(request.cookies)))
-    return render_template('product.html', id=id, product=product_data, **commonkwargs(getlogin(request.cookies)))
+        return render_template('404.html', **commonkwargs(getlogin()))
+    return render_template('product.html', id=id, product=product_data, **commonkwargs(getlogin()))
 
-#login-register-profile
+#account system
 @app.route('/login', methods=["GET", "POST"])
 def login():
-    email = getlogin(request.cookies)
+    email = getlogin()
     if (email != 'placeholder'):
         return redirect(url_for('profile'), 302)
     if (request.method == 'POST'):
         data = request.form.to_dict(flat=False)
         input_email = data['email'][0]
         if len(data['email']) > 0 and getuser(data['email'][0]) != False and data['password'][0] == getuser(data['email'][0])['password']:
-            response = make_response(redirect(url_for('profile'), 302))
-            response.set_cookie('account', input_email)
-            return response
+            setlogin(input_email)
+            return redirect(url_for('profile'), 302)
         else:
             pass
     return render_template('login.html', **commonkwargs(email))
 
 @app.route('/register', methods=["GET", "POST"])
 def register():
-    email = getlogin(request.cookies)
+    email = getlogin()
     if (email != 'placeholder'):
         return redirect(url_for('profile'), 302)
     if (request.method == 'POST'):
         data = request.form.to_dict(flat=False)
         # Добавляем поле 'cart': [] при регистрации
-        setuser(data['email'][0], {
-            'password': data['password'][0],
-            'username': data['name'][0],
+        session['temp_email'] = data['email'][0]
+        session['temp_password'] = data['password'][0]
+        session['temp_name'] = data['name'][0]
+        session['temp_rights'] = data['rights'][0]
+        session['auth'] = True
+        return redirect(url_for('confirm_mail'), 302)
+    return render_template('register.html', **commonkwargs(email))
+
+@app.route('/confirm_mail', methods=['GET', 'POST'])
+def confirm_mail():
+    email = getlogin(reset_auth=False)
+    if (email != 'placeholder' or session['auth'] == False):
+        return redirect(url_for('profile'), 302)
+    if (request.method == 'GET'):
+        code = []
+        scode = ""
+        for i in range(4):
+            code.append(randint(0, 9))
+            scode += str(code[i])
+        session['auth_code'] = code
+        if (Debug_mode):
+            print(f'Ваш код: {scode}')
+        else:
+            sendmail(session['temp_email'], scode)
+        return render_template('confirm_mail.html', **commonkwargs(email))
+    if (request.method == 'POST'):
+        data = request.form.to_dict(flat=False)
+        for i in range(4):
+            if session['auth_code'][i] != int(data[f'code{i}'][0]):
+                return redirect(url_for('confirm_mail'), 302)
+        setuser(session['temp_email'], {
+            'password': session['temp_password'],
+            'username': session['temp_name'],
             'description': "empty",
             'phone': "N/A",
-            'rights': int(data['rights'][0]),
+            'rights': int(session['temp_rights']),
             'money': 0,
             'cart': [],
             'to_take': []
         })
-        email = data['email'][0]
-        response = make_response(redirect(url_for('profile'), 302))
-        response.set_cookie('account', email)
-        return response
-    return render_template('register.html', **commonkwargs(email))
+        email = session['temp_email']
+        setlogin(email)
+        return redirect(url_for('profile'), 302)
+    return redirect(url_for('register'), 302)
 
 @app.route('/profile', methods=["GET", "POST"])
 def profile():
-    email = getlogin(request.cookies)
+    email = getlogin()
     if (email == 'placeholder'):
         return redirect(url_for('login'), 302)
 
@@ -269,10 +318,8 @@ def profile():
 
         # 1. Выход
         if (data['commit_type'][0] == 'logout'):
-            email = 'placeholder'
-            response = make_response(redirect(url_for('landing'), 302))
-            response.set_cookie('account', email)
-            return response
+            setlogin('')
+            return redirect(url_for('landing'), 302)
 
         # 2. Обновление текстовых данных
         if (data['commit_type'][0] == 'update_data'):
@@ -311,7 +358,7 @@ def download_report():
     Маршрут для скачивания отчета по пользователям
     """
     # Проверяем авторизацию
-    email = getlogin(request.cookies)
+    email = getlogin()
     if email == 'placeholder':
         return redirect(url_for('login'), 302)
     

@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}Подтверждение Email{% endblock %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="card auth-card border-0 rounded-4 w-100" style="max-width: 700px;">
+        <div class="row g-0">
+
+            <!-- ЛЕВАЯ ЧАСТЬ: ФОРМА -->
+            <div class="col-md-7 bg-white p-5">
+                <div class="mb-4">
+                    <h2 class="fw-bold mb-1">Подтверждение Email</h2>
+                    <p class="text-muted small">
+                        Введите 4-значный код, отправленный на указанную почту
+                        <span class="fw-bold text-primary">{{ email }}</span>
+                    </p>
+                </div>
+
+                <form action="{{ url_for('confirm_mail') }}" method="post">
+                    <div class="mb-4">
+                        <label class="form-label small fw-bold text-muted">Код подтверждения</label>
+                        <div class="d-flex justify-content-between gap-3">
+                            {% for i in range(4) %}
+                            <input name="code{{i}}" type="text"
+                                class="form-control rounded-3 py-3 text-center fs-4 bg-light border-light" maxlength="1"
+                                style="height: 60px;" required
+                                oninput="this.value=this.value.replace(/[^0-9]/g,'');if(this.value.length==1)document.getElementsByName('code{{i+1}}')[0]?.focus()">
+                            {% endfor %}
+                        </div>
+                        <div class="form-text text-center mt-2">
+                            Введите 4 цифры из письма
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary-custom btn-pill w-100 mb-3 py-2">Подтвердить</button>
+                </form>
+                <div class="text-center mt-3">
+                    <p class="text-muted small mb-1">Не получили код?</p>
+                    <form action="{{ url_for('confirm_mail') }}" method="get">
+                        <button type="submit"
+                            class="fw-bold text-decoration-none small">Переотправить код</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- ПРАВАЯ ЧАСТЬ: ИЛЛЮСТРАЦИЯ -->
+            <div class="col-md-5 auth-bg-side d-none d-md-flex flex-column text-center"
+                style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);">
+                <div class="z-1">
+                    <div class="mb-4 text-warning opacity-75">
+                        <i class="bi bi-envelope-check" style="font-size: 4rem;"></i>
+                    </div>
+                    <h3 class="fw-bold mb-3">Проверка почты</h3>
+                    <p class="opacity-75 small px-3">
+                        Мы отправили код подтверждения на вашу электронную почту для завершения регистрации.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    // Автоматический переход между полями ввода
+    document.addEventListener('DOMContentLoaded', function () {
+        const inputs = document.querySelectorAll('input[name^="code"]');
+
+        inputs.forEach((input, index) => {
+            input.addEventListener('keydown', function (e) {
+                if (e.key === 'Backspace' && this.value === '' && index > 0) {
+                    inputs[index - 1].focus();
+                }
+            });
+
+            input.addEventListener('input', function (e) {
+                if (this.value.length === 1 && index < inputs.length - 1) {
+                    inputs[index + 1].focus();
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}
