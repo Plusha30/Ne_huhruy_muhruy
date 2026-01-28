@@ -12,3 +12,12 @@ def pricing():
 
 #def ultimate_dashboard():
 #    return render_template('super_dashboard.html', **commonkwargs(getlogin()))
+
+#def rand():
+#    return render_template('some_random_forms.html', **commonkwargs(getlogin()))
+
+#def rand1():
+#    return render_template('some_random_forms_1.html', **commonkwargs(getlogin()))
+
+#def rand2():
+#    return render_template('some_random_forms_2.html', **commonkwargs(getlogin()))

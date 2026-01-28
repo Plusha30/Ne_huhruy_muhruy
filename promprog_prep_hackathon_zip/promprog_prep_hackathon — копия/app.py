@@ -31,6 +31,9 @@ Session(app)
 app.add_url_rule('/', view_func=simple_r.landing)
 app.add_url_rule('/pricing', view_func=simple_r.pricing)
 #app.add_url_rule('/ultimate_dashboard', view_func=simple_r.ultimate_dashboard)
+#app.add_url_rule('/rand', view_func=simple_r.rand)
+#app.add_url_rule('/rand1', view_func=simple_r.rand1)
+#app.add_url_rule('/rand2', view_func=simple_r.rand2)
 #account_routes.py
 app.add_url_rule('/login', view_func=account_r.login, methods=['GET', 'POST'])
 app.add_url_rule('/register', view_func=account_r.register, methods=['GET', 'POST'])
@@ -57,7 +60,7 @@ def four04():
     return render_template('404.html', **commonkwargs(getlogin(reset_auth=False)))
 
 #@app.errorhandler(Exception)
-#def four04(error):
+#def fatal_error(error):
 #    return render_template('404.html', **commonkwargs(getlogin(reset_auth=False)))
 
 @app.route('/dashboard')

@@ -38,5 +38,8 @@ def sendmail(mail, code):
     server = smtplib.SMTP_SSL('smtp.mail.ru', 465)
     server.login(fromaddr, mypass)
     text = msg.as_string()
-    server.sendmail(fromaddr, toaddr, text)
-    server.quit()
+    try:
+        server.sendmail(fromaddr, toaddr, text)
+        server.quit()
+    except:
+        server.quit()

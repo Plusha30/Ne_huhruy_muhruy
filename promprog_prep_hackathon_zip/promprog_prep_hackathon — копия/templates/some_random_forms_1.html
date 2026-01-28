@@ -1,0 +1,229 @@
+{% extends "base.html" %}
+{% block title %}Примеры форм{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row mb-5">
+        <div class="col-12 text-center">
+            <h1 class="display-title mb-3">Примеры форм</h1>
+            <p class="text-muted">Различные типы полей ввода и элементов формы</p>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Левая колонка -->
+        <div class="col-lg-6">
+            <!-- Карточка 1: Личная информация -->
+            <div class="card-hover p-4 mb-4">
+                <h4 class="mb-4"><i class="bi bi-person-circle me-2"></i>Личная информация</h4>
+                
+                <form>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-muted">Имя</label>
+                            <input type="text" class="form-control rounded-3 py-2" placeholder="Иван">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-muted">Фамилия</label>
+                            <input type="text" class="form-control rounded-3 py-2" placeholder="Иванов">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-muted">Email</label>
+                        <input type="email" class="form-control rounded-3 py-2" placeholder="name@example.com">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-muted">О себе</label>
+                        <textarea class="form-control rounded-3" rows="3" placeholder="Расскажите о себе..."></textarea>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-muted">Выбор цвета</label>
+                        <div class="d-flex gap-2">
+                            <input type="color" class="form-control-color" value="#3b82f6" title="Выберите цвет">
+                            <span class="align-self-center small text-muted">Любимый цвет</span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Карточка 3: Выбор опций -->
+            <div class="card-hover p-4">
+                <h4 class="mb-4"><i class="bi bi-check2-square me-2"></i>Выбор категорий</h4>
+                
+                <div class="mb-3">
+                    <label class="form-label small fw-bold text-muted">Интересы (checkbox)</label>
+                    <div class="d-flex flex-wrap gap-2">
+                        <div class="interest-checkbox-card">
+                            <input class="form-check-input" type="checkbox" id="interest1" checked>
+                            <span class="ms-2">Спорт</span>
+                        </div>
+                        <div class="interest-checkbox-card">
+                            <input class="form-check-input" type="checkbox" id="interest2">
+                            <span class="ms-2">Музыка</span>
+                        </div>
+                        <div class="interest-checkbox-card">
+                            <input class="form-check-input" type="checkbox" id="interest3">
+                            <span class="ms-2">Книги</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="form-label small fw-bold text-muted">Приоритет (radio)</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="priority" id="priority1">
+                        <label class="form-check-label" for="priority1">Низкий</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="priority" id="priority2" checked>
+                        <label class="form-check-label" for="priority2">Средний</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="priority" id="priority3">
+                        <label class="form-check-label" for="priority3">Высокий</label>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary-custom btn-pill w-100">Сохранить выбор</button>
+            </div>
+        </div>
+
+        <!-- Правая колонка -->
+        <div class="col-lg-6">
+            <!-- Карточка 2: Настройки -->
+            <div class="card-hover p-4 mb-4">
+                <h4 class="mb-4"><i class="bi bi-gear me-2"></i>Настройки параметров</h4>
+                
+                <form>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-muted">Выбор числа</label>
+                        <input type="number" class="form-control rounded-3 py-2" min="1" max="100" value="50">
+                        <div class="form-text">От 1 до 100</div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-muted">Диапазон</label>
+                        <input type="range" class="form-range" min="0" max="100" value="75">
+                        <div class="d-flex justify-content-between small text-muted">
+                            <span>0</span>
+                            <span>75%</span>
+                            <span>100</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-muted">Выпадающий список</label>
+                        <select class="form-select rounded-3 py-2">
+                            <option selected>Выберите опцию</option>
+                            <option value="1">Опция 1</option>
+                            <option value="2">Опция 2</option>
+                            <option value="3">Опция 3</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="form-label small fw-bold text-muted">Дата и время</label>
+                        <div class="row g-2">
+                            <div class="col-md-6">
+                                <input type="date" class="form-control rounded-3 py-2">
+                            </div>
+                            <div class="col-md-6">
+                                <input type="time" class="form-control rounded-3 py-2">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-muted">Загрузка файла</label>
+                        <input type="file" class="form-control rounded-3 py-2">
+                        <div class="form-text">Максимальный размер: 5MB</div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Карточка 4: Кнопки и переключатели -->
+            <div class="card-hover p-4">
+                <h4 class="mb-4"><i class="bi bi-toggle-on me-2"></i>Элементы управления</h4>
+                
+                <div class="mb-4">
+                    <label class="form-label small fw-bold text-muted">Переключатели</label>
+                    <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" role="switch" id="switch1" checked>
+                        <label class="form-check-label" for="switch1">Уведомления по email</label>
+                    </div>
+                    <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" role="switch" id="switch2">
+                        <label class="form-check-label" for="switch2">СМС-оповещения</label>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="form-label small fw-bold text-muted">Выбор варианта (радио-кнопки в линию)</label>
+                    <div class="d-flex gap-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="inlineRadio" id="inlineRadio1">
+                            <label class="form-check-label" for="inlineRadio1">Вариант A</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="inlineRadio" id="inlineRadio2" checked>
+                            <label class="form-check-label" for="inlineRadio2">Вариант B</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="inlineRadio" id="inlineRadio3">
+                            <label class="form-check-label" for="inlineRadio3">Вариант C</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="d-flex gap-2">
+                    <button class="btn btn-outline-primary btn-pill flex-grow-1">Отмена</button>
+                    <button class="btn btn-primary-custom btn-pill flex-grow-1">Применить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Карточка во всю ширину -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card-hover p-4">
+                <h4 class="mb-4 text-center"><i class="bi bi-card-checklist me-2"></i>Дополнительные параметры</h4>
+                
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-muted">Выбор страны</label>
+                            <select class="form-select form-select-lg-custom">
+                                <option>Россия</option>
+                                <option>Беларусь</option>
+                                <option>Казахстан</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-muted">Почтовый индекс</label>
+                            <input type="text" class="form-control rounded-3 py-2" pattern="[0-9]{6}" placeholder="123456">
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-muted">URL профиля</label>
+                            <input type="url" class="form-control rounded-3 py-2" placeholder="https://example.com">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-3">
+                    <button class="btn btn-dark btn-pill px-5">Отправить все данные</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

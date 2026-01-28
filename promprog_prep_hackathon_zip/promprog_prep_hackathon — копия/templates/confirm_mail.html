@@ -36,10 +36,8 @@
                 </form>
                 <div class="text-center mt-3">
                     <p class="text-muted small mb-1">Не получили код?</p>
-                    <form action="{{ url_for('confirm_mail') }}" method="get">
-                        <button type="submit"
-                            class="fw-bold text-decoration-none small">Переотправить код</button>
-                    </form>
+                    <a href="{{ url_for('confirm_mail') }}"
+                        class="fw-bold text-decoration-none small">Переотправить код</a>
                 </div>
             </div>
 

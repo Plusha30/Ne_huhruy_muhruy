@@ -1,0 +1,241 @@
+{% extends "base.html" %}
+{% block title %}Демо формы{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center mb-5">
+        <div class="col-lg-8 text-center">
+            <h1 class="display-title mb-3">Демонстрация элементов формы</h1>
+            <p class="text-muted">Примеры различных полей ввода, оформленных в едином стиле системы</p>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Левая колонка -->
+        <div class="col-lg-6">
+            <!-- Форма 1: Профиль -->
+            <div class="card card-hover p-4 mb-4">
+                <h4 class="mb-4 fw-bold d-flex align-items-center gap-2">
+                    <i class="bi bi-person-circle text-primary"></i>
+                    Основная информация
+                </h4>
+                
+                <div class="mb-3">
+                    <label class="form-label small fw-bold text-muted">ФИО</label>
+                    <input type="text" class="form-control rounded-3 py-2 bg-light border-light" placeholder="Иванов Иван Иванович">
+                </div>
+                
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label small fw-bold text-muted">Возраст</label>
+                        <select class="form-select form-select-lg-custom">
+                            <option selected>Выберите возраст</option>
+                            {% for i in range(7, 19) %}
+                            <option value="{{ i }}">{{ i }} лет</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small fw-bold text-muted">Класс</label>
+                        <div class="input-group">
+                            <select class="form-select rounded-start-3">
+                                {% for i in range(1, 12) %}
+                                <option>{{ i }}</option>
+                                {% endfor %}
+                            </select>
+                            <span class="input-group-text bg-light border-light">-</span>
+                            <select class="form-select rounded-end-3">
+                                <option>А</option>
+                                <option>Б</option>
+                                <option>В</option>
+                                <option>Г</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="form-label small fw-bold text-muted d-block">Любимые предметы</label>
+                    <div class="d-flex flex-wrap gap-2">
+                        {% for subject in ['Математика', 'Физика', 'Химия', 'Биология', 'История', 'Литература'] %}
+                        <div class="form-check form-check-custom interest-checkbox-card">
+                            <input class="form-check-input" type="checkbox" id="subject{{ loop.index }}">
+                            <span class="form-check-label">{{ subject }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary-custom btn-pill w-100">Сохранить профиль</button>
+            </div>
+
+            <!-- Форма 2: Настройки -->
+            <div class="card card-hover p-4">
+                <h4 class="mb-4 fw-bold d-flex align-items-center gap-2">
+                    <i class="bi bi-gear text-primary"></i>
+                    Настройки отображения
+                </h4>
+                
+                <div class="mb-4">
+                    <label class="form-label small fw-bold text-muted">Цветовая тема</label>
+                    <div class="d-flex gap-3">
+                        {% for color in ['#3b82f6', '#10b981', '#8b5cf6', '#ef4444', '#f59e0b'] %}
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="themeColor" 
+                                   style="background-color: {{ color }}; border-color: {{ color }}" 
+                                   {% if loop.first %}checked{% endif %}>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="form-label small fw-bold text-muted">Размер текста</label>
+                    <input type="range" class="form-range" min="12" max="24" value="16">
+                    <div class="d-flex justify-content-between small text-muted">
+                        <span>Мелкий</span>
+                        <span>Стандартный</span>
+                        <span>Крупный</span>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="form-label small fw-bold text-muted">Уведомления</label>
+                    <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" checked>
+                        <label class="form-check-label">Email-уведомления</label>
+                    </div>
+                    <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox">
+                        <label class="form-check-label">Push-уведомления</label>
+                    </div>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" checked>
+                        <label class="form-check-label">SMS-оповещения</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Правая колонка -->
+        <div class="col-lg-6">
+            <!-- Форма 3: Контактная информация -->
+            <div class="card card-hover p-4 mb-4">
+                <h4 class="mb-4 fw-bold d-flex align-items-center gap-2">
+                    <i class="bi bi-telephone text-primary"></i>
+                    Контактные данные
+                </h4>
+                
+                <div class="mb-3">
+                    <label class="form-label small fw-bold text-muted">Номер телефона</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light border-light">+7</span>
+                        <input type="tel" class="form-control rounded-end-3 py-2 bg-light border-light" placeholder="900 123-45-67">
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="form-label small fw-bold text-muted">Предпочитаемый способ связи</label>
+                    <div class="d-flex flex-column gap-2">
+                        {% for method, icon in [('Телефон', 'telephone'), ('Telegram', 'send'), ('Email', 'envelope'), ('Лично', 'person')] %}
+                        <div class="form-check interest-checkbox-card">
+                            <input class="form-check-input" type="radio" name="contactMethod" id="method{{ loop.index }}" {% if loop.first %}checked{% endif %}>
+                            <label class="form-check-label d-flex align-items-center gap-2" for="method{{ loop.index }}">
+                                <i class="bi bi-{{ icon }}"></i>
+                                {{ method }}
+                            </label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="form-label small fw-bold text-muted">Дополнительная информация</label>
+                    <textarea class="form-control rounded-3 bg-light border-light" rows="4" placeholder="Дополнительные пожелания или комментарии..."></textarea>
+                </div>
+            </div>
+
+            <!-- Форма 4: Выбор параметров -->
+            <div class="card card-hover p-4">
+                <h4 class="mb-4 fw-bold d-flex align-items-center gap-2">
+                    <i class="bi bi-sliders text-primary"></i>
+                    Дополнительные параметры
+                </h4>
+                
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <label class="form-label small fw-bold text-muted">Количество порций</label>
+                        <div class="input-group">
+                            <button class="btn btn-outline-secondary border-light" type="button">-</button>
+                            <input type="number" class="form-control text-center bg-light border-light" value="1" min="1" max="10">
+                            <button class="btn btn-outline-secondary border-light" type="button">+</button>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <label class="form-label small fw-bold text-muted">Приоритет</label>
+                        <select class="form-select form-select-lg-custom">
+                            <option selected>Обычный</option>
+                            <option>Высокий</option>
+                            <option>Низкий</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="form-label small fw-bold text-muted">Выберите дни недели</label>
+                    <div class="d-flex flex-wrap gap-2">
+                        {% for day in ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'] %}
+                        <div class="form-check form-check-custom">
+                            <input class="form-check-input" type="checkbox" id="day{{ loop.index }}" {% if loop.index < 6 %}checked{% endif %}>
+                            <label class="form-check-label" for="day{{ loop.index }}">{{ day }}</label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="form-label small fw-bold text-muted">Интервал времени</label>
+                    <div class="row g-2">
+                        <div class="col">
+                            <input type="time" class="form-control bg-light border-light" value="08:00">
+                        </div>
+                        <div class="col-auto align-self-center">
+                            <span class="text-muted">—</span>
+                        </div>
+                        <div class="col">
+                            <input type="time" class="form-control bg-light border-light" value="15:00">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="d-flex gap-3">
+                    <button class="btn btn-primary-custom btn-pill flex-grow-1">Применить</button>
+                    <button class="btn btn-outline-primary btn-pill">Сбросить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Декоративный элемент внизу -->
+    <div class="text-center mt-5 pt-5">
+        <div class="d-inline-block p-4 rounded-4 bg-light">
+            <i class="bi bi-input-cursor-text display-4 text-muted opacity-50"></i>
+            <p class="text-muted mt-2 small">Все формы используют единую систему стилей</p>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Несколько дополнительных стилей для демо-страницы */
+.form-range::-webkit-slider-thumb {
+    background-color: var(--color-accent);
+}
+.form-range::-moz-range-thumb {
+    background-color: var(--color-accent);
+}
+.input-group-text {
+    font-size: 0.9rem;
+}
+</style>
+{% endblock %}
