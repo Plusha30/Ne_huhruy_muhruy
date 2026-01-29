@@ -44,7 +44,7 @@ app.add_url_rule("/got_food/<id>", view_func=student_r.gotfood, methods=['POST']
 app.add_url_rule('/add_to_cart/<id>', view_func=student_r.add_to_cart)
 app.add_url_rule('/clear_cart', view_func=student_r.clear_cart)
 app.add_url_rule('/buy_from_cart', view_func=student_r.buy_from_cart)
-app.add_url_rule('/payment', view_func=student_r.payment)
+app.add_url_rule('/payment', view_func=student_r.payment, methods=['GET', 'POST'])
 #product_routes.py
 app.add_url_rule('/product/setcommentary/<id>', view_func=product_r.sendcommentary, methods=['POST'])
 app.add_url_rule('/product/<id>', view_func=product_r.product_detail, methods=['GET'])
