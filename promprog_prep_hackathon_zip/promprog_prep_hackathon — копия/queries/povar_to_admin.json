@@ -5,7 +5,8 @@
         "volume": "20 \u0448\u0442",
         "person": "\u041f\u0435\u0442\u0440\u043e\u0432\u0438\u0447 \u0415.\u0411.",
         "when": "8:00",
-        "status": -1
+        "status": -1,
+        "cost": 0
     },
     {
         "id": 1,
@@ -13,7 +14,8 @@
         "volume": "56 \u043b",
         "person": "povar",
         "when": "19:36",
-        "status": 1
+        "status": 1,
+        "cost": 189
     },
     {
         "id": 2,
@@ -21,6 +23,7 @@
         "volume": "16 \u043b",
         "person": "povar",
         "when": "19:36",
-        "status": 0
+        "status": 0,
+        "cost": 3000
     }
 ]

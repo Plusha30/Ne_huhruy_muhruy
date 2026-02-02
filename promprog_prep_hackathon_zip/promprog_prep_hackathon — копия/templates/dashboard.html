@@ -353,7 +353,8 @@
 
                 <!-- 3.0 СТРАНИЦА "ПРИСУТПИМ" -->
                 <div class="tab-pane fade" id="begin">
-                    <h1 style="margin-left: auto; margin-right: auto; margin-left: auto; margin-right: auto;">Давайте приступим</h1>
+                    <h1 style="margin-left: auto; margin-right: auto; margin-left: auto; margin-right: auto;">Давайте
+                        приступим</h1>
                 </div>
 
                 <!-- 3.1 ВЫДАЧА -->
@@ -517,7 +518,8 @@
 
                 <!-- 4.0 СТРАНИЦА "ПРИСУТПИМ" -->
                 <div class="tab-pane fade" id="begin">
-                    <h1 style="margin-left: auto; margin-right: auto; margin-left: auto; margin-right: auto;">Давайте приступим</h1>
+                    <h1 style="margin-left: auto; margin-right: auto; margin-left: auto; margin-right: auto;">Давайте
+                        приступим</h1>
                 </div>
 
                 <!-- 4.1 СТАТИСТИКА -->
@@ -601,6 +603,7 @@
                 <div class="tab-pane fade" id="reports">
                     <h5 class="fw-bold mb-4">Формирование отчетов</h5>
                     <div class="row g-4">
+                        <!-- Первая карточка -->
                         <div class="col-md-6">
                             <div class="card border-0 shadow-sm p-4 h-100">
                                 <div class="d-flex align-items-center gap-3 mb-3">
@@ -608,11 +611,30 @@
                                         <i class="bi bi-file-earmark-spreadsheet fs-3"></i>
                                     </div>
                                     <div>
-                                        <h6 class="fw-bold mb-0">Отчет по пользователям</h6>
-                                        <small class="text-muted">Все зарегистрированные пользователи системы</small>
+                                        <h6 class="fw-bold mb-0">Отчет по заказам</h6>
+                                        <small class="text-muted">Все заказы учеников поварам</small>
                                     </div>
                                 </div>
-                                <a href="{{ url_for('download_report') }}"
+                                <a href="{{ url_for('download_student_report') }}"
+                                    class="btn btn-outline-primary btn-pill w-100 mt-auto">
+                                    Скачать Excel
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Вторая карточка -->
+                        <div class="col-md-6">
+                            <div class="card border-0 shadow-sm p-4 h-100">
+                                <div class="d-flex align-items-center gap-3 mb-3">
+                                    <div class="bg-primary bg-opacity-10 text-primary p-3 rounded-circle">
+                                        <i class="bi bi-file-earmark-spreadsheet fs-3"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="fw-bold mb-0">Отчет по продуктам</h6>
+                                        <small class="text-muted">Все запросы на закупку продуктов</small>
+                                    </div>
+                                </div>
+                                <a href="{{ url_for('download_product_report') }}"
                                     class="btn btn-outline-primary btn-pill w-100 mt-auto">
                                     Скачать Excel
                                 </a>
@@ -782,58 +804,60 @@
 
     // Функция для сохранения активной вкладки
     function saveActiveTab(tabId) {
-        const rights = {{ rights|tojson }}; // Права из шаблона
-        localStorage.setItem(`dashboard_tab_${rights}`, tabId);
+        const rights = {{ rights| tojson
+    }}; // Права из шаблона
+    localStorage.setItem(`dashboard_tab_${rights}`, tabId);
     }
 
     // Функция для восстановления активной вкладки
     function restoreActiveTab() {
-        const rights = {{ rights|tojson }};
-        let savedTabId = localStorage.getItem(`dashboard_tab_${rights}`);
-        if (!savedTabId) {
-            savedTabId = "begin";
-        };
-        
-        // Находим кнопку вкладки по data-bs-target
-        const tabButton = document.querySelector(`[data-bs-target="#${savedTabId}"]`);
-        if (!tabButton) return;
+        const rights = {{ rights| tojson
+    }};
+    let savedTabId = localStorage.getItem(`dashboard_tab_${rights}`);
+    if (!savedTabId) {
+        savedTabId = "begin";
+    };
 
-        // Находим соответствующую панель
-        const tabPane = document.querySelector(`#${savedTabId}`);
-        if (!tabPane) return;
+    // Находим кнопку вкладки по data-bs-target
+    const tabButton = document.querySelector(`[data-bs-target="#${savedTabId}"]`);
+    if (!tabButton) return;
 
-        // Проверяем, активна ли уже эта вкладка
-        if (tabButton.classList.contains('active')) return;
+    // Находим соответствующую панель
+    const tabPane = document.querySelector(`#${savedTabId}`);
+    if (!tabPane) return;
 
-        // Временно отключаем все transition для табов
-        const allPanes = document.querySelectorAll('.tab-pane');
+    // Проверяем, активна ли уже эта вкладка
+    if (tabButton.classList.contains('active')) return;
+
+    // Временно отключаем все transition для табов
+    const allPanes = document.querySelectorAll('.tab-pane');
+    allPanes.forEach(pane => {
+        pane.classList.add('no-transition');
+    });
+
+    // Убираем активность со всех вкладок и панелей
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('active');
+        link.setAttribute('aria-selected', 'false');
+    });
+
+    document.querySelectorAll('.tab-pane').forEach(pane => {
+        pane.classList.remove('show', 'active');
+    });
+
+    // Активируем сохраненную вкладку
+    tabButton.classList.add('active');
+    tabButton.setAttribute('aria-selected', 'true');
+
+    // Активируем панель МОМЕНТАЛЬНО
+    tabPane.classList.add('show', 'active');
+
+    // Восстанавливаем transition через небольшой таймаут
+    setTimeout(() => {
         allPanes.forEach(pane => {
-            pane.classList.add('no-transition');
+            pane.classList.remove('no-transition');
         });
-
-        // Убираем активность со всех вкладок и панелей
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.classList.remove('active');
-            link.setAttribute('aria-selected', 'false');
-        });
-
-        document.querySelectorAll('.tab-pane').forEach(pane => {
-            pane.classList.remove('show', 'active');
-        });
-
-        // Активируем сохраненную вкладку
-        tabButton.classList.add('active');
-        tabButton.setAttribute('aria-selected', 'true');
-
-        // Активируем панель МОМЕНТАЛЬНО
-        tabPane.classList.add('show', 'active');
-
-        // Восстанавливаем transition через небольшой таймаут
-        setTimeout(() => {
-            allPanes.forEach(pane => {
-                pane.classList.remove('no-transition');
-            });
-        }, 50);
+    }, 50);
     }
 
     // Обработчики событий для вкладок повара

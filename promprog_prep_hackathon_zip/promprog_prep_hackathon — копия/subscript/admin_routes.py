@@ -3,6 +3,7 @@
 from flask import render_template, request, redirect, url_for, send_file, session
 from subscript.filework import *
 from subscript.account_system import *
+from subscript.reports import *
 
 def set_admin_query():
     email = getlogin()
@@ -17,3 +18,61 @@ def set_admin_query():
             break
     setquerylist(name="povar_to_admin.json", to=qu)
     return redirect(url_for('dashboard'), 302)
+
+def download_student_report():
+    """
+    Маршрут для скачивания отчета по пользователям
+    """
+    # Проверяем авторизацию
+    email = getlogin()
+    if email == 'placeholder':
+        return redirect(url_for('dashboard'), 302)
+    
+    # Проверяем права (только администраторы могут скачивать отчеты)
+    user_data = getuser(email)
+    if not user_data or user_data.get('rights', 0) < 2:
+        return redirect(url_for('dashboard'), 302)
+    
+    # Генерируем отчет
+    users_dir = f'{base_path}/queries/student_buys.json'
+    excel_file = generate_student_buys_report(users_dir)
+    
+    # Создаем имя файла с текущей датой и временем
+    filename = f"отчет_заказы_{datetime.now().strftime('%Y-%m-%d_%H-%M')}.xlsx"
+    
+    # Отправляем файл
+    return send_file(
+        excel_file,
+        as_attachment=True,
+        download_name=filename,
+        mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+
+def download_product_report():
+    """
+    Маршрут для скачивания отчета по пользователям
+    """
+    # Проверяем авторизацию
+    email = getlogin()
+    if email == 'placeholder':
+        return redirect(url_for('dashboard'), 302)
+    
+    # Проверяем права (только администраторы могут скачивать отчеты)
+    user_data = getuser(email)
+    if not user_data or user_data.get('rights', 0) < 2:
+        return redirect(url_for('dashboard'), 302)
+    
+    # Генерируем отчет
+    users_dir = f'{base_path}/queries/povar_to_admin.json'
+    excel_file = generate_product_report(users_dir)
+    
+    # Создаем имя файла с текущей датой и временем
+    filename = f"отчет_продукты_{datetime.now().strftime('%Y-%m-%d_%H-%M')}.xlsx"
+    
+    # Отправляем файл
+    return send_file(
+        excel_file,
+        as_attachment=True,
+        download_name=filename,
+        mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )

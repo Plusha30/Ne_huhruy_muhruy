@@ -23,6 +23,12 @@ def sendfood(id):
                 if j['id'] != id:
                     newer.append(j)
             setquerylist(name="student_to_povar.json", to=newer)
+            admin_qu = getquerylist('student_buys.json')
+            for i in range(len(admin_qu)):
+                if (admin_qu[i]['id'] == id):
+                    admin_qu[i]['isCooked'] = True
+                    break
+            setquerylist(name='student_buys.json', to=admin_qu)
             setuser(thatmail, user)
             return redirect(url_for('dashboard'))
     return redirect(url_for('dashboard'))
@@ -49,6 +55,7 @@ def buy_to_admin():
     dt['total_povar_queries'] += 1
     setquerylist(name="global.json", to=dt)
     suffix = getquerylist('povar.json')[data['prod'][0]]['suffix']
+    price = getquerylist('povar.json')[data['prod'][0]]['price']
     qu = getquerylist("povar_to_admin.json")
     qu.append({
         "id": nowid,
@@ -56,7 +63,8 @@ def buy_to_admin():
         "volume": f'{data['volume'][0]} {suffix}',
         "person": user['username'],
         "when": f'{datetime.now().hour}:{datetime.now().minute}',
-        "status": 0
+        "status": 0,
+        "cost": f'{data['volume'][0] * price} {suffix}'
     })
     setquerylist(name="povar_to_admin.json", to=qu)
     setuser(email, user)

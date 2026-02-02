@@ -36,6 +36,12 @@ def gotfood(id):
             new_to_take.append(i)
     user['to_take'] = new_to_take
     setuser(email, user)
+    admin_qu = getquerylist('student_buys.json')
+    for i in range(len(admin_qu)):
+        if (admin_qu[i]['id'] == id):
+            admin_qu[i]['isComplete'] = True
+            break
+    setquerylist(name='student_buys.json', to=admin_qu)
     return redirect(url_for('dashboard'))
 
 def add_to_cart(id):
@@ -85,6 +91,17 @@ def buy_from_cart():
         "time": f'{datetime.now().hour}:{datetime.now().minute}'
     })
     setquerylist(name="student_to_povar.json", to=qu)
+    admin_qu = getquerylist('student_buys.json')
+    admin_qu.append({
+        "id": nowid,
+        "user": email,
+        "money": sum,
+        "what": names,
+        "time": f'{datetime.now().hour}:{datetime.now().minute}',
+        "date": f'{datetime.now().date()}',
+        'isComplete': False
+    })
+    setquerylist(name="student_buys.json", to=admin_qu)
     setuser(email, user)
     return redirect(url_for('clear_cart'))
 

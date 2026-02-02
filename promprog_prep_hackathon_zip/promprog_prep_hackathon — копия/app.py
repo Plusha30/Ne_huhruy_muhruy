@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, send_file, session
 from flask_session import Session
 from subscript.filework import *
-from subscript.reports import generate_users_report
 from subscript.account_system import *
 import subscript.simple_routes as simple_r
 import subscript.account_routes as account_r
@@ -20,6 +19,7 @@ app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024
 app.config['SESSION_TYPE'] = 'filesystem'  # or 'redis', 'mongodb', etc.
 app.config['SESSION_FILE_DIR'] = SESSION_PATH
 app.config['SESSION_PERMANENT'] = False
+app.config['TEMPLATES_AUTO_RELOAD'] = True
 app.config.update(
     SESSION_COOKIE_SECURE=True,    # HTTPS only
     SESSION_COOKIE_HTTPONLY=True,  # No JavaScript access
@@ -30,10 +30,6 @@ Session(app)
 #simple_routes.py
 app.add_url_rule('/', view_func=simple_r.landing)
 app.add_url_rule('/pricing', view_func=simple_r.pricing)
-#app.add_url_rule('/ultimate_dashboard', view_func=simple_r.ultimate_dashboard)
-#app.add_url_rule('/rand', view_func=simple_r.rand)
-#app.add_url_rule('/rand1', view_func=simple_r.rand1)
-#app.add_url_rule('/rand2', view_func=simple_r.rand2)
 #account_routes.py
 app.add_url_rule('/login', view_func=account_r.login, methods=['GET', 'POST'])
 app.add_url_rule('/register', view_func=account_r.register, methods=['GET', 'POST'])
@@ -54,14 +50,16 @@ app.add_url_rule('/update_inventory', view_func=povar_r.updateinventory, methods
 app.add_url_rule('/buy_to_admin', view_func=povar_r.buy_to_admin, methods=['POST'])
 #admin_routes.py
 app.add_url_rule('/set_admin_query', view_func=admin_r.set_admin_query, methods=['POST'])
+app.add_url_rule('/download_student_report', view_func=admin_r.download_student_report)
+app.add_url_rule('/download_product_report', view_func=admin_r.download_product_report)
 
 @app.errorhandler(404)
 def four04():
     return render_template('404.html', **commonkwargs(getlogin(reset_auth=False)))
 
-#@app.errorhandler(Exception)
-#def fatal_error(error):
-#    return render_template('404.html', **commonkwargs(getlogin(reset_auth=False)))
+@app.errorhandler(Exception)
+def fatal_error(error):
+    return render_template('404.html', **commonkwargs(getlogin(reset_auth=False)))
 
 @app.route('/dashboard')
 def dashboard():
@@ -80,36 +78,6 @@ def dashboard():
                                                            toadmin=getquerylist("povar_to_admin.json"))                 
     elif (kwargs['rights'] == 3):
         return render_template('dashboard.html', **kwargs, toadmin=getquerylist("povar_to_admin.json"))
-
-@app.route('/download_report')
-def download_report():
-    """
-    Маршрут для скачивания отчета по пользователям
-    """
-    # Проверяем авторизацию
-    email = getlogin()
-    if email == 'placeholder':
-        return redirect(url_for('login'), 302)
-    
-    # Проверяем права (только администраторы могут скачивать отчеты)
-    user_data = getuser(email)
-    if not user_data or user_data.get('rights', 0) < 2:
-        return "Доступ запрещен. Требуются права модератора или администратора.", 403
-    
-    # Генерируем отчет
-    users_dir = os.path.join(base_path, 'users')  # Путь к папке с пользователями
-    excel_file = generate_users_report(users_dir)
-    
-    # Создаем имя файла с текущей датой и временем
-    filename = f"отчет_пользователи_{datetime.now().strftime('%Y-%m-%d_%H-%M')}.xlsx"
-    
-    # Отправляем файл
-    return send_file(
-        excel_file,
-        as_attachment=True,
-        download_name=filename,
-        mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-    )
 
 #start
 if __name__ == '__main__':
