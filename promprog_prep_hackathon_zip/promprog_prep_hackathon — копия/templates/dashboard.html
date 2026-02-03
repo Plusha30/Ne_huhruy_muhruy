@@ -154,10 +154,17 @@
                         {% if cart_items %}
                         <div class="d-flex flex-column gap-2 mb-3" style="max-height: 200px; overflow-y: auto;">
                             {% for item in cart_items %}
+                            {% if item[1] == 1 %}
                             <div class="d-flex justify-content-between align-items-center small">
-                                <span>{{ item.name }}</span>
-                                <span class="fw-bold">{{ item.price }} ₽</span>
+                                <span>{{ item[0].name }} x{{ item[1] }}</span>
+                                <span class="fw-bold">{{ item[0].price }} ₽</span>
                             </div>
+                            {% else %}
+                            <div class="d-flex justify-content-between align-items-center small" style="color: red;">
+                                <span style="color: red;">{{ item[0].name }} x{{ item[1] }}</span>
+                                <span class="fw-bold" style="color: red;">{{ item[0].price }} ₽</span>
+                            </div>
+                            {% endif %}
                             {% endfor %}
                         </div>
 
@@ -167,7 +174,7 @@
                         </div>
 
                         <div class="d-grid gap-2">
-                            <a href="{{ url_for('buy_from_cart') }}"
+                            <a href="{{ url_for('pay') }}"
                                 class="btn btn-success btn-sm rounded-pill">Оплатить</button>
                                 <a href="{{ url_for('clear_cart') }}"
                                     class="btn btn-light border btn-sm rounded-pill text-danger">Очистить</a>
@@ -254,11 +261,18 @@
 
                                 <!-- КНОПКА ДОБАВЛЕНИЯ В КОРЗИНУ -->
                                 {% if rights == 1 %}
+                                <div style="display: flex;">
+                                <a href="{{ url_for('remove_from_cart', id=id) }}"
+                                    class="btn btn-sm btn-light border rounded-circle shadow-sm hover-primary d-flex align-items-center justify-content-center"
+                                    style="width: 32px; height: 32px; display: inline-block; margin-right: 5px;">
+                                    -
+                                </a>
                                 <a href="{{ url_for('add_to_cart', id=id) }}"
                                     class="btn btn-sm btn-light border rounded-circle shadow-sm hover-primary d-flex align-items-center justify-content-center"
-                                    style="width: 32px; height: 32px;">
+                                    style="width: 32px; height: 32px; display: inline-block;">
                                     <i class="bi bi-plus-lg"></i>
                                 </a>
+                                </div>
                                 {% endif %}
                             </div>
                         </div>

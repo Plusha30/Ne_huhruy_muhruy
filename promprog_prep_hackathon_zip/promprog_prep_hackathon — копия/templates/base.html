@@ -11,7 +11,7 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-<body>
+<body style="min-height: 100vh; margin: 0; display: flex; flex-direction: column;">
 
 <!-- Навигация (Обычная, НЕ фиксированная) -->
 <div class="container pt-3 mb-4">
@@ -77,11 +77,11 @@
 
 <!-- Убрали navbar-spacer, так как шапка теперь занимает место в потоке -->
 
-<main>
+<main style="flex: 1;">
     {% block content %}{% endblock %}
 </main>
 
-<footer class="py-5 mt-auto text-center border-top bg-white">
+<footer class="py-5 mt-auto text-center border-top bg-white" style="flex-shrink: 0;">
     <div class="container">
         <p class="text-muted mb-0 small">&copy; 2026 Школьная Столовая.</p>
     </div>

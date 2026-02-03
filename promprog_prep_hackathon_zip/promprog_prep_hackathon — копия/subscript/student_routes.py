@@ -14,11 +14,11 @@ def get_cart_objects(email):
     cart_items = []
     total_price = 0
     for item_id in cart_ids:
-        if item_id in all_tovars:
-            item = all_tovars[item_id]
-            cart_items.append(item)
+        if item_id[0] in all_tovars:
+            item = all_tovars[item_id[0]]
+            cart_items.append([item, item_id[1]])
             try:
-                total_price += int(item['price'])
+                total_price += int(item['price']) * item_id[1]
             except:
                 pass
     return cart_items, total_price
@@ -51,8 +51,29 @@ def add_to_cart(id):
     user = getuser(email)
     if 'cart' not in user:
         user['cart'] = []
-    user['cart'].append(str(id))
+    for i in range(len(user['cart'])):
+        if (user['cart'][i][0] == str(id)):
+            user['cart'][i][1] += 1
+            setuser(email, user)
+            return redirect(url_for('dashboard'))
+    user['cart'].append([str(id), 1])
     setuser(email, user)
+    return redirect(url_for('dashboard'))
+
+def remove_from_cart(id):
+    email = getlogin()
+    if email == 'placeholder':
+        return redirect(url_for('login'))
+    user = getuser(email)
+    if 'cart' not in user:
+        user['cart'] = []
+    for i in range(len(user['cart'])):
+        if (user['cart'][i][0] == str(id)):
+            user['cart'][i][1] -= 1
+            if user['cart'][i][1] == 0:
+                user['cart'].remove(user['cart'][i])
+            setuser(email, user)
+            return redirect(url_for('dashboard'))
     return redirect(url_for('dashboard'))
 
 def clear_cart():
@@ -70,7 +91,7 @@ def buy_from_cart():
         return redirect(url_for('login'))
     sum = 0
     for i in user['cart']:
-        sum += gettovar(int(i))['price']
+        sum += gettovar(int(i[0]))['price'] * i[1]
     if (sum > user['money']):
         return redirect(url_for('dashboard'))
     user['money'] -= sum
@@ -81,7 +102,10 @@ def buy_from_cart():
     tovarlist = gettovarlist()
     names = []
     for i in user['cart']:
-        names.append(tovarlist[i]['name'])
+        if (i[1] == 1):
+            names.append(tovarlist[i[0]]['name'])
+        else:
+            names.append(f"{tovarlist[i[0]]['name']} x{i[1]}")
     qu = getquerylist("student_to_povar.json")
     qu.append({
         "id": nowid,
@@ -117,3 +141,13 @@ def payment():
         setuser(email, usernow)
         return redirect(url_for('dashboard'))
     return render_template('payment.html', **kwargs)
+
+def pay():
+    email = getlogin()
+    kwargs = commonkwargs(email)
+    if (kwargs['rights'] != 1):
+        return redirect(url_for('dashboard'))
+    cart_items, cart_total = get_cart_objects(email)
+    kwargs['cart_items'] = cart_items
+    kwargs['cart_total'] = cart_total
+    return render_template('pay.html', tovarlist=gettovarlist(), takequeries=getuser(email)['to_take'], **kwargs)
