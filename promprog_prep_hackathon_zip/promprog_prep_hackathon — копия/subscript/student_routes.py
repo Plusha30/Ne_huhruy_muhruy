@@ -112,7 +112,8 @@ def buy_from_cart():
         "products": names,
         "name": user['username'],
         "userid": email,
-        "time": f'{datetime.now().hour}:{datetime.now().minute}'
+        "time": f'{str(datetime.now())[11:16]}',
+        "date": f'{request.form.get("date", "Не указано")}'
     })
     setquerylist(name="student_to_povar.json", to=qu)
     admin_qu = getquerylist('student_buys.json')
@@ -122,7 +123,9 @@ def buy_from_cart():
         "money": sum,
         "what": names,
         "time": f'{datetime.now().hour}:{datetime.now().minute}',
-        "date": f'{datetime.now().date()}',
+        "order_date": f'{datetime.now().date()}',
+        "date": f'{request.form.get("date", "Не указано")}',
+        "isCooked": False,
         'isComplete': False
     })
     setquerylist(name="student_buys.json", to=admin_qu)
