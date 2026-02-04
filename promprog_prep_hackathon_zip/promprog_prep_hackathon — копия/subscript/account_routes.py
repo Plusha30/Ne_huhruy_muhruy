@@ -95,6 +95,8 @@ def profile():
                 changes['phone'] = data['phone'][0]
             if (len(data['description']) > 0):
                 changes['description'] = data['description'][0]
+            if (len(data['class']) > 0):
+                changes['class'] = data['class'][0]
             setuser(email, changes)
 
         # 3. Обновление фото

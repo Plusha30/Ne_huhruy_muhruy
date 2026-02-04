@@ -28,7 +28,7 @@ def commonkwargs(email):
         return ans
     else:
         return {'username': 'Log in', 'userimg': return_image(f'users/{email}', 'user_placeholder'), \
-            'description': 'empty', 'phone': 'N/A', 'rights': 0, 'money': 0, 'abonement': 'null'}
+            'description': 'empty', 'phone': 'N/A', 'class': 'N/A', 'rights': 0, 'money': 0, 'abonement': 'null'}
 
 def today_days():
     today = date.today()

@@ -121,6 +121,8 @@ def buy_from_cart():
     admin_qu.append({
         "id": nowid,
         "user": email,
+        'class': user['class'],
+        'phone': user['phone'],
         "money": sum,
         "what": names,
         "time": f'{datetime.now().hour}:{datetime.now().minute}',

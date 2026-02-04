@@ -46,6 +46,8 @@ def generate_student_buys_report(json_path):
     column_mapping = {
         'id': 'ID',
         'user': 'Пользователь',
+        'class': 'Класс',
+        'phone': 'Телефон',
         'money': 'Цена',
         'what': 'Список товаров',
         'time': 'Время',
@@ -56,7 +58,7 @@ def generate_student_buys_report(json_path):
     df = df.rename(columns={k: v for k, v in column_mapping.items() if k in df.columns})
     
     # Определяем порядок колонок для отчета
-    desired_columns = ['ID', 'Пользователь', 'Цена', 'Список товаров', 'Время', 'Дата', 'Приготовлен', 'Получен']
+    desired_columns = ['ID', 'Пользователь', 'Класс', 'Телефон', 'Цена', 'Список товаров', 'Время', 'Дата', 'Приготовлен', 'Получен']
     report_columns = [col for col in desired_columns if col in df.columns]
     
     # Создаем финальный DataFrame с нужными колонками

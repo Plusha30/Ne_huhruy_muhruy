@@ -5,7 +5,6 @@
     "price": 85,
     "badge": "Хит продаж",
     "color": "rgb(220, 53, 69)",
-    "main_icon": "bi-fire",
     "allergens": []
   },
   "2": {
@@ -14,7 +13,6 @@
     "price": 120,
     "badge": "Свежее",
     "color": "rgb(25, 135, 84)",
-    "main_icon": "bi-egg-fried",
     "allergens": ["Глютен", "Лактоза"]
   },
   "3": {
@@ -23,7 +21,6 @@
     "price": 35,
     "badge": "",
     "color": "rgb(13, 110, 253)",
-    "main_icon": "bi-cup-straw",
     "allergens": []
   },
   "4": {
@@ -32,7 +29,6 @@
     "price": 55,
     "badge": "Веган",
     "color": "rgb(25, 135, 84)",
-    "main_icon": "bi-flower1",
     "allergens": []
   },
   "5": {
@@ -41,7 +37,6 @@
     "price": 140,
     "badge": "Омега-3",
     "color": "rgb(13, 202, 240)",
-    "main_icon": "bi-water",
     "allergens": ["Рыба"]
   },
   "6": {
@@ -50,7 +45,6 @@
     "price": 95,
     "badge": "Завтрак",
     "color": "rgb(255, 193, 7)",
-    "main_icon": "bi-circle-square",
     "allergens": ["Лактоза", "Глютен"]
   },
   "7": {
@@ -59,7 +53,6 @@
     "price": 40,
     "badge": "Витамин C",
     "color": "rgb(253, 126, 20)",
-    "main_icon": "bi-sun",
     "allergens": ["Цитрусовые"]
   },
   "8": {
@@ -68,7 +61,6 @@
     "price": 45,
     "badge": "Сладкое",
     "color": "rgb(139, 69, 19)",
-    "main_icon": "bi-star-fill",
     "allergens": ["Глютен", "Орехи"]
   }
 }

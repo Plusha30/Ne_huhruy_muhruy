@@ -1,10 +1,15 @@
 {
     "password": "admin",
     "username": "admin",
+    "class": "N/A",
     "description": "empty",
     "phone": "N/A",
     "rights": 3,
     "money": 0,
+    "allergies": [],
     "cart": [],
-    "to_take": []
+    "to_take": [],
+    "abonement": "null",
+    "last_used_day": -1,
+    "last_used_hour": -1
 }

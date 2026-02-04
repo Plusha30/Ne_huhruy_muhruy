@@ -76,7 +76,7 @@
                     <input name="commit_type" value="update_data" hidden>
                     <div class="row g-3 mb-3">
                         <div class="col-md-6">
-                            <label class="form-label small fw-bold text-muted">Имя</label>
+                            <label class="form-label small fw-bold text-muted">ФИО</label>
                             <input name="name" type="text" class="form-control rounded-3" value="{{username}}">
                         </div>
                         <div class="col-md-6">
@@ -84,6 +84,12 @@
                             <input name="phone" type="text" class="form-control rounded-3" value="{{phone}}">
                         </div>
                     </div>
+                    {% if rights == 1 %}
+                        <div class="col-md-2">
+                            <label class="form-label small fw-bold text-muted">Класс</label>
+                            <input name="class" type="text" class="form-control rounded-3" value="{{class}}">
+                        </div>
+                    {% endif %}
                     {% if rights != 1 %}
                     <div class="mb-3">
                         <label class="form-label small fw-bold text-muted">Должность / Описание</label>

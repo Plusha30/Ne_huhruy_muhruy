@@ -6,9 +6,7 @@
   "badge": "Нежно",
   "color": "rgb(255, 193, 7)",
   "description": "Классическая школьная запеканка из натурального творога со сгущенкой.",
-  "main_icon": "bi-circle-square",
   "allergens": ["Лактоза", "Глютен"],
-  "gallery": ["bi-circle-square", "bi-emoji-smile"],
   "specs": {"Калории": "220 ккал", "Белки": "14 г", "Лактоза": "Да"},
   "reviews": []
 }
