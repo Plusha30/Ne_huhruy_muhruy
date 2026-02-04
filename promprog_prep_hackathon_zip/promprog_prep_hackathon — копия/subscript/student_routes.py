@@ -130,6 +130,9 @@ def buy_from_cart():
         'isComplete': False
     })
     setquerylist(name="student_buys.json", to=admin_qu)
+    if (request.form.get('abon', 'False') == 'True'):
+        user['last_used_day'] = today_days()
+        user['last_used_hour'] = today_hour()
     setuser(email, user)
     return redirect(url_for('clear_cart'))
 
@@ -161,6 +164,18 @@ def pay():
         if (user['abonement'] == 'null'):
             canAbonement = False
             break
+        abonementDays = getquerylist('abonement_conf.json')
+        if (user['last_used_day'] == today_days()):
+            if (user['last_used_hour'] <= today_hour() < abonementDays[user['abonement']][0]):
+                canAbonement = False
+                break
+            if (abonementDays[user['abonement']][-1] < user['last_used_hour'] <= today_hour()):
+                canAbonement = False
+                break
+            for i in range(0, len(abonementDays[user['abonement']]) - 1):
+                if (abonementDays[user['abonement']][i] <= user['last_used_hour'] <= today_hour() < abonementDays[user['abonement']][i + 1]):
+                    canAbonement = False
+                    break
         if (len(cart_objects) > 2):
             canAbonement = False
             break
@@ -188,5 +203,7 @@ def setabonement(id):
     if email != 'placeholder':
         user = getuser(email)
         user['abonement'] = id
+        user['last_used_day'] = -1
+        user['last_used_hour'] = -1
         setuser(email, user)
     return redirect(url_for('pricing'))

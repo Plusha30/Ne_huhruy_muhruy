@@ -84,5 +84,4 @@ def dashboard():
 
 #start
 if __name__ == '__main__':
-    print(datetime.now())
     app.run(port=5237, host="127.0.0.1", debug=True)

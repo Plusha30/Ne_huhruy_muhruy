@@ -36,7 +36,7 @@ def today_days():
     return (today - epoch_date).days
 
 def today_hour():
-    return datetime.now().hour()
+    return datetime.now().hour
 
 def getuser(email):
     users_path = f"{base_path}/users/{email}.json"
