@@ -18,6 +18,9 @@
             <p class="text-secondary mb-0">
                 {% if rights == 0 %}Войдите, чтобы сделать заказ.{% endif %}
                 {% if rights == 1 %}Твой баланс: <span class="fw-bold text-success">{{ money }} ₽</span>{% endif %}
+                {% if rights == 1 %}
+
+                {% endif %}
                 {% if rights == 2 %}Учет выдачи блюд, контроль склада и закупки.{% endif %}
                 {% if rights == 3 %}Статистика, согласование закупок и отчетность.{% endif %}
             </p>
@@ -881,6 +884,32 @@
 
     // Для роли админа (rights == 3) - те же обработчики, но для другой структуры
     // (используем ту же логику, так как структура аналогична)
+
+// Минимальный код для сохранения позиции без анимации
+(function() {
+    // Сохраняем позицию перед обновлением
+    window.addEventListener('beforeunload', () => {
+        sessionStorage.setItem('scrollY', window.pageYOffset);
+    });
+
+    // Сохраняем при скролле (с задержкой)
+    let scrollTimer;
+    window.addEventListener('scroll', () => {
+        clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(() => {
+            sessionStorage.setItem('scrollY', window.pageYOffset);
+        }, 150);
+    });
+
+    // Восстанавливаем позицию (строго без анимации)
+    document.addEventListener('DOMContentLoaded', () => {
+        const savedY = sessionStorage.getItem('scrollY');
+        if (savedY) {
+            // Ключевой момент: behavior: 'auto' или просто число
+            window.scrollTo(0, parseInt(savedY, 10)); // Без анимации
+        }
+    });
+})();
 
 </script>
 
