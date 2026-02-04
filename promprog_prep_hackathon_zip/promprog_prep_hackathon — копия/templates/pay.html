@@ -64,15 +64,24 @@
                             </div>
                         </div>
                     </div>
-                    {% if money >= cart_total %}
                     <form action="{{ url_for('buy_from_cart') }}" method="post">
+                        {% if canAbonement or money >= cart_total %}
                         <input type="date" id="datepicker" name="date" class="form-control rounded-3"
                             style="width: 300px; margin-left: auto; margin-right: auto;" value="{{ now_date }}"
                             required>
-                        <div style="margin-left: auto; margin-right: auto;"><center><button style="margin: 5px; margin-bottom: 20px;"
+                        {% endif %}
+                        <div style="margin-top: 5px;"></div>
+                        {% if money >= cart_total %}
+                        <div style="margin-left: auto; margin-right: auto;"><center><button style="margin: 5px;"
                             class="btn btn-success btn-sm rounded-pill">Оплатить</button></center></div>
+                        {% endif %}
+                        {% if canAbonement %}
+                        <div style="margin-left: auto; margin-right: auto;"><center><button style="margin: 5px;"
+                            class="btn btn-success btn-sm rounded-pill">Оплатить абонементом</button></center></div>
+                        {% endif %}
+                        <div style="margin-bottom: 20px;"></div>
                     </form>
-                    {% else %}
+                    {% if money < cart_total %}
                     <a href="{{ url_for('payment') }}" class="btn btn-sm rounded-pill"
                         style="background-color: black; margin: 5px; max-width: 300px; margin-left:auto; margin-right: auto;"><i style="color: white"
                             class="bi bi-wallet2 me-2"></i><span style="color: white">Пополнить</span></a>

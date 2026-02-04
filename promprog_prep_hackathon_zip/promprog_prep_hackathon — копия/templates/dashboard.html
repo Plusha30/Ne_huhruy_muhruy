@@ -18,9 +18,7 @@
             <p class="text-secondary mb-0">
                 {% if rights == 0 %}Войдите, чтобы сделать заказ.{% endif %}
                 {% if rights == 1 %}Твой баланс: <span class="fw-bold text-success">{{ money }} ₽</span>{% endif %}
-                {% if rights == 1 %}
-
-                {% endif %}
+                {% if rights == 1 %}{% if abonement != "null" %}<br>Активен абонемент: <span class="fw-bold text-success">{{abonement}}</span>{% endif %}{% endif %}
                 {% if rights == 2 %}Учет выдачи блюд, контроль склада и закупки.{% endif %}
                 {% if rights == 3 %}Статистика, согласование закупок и отчетность.{% endif %}
             </p>

@@ -3,6 +3,7 @@
 import pathlib
 import os
 import json
+from datetime import date, datetime
 
 base_path = str(pathlib.Path(__file__).parent.resolve())[:-10]
 SESSION_PATH = f'{base_path}/sessions'
@@ -27,7 +28,15 @@ def commonkwargs(email):
         return ans
     else:
         return {'username': 'Log in', 'userimg': return_image(f'users/{email}', 'user_placeholder'), \
-            'description': 'empty', 'phone': 'N/A', 'rights': 0, 'money': 0}
+            'description': 'empty', 'phone': 'N/A', 'rights': 0, 'money': 0, 'abonement': 'null'}
+
+def today_days():
+    today = date.today()
+    epoch_date = date(1970, 1, 1)
+    return (today - epoch_date).days
+
+def today_hour():
+    return datetime.now().hour()
 
 def getuser(email):
     users_path = f"{base_path}/users/{email}.json"

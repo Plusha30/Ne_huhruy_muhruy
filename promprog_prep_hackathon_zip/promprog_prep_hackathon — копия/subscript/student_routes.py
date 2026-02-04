@@ -90,11 +90,12 @@ def buy_from_cart():
     if email == 'placeholder' or user['rights'] != 1:
         return redirect(url_for('login'))
     sum = 0
-    for i in user['cart']:
-        sum += gettovar(int(i[0]))['price'] * i[1]
-    if (sum > user['money']):
-        return redirect(url_for('dashboard'))
-    user['money'] -= sum
+    if (not request.form.get('abonement', False)):
+        for i in user['cart']:
+            sum += gettovar(int(i[0]))['price'] * i[1]
+        if (sum > user['money']):
+            return redirect(url_for('dashboard'))
+        user['money'] -= sum
     dt = getquerylist("global.json")
     nowid = dt['total_student_queries']
     dt['total_student_queries'] += 1
@@ -153,4 +154,39 @@ def pay():
     cart_items, cart_total = get_cart_objects(email)
     kwargs['cart_items'] = cart_items
     kwargs['cart_total'] = cart_total
-    return render_template('pay.html', tovarlist=gettovarlist(), takequeries=getuser(email)['to_take'], **kwargs)
+    user = getuser(email)
+    cart_objects = user['cart']
+    canAbonement = True
+    for i in range(1): # Так как в python нет привычного инструментария из c++ с goto, то приходится импровизировать
+        if (user['abonement'] == 'null'):
+            canAbonement = False
+            break
+        if (len(cart_objects) > 2):
+            canAbonement = False
+            break
+        cnt = 0
+        for i in cart_objects:
+            cnt += i[1]
+        if (cnt > 2):
+            canAbonement = False
+            break
+        drinks = 0
+        not_drinks = 0
+        tovarlist = gettovarlist()
+        for i in cart_objects:
+            if (tovarlist[i[0]]['category'] == 'Напитки'):
+                drinks += 1
+            else:
+                not_drinks += 1
+        if (drinks > 1 or not_drinks > 1):
+            canAbonement = False
+            break
+    return render_template('pay.html', canAbonement=canAbonement, tovarlist=gettovarlist(), takequeries=getuser(email)['to_take'], **kwargs)
+
+def setabonement(id):
+    email = getlogin()
+    if email != 'placeholder':
+        user = getuser(email)
+        user['abonement'] = id
+        setuser(email, user)
+    return redirect(url_for('pricing'))

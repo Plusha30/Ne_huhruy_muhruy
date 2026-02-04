@@ -43,6 +43,7 @@ app.add_url_rule('/buy_from_cart', view_func=student_r.buy_from_cart, methods=['
 app.add_url_rule('/remove_from_cart/<id>', view_func=student_r.remove_from_cart)
 app.add_url_rule('/payment', view_func=student_r.payment, methods=['GET', 'POST'])
 app.add_url_rule('/pay', view_func=student_r.pay)
+app.add_url_rule('/setabonement/<id>', view_func=student_r.setabonement)
 #product_routes.py
 app.add_url_rule('/product/setcommentary/<id>', view_func=product_r.sendcommentary, methods=['POST'])
 app.add_url_rule('/product/<id>', view_func=product_r.product_detail, methods=['GET'])
@@ -56,7 +57,7 @@ app.add_url_rule('/download_student_report', view_func=admin_r.download_student_
 app.add_url_rule('/download_product_report', view_func=admin_r.download_product_report)
 
 #@app.errorhandler(404)
-#def four04():
+#def four04(error):
 #    return render_template('404.html', **commonkwargs(getlogin(reset_auth=False)))
 
 #@app.errorhandler(Exception)
@@ -83,4 +84,5 @@ def dashboard():
 
 #start
 if __name__ == '__main__':
+    print(datetime.now())
     app.run(port=5237, host="127.0.0.1", debug=True)

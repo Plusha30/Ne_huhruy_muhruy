@@ -63,7 +63,10 @@ def confirm_mail():
             'rights': int(session['temp_rights']),
             'money': 0,
             'cart': [],
-            'to_take': []
+            'to_take': [],
+            'abonement': 'null',
+            'last_used_hour': -1,
+            'last_used_day': -1
         })
         session['temp_password'] = False
         email = session['temp_email']
