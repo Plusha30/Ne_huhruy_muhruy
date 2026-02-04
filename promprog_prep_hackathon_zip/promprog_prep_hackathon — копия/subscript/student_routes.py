@@ -133,6 +133,10 @@ def buy_from_cart():
     if (request.form.get('abon', 'False') == 'True'):
         user['last_used_day'] = today_days()
         user['last_used_hour'] = today_hour()
+    else:
+        glob = getquerylist('global.json')
+        glob['today_money'] += sum
+        setquerylist(name='global.json', to=glob)
     setuser(email, user)
     return redirect(url_for('clear_cart'))
 

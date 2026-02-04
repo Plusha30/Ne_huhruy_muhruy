@@ -80,7 +80,16 @@ def dashboard():
                                                            productlist=getquerylist("povar.json"),
                                                            toadmin=getquerylist("povar_to_admin.json"))                 
     elif (kwargs['rights'] == 3):
-        return render_template('dashboard.html', **kwargs, toadmin=getquerylist("povar_to_admin.json"))
+        glob = getquerylist('global.json')
+        today = glob['today']
+        if (today == today_days()):
+            return render_template('dashboard.html', admin_money=glob['today_money'], **kwargs, toadmin=getquerylist("povar_to_admin.json"))
+        else:
+            glob['today'] = today_days()
+            glob['today_money'] = 0
+            setquerylist(name="global.json", to=glob)
+            return render_template('dashboard.html', admin_money=glob['today_money'], **kwargs, toadmin=getquerylist("povar_to_admin.json"))
+
 
 #start
 if __name__ == '__main__':
