@@ -7,83 +7,271 @@
 <section class="text-center py-5">
     <div class="container">
         <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 rounded-pill px-3 py-2 mb-3">
-            Выгодно
+            Выгодно до 20%
         </span>
         <h1 class="display-title display-4 mb-3">
             Абонементы на <span class="text-gradient">Питание</span>
         </h1>
         <p class="text-secondary lead mb-5">
-            Экономьте до 20% при покупке питания на месяц.
+            Экономьте при покупке питания на месяц. Стоимость за день: завтрак 300₽ • обед 500₽
         </p>
+        
+        <!-- БЛОК С ТЕКУЩИМ АБОНЕМЕНТОМ -->
+        {% if abonement and abonement != "null" %}
+        <div class="alert alert-success border-2 border-success border-opacity-25 bg-success bg-opacity-10 rounded-3 py-3 px-4 d-inline-block">
+            <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-check-circle-fill text-success fs-4"></i>
+                <div>
+                    <h6 class="fw-bold mb-0">
+                        Ваш текущий абонемент: 
+                        {% if abonement == "Завтрак" %}Только Завтраки
+                        {% elif abonement == "Полноценный" %}Завтрак + Обед
+                        {% elif abonement == "Льготный" %}Льготный
+                        {% else %}{{ abonement }}{% endif %}
+                    </h6>
+                    <p class="text-muted small mb-0">Действует до конца текущего месяца</p>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="alert alert-info border-2 border-info border-opacity-25 bg-info bg-opacity-10 rounded-3 py-3 px-4 d-inline-block">
+            <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-info-circle-fill text-info fs-4"></i>
+                <div>
+                    <h6 class="fw-bold mb-0">У вас нет активного абонемента</h6>
+                    <p class="text-muted small mb-0">Выберите подходящий вариант ниже</p>
+                </div>
+            </div>
+        </div>
+        {% endif %}
     </div>
 </section>
 
 <!-- PRICING CARDS -->
 <section class="pb-5">
     <div class="container">
-        <div class="row g-4 align-items-center justify-content-center">
+        <div class="row g-4 justify-content-center">
 
-            <!-- 1. Завтраки -->
-            <div class="col-lg-4">
-                <div class="card card-hover border-0 shadow-sm h-100 p-4">
-                    <div class="mb-4">
-                        <h5 class="fw-bold text-muted">Только Завтраки</h5>
-                        <h2 class="display-4 fw-bold mb-0">2000<span class="fs-6 text-muted fw-normal">/мес</span></h2>
-                        <p class="text-muted small mt-2">Только бесплатный завтрак.</p>
-                    </div>
-                    <ul class="list-unstyled mb-5">
-                        <li class="check-list-item"><i class="bi bi-check-circle check-icon-circle text-muted"></i> Обновляется после 9:00</li>
-                        <li class="check-list-item"><i class="bi bi-check-circle check-icon-circle text-muted"></i> 1 блюдо и 1 напиток</li>
-                    </ul>
-                    <a href="/setabonement/Завтрак" class="btn btn-white border w-100 btn-pill py-2 fw-bold">Купить</a>
-                </div>
-            </div>
-
-            <!-- 2. ПОЛНЫЙ ДЕНЬ (Центральная) -->
-            <div class="col-lg-4 mb-4 mb-lg-0">
-                <div class="pricing-card-featured p-4 p-md-5 d-flex flex-column h-100">
-                    <div class="text-center mb-4 mt-2">
-                        <h4 class="fw-bold text-primary mb-2">Завтрак + Обед</h4>
-                        <div class="d-flex justify-content-center align-items-end">
-                            <span class="display-3 fw-bold text-dark lh-1">3500₽</span>
-                            <span class="text-muted fs-5 mb-2 ms-1">/мес</span>
+            <!-- 1. ТОЛЬКО ЗАВТРАКИ -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card border-0 shadow-sm h-100 pricing-card {% if abonement == 'Завтрак' %}border-success border-2{% endif %}">
+                    <div class="card-body p-4 p-lg-5 d-flex flex-column">
+                        {% if abonement == 'Завтрак' %}
+                        <div class="badge bg-success bg-opacity-10 text-success border border-success rounded-pill px-3 py-1 mb-3 d-inline-flex align-items-center gap-1">
+                            <i class="bi bi-check-circle-fill"></i> Активен
                         </div>
-                        <p class="text-muted mt-3">Полноценное питание на весь день.</p>
+                        {% endif %}
+                        
+                        <div class="text-center mb-4">
+                            <h4 class="fw-bold text-dark mb-3">Только Завтраки</h4>
+                            <div class="price-display">
+                                <span class="h1 fw-bold">9 000₽</span>
+                                <span class="text-muted">/месяц</span>
+                            </div>
+                            <p class="text-muted mt-2">300₽ × 30 дней</p>
+                        </div>
+                        
+                        <div class="mb-4 flex-grow-1">
+                            <div class="check-list-item mb-2">
+                                <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                                Каждый день бесплатный завтрак
+                            </div>
+                            <div class="check-list-item mb-2">
+                                <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                                Доступ после 9:00
+                            </div>
+                            <div class="check-list-item mb-2">
+                                <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                                1 блюдо + 1 напиток на выбор
+                            </div>
+                            <div class="check-list-item">
+                                <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                                Экономия 20% от разовых покупок
+                            </div>
+                        </div>
+                        
+                        <a href="/setabonement/Завтрак" class="btn {% if abonement == 'Завтрак' %}btn-outline-success{% else %}btn-primary{% endif %} btn-lg w-100 fw-bold mt-auto">
+                            {% if abonement == 'Завтрак' %}<i class="bi bi-check-circle me-2"></i>Активен{% else %}Купить абонемент{% endif %}
+                        </a>
                     </div>
-
-                    <hr class="border-light mb-4 opacity-50">
-
-                    <div class="flex-grow-1 mb-5">
-                        <div class="check-list-item"><i class="bi bi-check-circle-fill check-icon-circle"></i> Два набора питания</div>
-                        <div class="check-list-item"><i class="bi bi-check-circle-fill check-icon-circle"></i> Завтрак + Обед</div>
-                        <div class="check-list-item"><i class="bi bi-check-circle-fill check-icon-circle"></i> После 9:00 и 12:00</div>
-                        <div class="check-list-item"><i class="bi bi-check-circle-fill check-icon-circle"></i> Каждый: 1 блюдо и 1 напиток</div>
-                    </div>
-
-                    <a href="/setabonement/Полноценный" class="btn btn-white border w-100 btn-pill py-2 fw-bold">Купить</a>
                 </div>
             </div>
 
-            <!-- 3. Льготный -->
-            <div class="col-lg-4">
-                <div class="card card-hover border-0 shadow-sm h-100 p-4">
-                    <div class="mb-4">
-                        <h5 class="fw-bold text-muted">Льготный</h5>
-                        <h2 class="display-4 fw-bold mb-0">0₽<span class="fs-6 text-muted fw-normal">/мес</span></h2>
-                        <p class="text-muted small mt-2">Для льготных категорий граждан.</p>
+            <!-- 2. ЗАВТРАК + ОБЕД -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card border-primary border-2 shadow-lg h-100 pricing-card featured {% if abonement == 'Полноценный' %}border-success border-2{% endif %}">
+                    <div class="card-body p-4 p-lg-5 d-flex flex-column">
+                        <div class="text-center mb-4">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                {% if abonement == 'Полноценный' %}
+                                <div class="badge bg-success bg-opacity-10 text-success border border-success rounded-pill px-3 py-1 d-inline-flex align-items-center gap-1">
+                                    <i class="bi bi-check-circle-fill"></i> Активен
+                                </div>
+                                {% else %}
+                                <div class="badge bg-primary bg-opacity-10 text-primary px-3 py-1 rounded-pill">
+                                    Самый популярный
+                                </div>
+                                {% endif %}
+                            </div>
+                            <h4 class="fw-bold text-dark mb-3">Завтрак + Обед</h4>
+                            <div class="price-display">
+                                <span class="h1 fw-bold">24 000₽</span>
+                                <span class="text-muted">/месяц</span>
+                            </div>
+                            <p class="text-muted mt-2">800₽ × 30 дней</p>
+                        </div>
+                        
+                        <div class="mb-4 flex-grow-1">
+                            <div class="check-list-item mb-2">
+                                <i class="bi bi-check-circle-fill {% if abonement == 'Полноценный' %}text-success{% else %}text-primary{% endif %} me-2"></i>
+                                Полноценное питание на весь день
+                            </div>
+                            <div class="check-list-item mb-2">
+                                <i class="bi bi-check-circle-fill {% if abonement == 'Полноценный' %}text-success{% else %}text-primary{% endif %} me-2"></i>
+                                Завтрак (после 9:00) + Обед (после 12:00)
+                            </div>
+                            <div class="check-list-item mb-2">
+                                <i class="bi bi-check-circle-fill {% if abonement == 'Полноценный' %}text-success{% else %}text-primary{% endif %} me-2"></i>
+                                В каждый приём: 1 блюдо + 1 напиток
+                            </div>
+                            <div class="check-list-item mb-2">
+                                <i class="bi bi-check-circle-fill {% if abonement == 'Полноценный' %}text-success{% else %}text-primary{% endif %} me-2"></i>
+                                Можно брать раздельно
+                            </div>
+                            <div class="check-list-item">
+                                <i class="bi bi-check-circle-fill {% if abonement == 'Полноценный' %}text-success{% else %}text-primary{% endif %} me-2"></i>
+                                Экономия 20% от разовых покупок
+                            </div>
+                        </div>
+                        
+                        <a href="/setabonement/Полноценный" class="btn {% if abonement == 'Полноценный' %}btn-outline-success{% else %}btn-primary{% endif %} btn-lg w-100 fw-bold mt-auto">
+                            {% if abonement == 'Полноценный' %}<i class="bi bi-check-circle me-2"></i>Активен{% else %}Купить абонемент{% endif %}
+                        </a>
                     </div>
-                    <ul class="list-unstyled mb-5">
-                        <li class="check-list-item"><i class="bi bi-check-circle check-icon-circle text-muted"></i> Питание за счет бюджета</li>
-                        <li class="check-list-item"><i class="bi bi-check-circle check-icon-circle text-muted"></i> По одному приёму пищи в завтрак и обед</li>
-                        <li class="check-list-item"><i class="bi bi-check-circle check-icon-circle text-muted"></i> Предопределённое меню</li>
-                    </ul>
-                    <button class="btn btn-white border w-100 btn-pill py-2 fw-bold">Подать заявление</button>
+                </div>
+            </div>
+
+            <!-- 3. ЛЬГОТНЫЙ -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card border-0 shadow-sm h-100 pricing-card {% if abonement == 'Льготный' %}border-success border-2{% endif %}">
+                    <div class="card-body p-4 p-lg-5 d-flex flex-column">
+                        {% if abonement == 'Льготный' %}
+                        <div class="badge bg-success bg-opacity-10 text-success border border-success rounded-pill px-3 py-1 mb-3 d-inline-flex align-items-center gap-1">
+                            <i class="bi bi-check-circle-fill"></i> Активен
+                        </div>
+                        {% endif %}
+                        
+                        <div class="text-center mb-4">
+                            <h4 class="fw-bold text-dark mb-3">Льготный</h4>
+                            <div class="price-display">
+                                <span class="h1 fw-bold">Бесплатно</span>
+                                <span class="text-muted">/месяц</span>
+                            </div>
+                            <p class="text-muted mt-2">Для льготных категорий</p>
+                        </div>
+                        
+                        <div class="mb-4 flex-grow-1">
+                            <div class="check-list-item mb-2">
+                                <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                                Питание за счёт бюджета
+                            </div>
+                            <div class="check-list-item mb-2">
+                                <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                                По одному приёму пищи в завтрак и обед
+                            </div>
+                            <div class="check-list-item mb-2">
+                                <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                                Предопределённое меню
+                            </div>
+                            <div class="check-list-item">
+                                <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                                Для подтверждённых льготных категорий
+                            </div>
+                        </div>
+                        
+                        {% if abonement == 'Льготный' %}
+                        <button class="btn btn-outline-success btn-lg w-100 fw-bold mt-auto" disabled>
+                            <i class="bi bi-check-circle me-2"></i>Активен
+                        </button>
+                        {% else %}
+                        <button class="btn btn-outline-primary btn-lg w-100 fw-bold mt-auto">
+                            Подать заявление
+                        </button>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
 
         </div>
-        <a href="/setabonement/null" style="margin-left: auto; margin-right: auto; margin-top: 100px;" class="btn btn-white border w-100 btn-pill py-2 fw-bold"><span class="text-danger">Отменить абонемент</span></a>
+
+        <!-- КНОПКА ОТМЕНЫ -->
+        {% if abonement and abonement != "null" %}
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="text-center">
+                    <a href="/setabonement/null" class="btn btn-outline-danger btn-lg px-5" onclick="return confirm('Вы уверены, что хотите отменить абонемент? Это действие начнет действовать со следующего месяца.')">
+                        <i class="bi bi-x-circle me-2"></i>Отменить текущий абонемент
+                    </a>
+                    <p class="text-muted mt-2 small">
+                        Отмена начнёт действовать со следующего месяца
+                    </p>
+                </div>
+            </div>
+        </div>
+        {% endif %}
     </div>
 </section>
+
+<style>
+.pricing-card {
+    transition: transform 0.3s ease;
+    border-radius: 20px;
+}
+
+.pricing-card:hover {
+    transform: translateY(-5px);
+}
+
+.pricing-card.featured {
+    z-index: 1;
+}
+
+.price-display {
+    margin: 20px 0;
+}
+
+.check-list-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+}
+
+.display-title {
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.text-gradient {
+    background: linear-gradient(90deg, #4e54c8 0%, #8f94fb 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.btn-pill {
+    border-radius: 50px;
+}
+
+/* Стиль для активного абонемента */
+.border-success {
+    border-color: #28a745 !important;
+}
+
+/* Уведомление */
+.alert {
+    border-radius: 15px;
+}
+</style>
 
 {% endblock %}
