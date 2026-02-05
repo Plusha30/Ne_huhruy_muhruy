@@ -58,8 +58,8 @@ def confirm_mail():
         setuser(session['temp_email'], {
             'password': session['temp_password'],
             'username': session['temp_name'],
-            'description': "empty",
-            'phone': "N/A",
+            'description': "",
+            'phone': "",
             'rights': int(session['temp_rights']),
             'money': 0,
             'cart': [],
