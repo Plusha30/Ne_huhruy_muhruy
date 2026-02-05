@@ -5,18 +5,13 @@
     "description": "empty",
     "phone": "N/A",
     "rights": 1,
-    "money": 1110,
+    "money": 9750,
     "allergies": [
         "\u041e\u0440\u0435\u0445\u0438",
         "\u0426\u0438\u0442\u0440\u0443\u0441\u043e\u0432\u044b\u0435",
         "\u0420\u044b\u0431\u0430"
     ],
-    "cart": [
-        [
-            "1",
-            15
-        ]
-    ],
+    "cart": [],
     "to_take": [],
     "abonement": "null",
     "last_used_day": -1,
