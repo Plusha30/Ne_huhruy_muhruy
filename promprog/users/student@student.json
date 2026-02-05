@@ -5,15 +5,20 @@
     "description": "empty",
     "phone": "N/A",
     "rights": 1,
-    "money": 110,
+    "money": 1110,
     "allergies": [
         "\u041e\u0440\u0435\u0445\u0438",
         "\u0426\u0438\u0442\u0440\u0443\u0441\u043e\u0432\u044b\u0435",
         "\u0420\u044b\u0431\u0430"
     ],
-    "cart": [],
+    "cart": [
+        [
+            "1",
+            15
+        ]
+    ],
     "to_take": [],
-    "abonement": "\u041f\u043e\u043b\u043d\u043e\u0446\u0435\u043d\u043d\u044b\u0439",
+    "abonement": "null",
     "last_used_day": -1,
     "last_used_hour": -1
 }
