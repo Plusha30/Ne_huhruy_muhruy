@@ -4,6 +4,7 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from flask import session
+from subscript.filework import does_user_exist
 
 Debug_mode = True #эта переменная при состоянии True вместо отправки кода на почту выводит его в print()
                    #вызвано тем, что слишком много писем с mail.ru почты приводит к блокировке почты из-за спама
@@ -14,6 +15,8 @@ def getlogin(reset_auth = True):
         session['user'] = 'placeholder'
     if (reset_auth):
         session['auth'] = False
+    if (not does_user_exist(session.get('user', ''))):
+        session['user'] = 'placeholder'
     return session['user']
 
 def setlogin(email):
