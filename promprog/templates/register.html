@@ -14,9 +14,22 @@
                 </div>
 
                 <form action="{{ url_for('register') }}" method="post">
-                    <div class="mb-3">
-                        <label class="form-label small fw-bold text-muted">ФИО</label>
-                        <input name="name" type="text" class="form-control rounded-3 py-2 bg-light border-light" placeholder="Иванов Иван Иванович" required>
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label small fw-bold text-muted">Фамилия</label>
+                            <input name="last_name" type="text" class="form-control rounded-3 py-2 bg-light border-light"
+                                   placeholder="Иванов" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small fw-bold text-muted">Имя</label>
+                            <input name="first_name" type="text" class="form-control rounded-3 py-2 bg-light border-light"
+                                   placeholder="Иван" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small fw-bold text-muted">Отчество</label>
+                            <input name="middle_name" type="text" class="form-control rounded-3 py-2 bg-light border-light"
+                                   placeholder="Иванович">
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label small fw-bold text-muted">Email</label>

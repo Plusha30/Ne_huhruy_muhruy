@@ -1,19 +1,18 @@
 {
     "password": "student",
-    "username": "student",
-    "class": "N/A",
+    "username": "",
+    "class": "",
     "description": "empty",
-    "phone": "N/A",
+    "phone": "",
     "rights": 1,
-    "money": 9750,
-    "allergies": [
-        "\u041e\u0440\u0435\u0445\u0438",
-        "\u0426\u0438\u0442\u0440\u0443\u0441\u043e\u0432\u044b\u0435",
-        "\u0420\u044b\u0431\u0430"
-    ],
+    "money": 9290,
+    "allergies": [],
     "cart": [],
     "to_take": [],
     "abonement": "null",
     "last_used_day": -1,
-    "last_used_hour": -1
+    "last_used_hour": -1,
+    "last_name": "",
+    "first_name": "",
+    "middle_name": ""
 }
