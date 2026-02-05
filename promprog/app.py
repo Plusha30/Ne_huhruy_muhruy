@@ -56,13 +56,13 @@ app.add_url_rule('/set_admin_query', view_func=admin_r.set_admin_query, methods=
 app.add_url_rule('/download_student_report', view_func=admin_r.download_student_report)
 app.add_url_rule('/download_product_report', view_func=admin_r.download_product_report)
 
-@app.errorhandler(404)
-def four04(error):
-    return render_template('404.html', **commonkwargs(getlogin(reset_auth=False)))
+#@app.errorhandler(404)
+#def four04(error):
+#    return render_template('404.html', **commonkwargs(getlogin(reset_auth=False)))
 
-@app.errorhandler(Exception)
-def fatal_error(error):
-    return render_template('404.html', **commonkwargs(getlogin(reset_auth=False)))
+#@app.errorhandler(Exception)
+#def fatal_error(error):
+#    return render_template('404.html', **commonkwargs(getlogin(reset_auth=False)))
 
 @app.route('/dashboard')
 def dashboard():
