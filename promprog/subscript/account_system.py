@@ -5,7 +5,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from flask import session
 
-Debug_mode = False #эта переменная при состоянии True вместо отправки кода на почту выводит его в print()
+Debug_mode = True #эта переменная при состоянии True вместо отправки кода на почту выводит его в print()
                    #вызвано тем, что слишком много писем с mail.ru почты приводит к блокировке почты из-за спама
                    #(может уже нет, так как я написал в поддержку, но это не факт)
 
