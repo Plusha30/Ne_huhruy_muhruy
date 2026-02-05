@@ -8,12 +8,21 @@
     "phone": "",
     "rights": 1,
     "money": 0,
-    "cart": [],
+    "cart": [
+        [
+            "1",
+            1
+        ]
+    ],
     "to_take": [],
-    "abonement": "null",
+    "abonement": "\u0417\u0430\u0432\u0442\u0440\u0430\u043a",
     "last_used_hour": -1,
     "last_used_day": -1,
-    "class": "3\u0417",
-    "class_grade": "3",
-    "class_letter": "\u0417"
+    "class": "9\u0416",
+    "class_grade": "9",
+    "class_letter": "\u0416",
+    "allergies": [
+        "\u041e\u0440\u0435\u0445\u0438",
+        "\u0420\u044b\u0431\u0430"
+    ]
 }
