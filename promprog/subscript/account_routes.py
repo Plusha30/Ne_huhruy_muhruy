@@ -69,6 +69,7 @@ def confirm_mail():
             'first_name': session.get('temp_first_name', ''),
             'middle_name': session.get('temp_middle_name', ''),
 
+            'class': "",
             'description': "",
             'phone': "",
             'rights': int(session['temp_rights']),
