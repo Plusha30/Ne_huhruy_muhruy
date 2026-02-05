@@ -36,11 +36,11 @@
                         <li class="nav-item"><a class="nav-link text-dark fw-medium"
                                 href="{{ url_for('landing') }}">Главная</a></li>
 
-                        <!-- КНОПКА "ПОСМОТРЕТЬ МЕНЮ" -->
+                        <!-- КНОПКА "Заказать питание" -->
                         {% if rights == 0 or rights == 1 %}
                         <li class="nav-item">
-                            <a class="btn btn-sm btn-primary-custom btn-pill px-3" href="{{ url_for('dashboard') }}">
-                                Посмотреть меню
+                            <a class="nav-link text-dark fw-medium" href="{{ url_for('dashboard') }}">
+                                Заказать питание
                             </a>
                         </li>
                         {% endif %}
