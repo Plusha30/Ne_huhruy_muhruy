@@ -28,7 +28,10 @@ def register():
         # Добавляем поле 'cart': [] при регистрации
         session['temp_email'] = data['email'][0]
         session['temp_password'] = data['password'][0]
-        session['temp_name'] = data['name'][0]
+        session['temp_last_name'] = data.get('last_name', [''])[0].strip()
+        session['temp_first_name'] = data.get('first_name', [''])[0].strip()
+        session['temp_middle_name'] = data.get('middle_name', [''])[0].strip()
+        session['temp_name'] = f"{session['temp_last_name']} {session['temp_first_name']} {session['temp_middle_name']}".strip()
         session['temp_rights'] = data['rights'][0]
         session['auth'] = True
         return redirect(url_for('confirm_mail'), 302)
@@ -57,7 +60,15 @@ def confirm_mail():
                 return redirect(url_for('confirm_mail'), 302)
         setuser(session['temp_email'], {
             'password': session['temp_password'],
-            'username': session['temp_name'],
+
+            # старое поле для совместимости
+            'username': session.get('temp_name', ''),
+
+            # новые поля
+            'last_name': session.get('temp_last_name', ''),
+            'first_name': session.get('temp_first_name', ''),
+            'middle_name': session.get('temp_middle_name', ''),
+
             'description': "",
             'phone': "",
             'rights': int(session['temp_rights']),
@@ -87,19 +98,35 @@ def profile():
             return redirect(url_for('landing'), 302)
 
         # 2. Обновление текстовых данных
+
         if (data['commit_type'][0] == 'update_data'):
             changes = getuser(email)
-            if (len(data['name']) > 0):
-                changes['username'] = data['name'][0]
-            if (len(data['phone']) > 0):
+
+            # новые поля ФИО
+            if 'last_name' in data and len(data['last_name']) > 0:
+                changes['last_name'] = data['last_name'][0].strip()
+            if 'first_name' in data and len(data['first_name']) > 0:
+                changes['first_name'] = data['first_name'][0].strip()
+            if 'middle_name' in data and len(data['middle_name']) > 0:
+                changes['middle_name'] = data['middle_name'][0].strip()
+
+            # поддержка старого username (склеиваем из новых)
+            ln = changes.get('last_name', '').strip()
+            fn = changes.get('first_name', '').strip()
+            mn = changes.get('middle_name', '').strip()
+            changes['username'] = f"{ln} {fn} {mn}".strip()
+
+            # телефон/описание/класс — как было, но безопасно по ключам
+            if 'phone' in data and len(data['phone']) > 0:
                 changes['phone'] = data['phone'][0]
-            if (len(data['description']) > 0):
+            if 'description' in data and len(data['description']) > 0:
                 changes['description'] = data['description'][0]
-            if (len(data['class']) > 0):
+            if 'class' in data and len(data['class']) > 0:
                 changes['class'] = data['class'][0]
+
             setuser(email, changes)
 
-        # 3. Обновление фото
+    # 3. Обновление фото
         if (data['commit_type'][0] == 'update_photo'):
             if (request.files['avatar'].filename == ''):
                 if (os.path.exists(f"{base_path}/static/images/users/{email}.jpg")):
@@ -116,4 +143,11 @@ def profile():
             changes['allergies'] = data.get('allergies', [])
             setuser(email, changes)
 
-    return render_template('profile.html', **commonkwargs(email))
+    user = getuser(email)  # или как у тебя принято
+    kwargs = commonkwargs(email)
+
+    kwargs['last_name'] = user.get('last_name', '')
+    kwargs['first_name'] = user.get('first_name', '')
+    kwargs['middle_name'] = user.get('middle_name', '')
+
+    return render_template('profile.html', **kwargs)
