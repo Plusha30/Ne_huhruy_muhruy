@@ -77,3 +77,8 @@ def getquerylist(name):
 def gettovarlist():
     with open(f"{base_path}/tovars/tovars.json", 'r', encoding='utf-8') as f:
         return json.loads(f.read())
+
+def does_user_exist(email):
+    if os.path.exists(f'{base_path}/users/{email}.json'):
+        return True
+    return False
