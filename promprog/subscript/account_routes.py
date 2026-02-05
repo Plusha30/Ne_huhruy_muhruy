@@ -121,8 +121,17 @@ def profile():
                 changes['phone'] = data['phone'][0]
             if 'description' in data and len(data['description']) > 0:
                 changes['description'] = data['description'][0]
-            if 'class' in data and len(data['class']) > 0:
-                changes['class'] = data['class'][0]
+            # номер и буква класса (для ученика)
+            if 'class_grade' in data and len(data['class_grade']) > 0:
+                changes['class_grade'] = data['class_grade'][0].strip()
+
+            if 'class_letter' in data and len(data['class_letter']) > 0:
+                changes['class_letter'] = data['class_letter'][0].strip()
+
+            # (опционально) соберём старое поле class для совместимости "7А"
+            cg = str(changes.get('class_grade', '')).strip()
+            cl = str(changes.get('class_letter', '')).strip()
+            changes['class'] = f"{cg}{cl}".strip()
 
             setuser(email, changes)
 
@@ -149,5 +158,7 @@ def profile():
     kwargs['last_name'] = user.get('last_name', '')
     kwargs['first_name'] = user.get('first_name', '')
     kwargs['middle_name'] = user.get('middle_name', '')
+    kwargs['class_grade'] = user.get('class_grade', '')
+    kwargs['class_letter'] = user.get('class_letter', '')
 
     return render_template('profile.html', **kwargs)
