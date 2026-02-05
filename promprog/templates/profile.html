@@ -16,7 +16,7 @@
             <div class="profile-sidebar sticky-top" style="top: 100px;">
                 <nav class="nav flex-column">
                     <a class="nav-link active" href="#general">
-                        <i class="bi bi-person"></i> Общее
+                        <i class="bi bi-person"></i> Личная информация
                     </a>
                     {% if rights == 1 %}
                     <a class="nav-link" href="#health">
@@ -37,26 +37,7 @@
         <!-- MAIN CONTENT -->
         <div class="col-lg-9">
 
-            <!-- 1. Аватарка -->
-            <form id="avatar-form" action="{{ url_for('profile') }}" method="POST" enctype="multipart/form-data">
-                <input name="commit_type" type="text" value="update_photo" hidden>
-                <div class="card card-hover p-4 border-0 mb-4 shadow-sm">
-                    <h5 class="fw-bold mb-4">Фото профиля</h5>
-                    <div class="d-flex align-items-center gap-4">
-                        <div class="avatar-upload" id="avatarPreview"
-                             style="width: 100px; height: 100px; border-radius: 50%; background-color: #f8f9fa; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid #dee2e6;">
-                            <img src="{{ url_for('static', filename=userimg) }}" id="userImage"
-                                 style="width: 100%; height: 100%; object-fit: cover;">
-                        </div>
-                        <div>
-                            <input type="file" id="fileInput" name="avatar" accept="image/png, image/jpeg" style="display: none;">
-                            <button id="uploadbtn" type="button" class="btn btn-sm btn-white border shadow-sm rounded-pill" onclick="document.getElementById('fileInput').click();">
-                                Загрузить
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </form>
+
             <script>
                 document.getElementById('fileInput').addEventListener('change', function() {
                     if (this.files[0]) document.getElementById('avatar-form').submit();
@@ -72,6 +53,35 @@
                         {% if rights == 1 %}Ученик{% elif rights == 2 %}Повар{% elif rights == 3 %}Администратор{% endif %}
                     </span>
                 </div>
+                <!-- 1. Аватарка -->
+                <!-- Фото профиля (перенесено в Личную информацию) -->
+                <form id="avatar-form" action="{{ url_for('profile') }}" method="POST" enctype="multipart/form-data" class="mb-4">
+                    <input name="commit_type" type="text" value="update_photo" hidden>
+
+                    <div class="d-flex align-items-center gap-4">
+                        <div class="avatar-upload" id="avatarPreview"
+                             style="width: 90px; height: 90px; border-radius: 50%; background-color: #f8f9fa; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid #dee2e6;">
+                            <img src="{{ url_for('static', filename=userimg) }}" id="userImage"
+                                 style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+
+                        <div>
+                            <label class="form-label small fw-bold text-muted d-block mb-2">Фото профиля</label>
+                            <input type="file" id="fileInput" name="avatar" accept="image/png, image/jpeg" style="display: none;">
+                            <button id="uploadbtn" type="button" class="btn btn-sm btn-white border shadow-sm rounded-pill"
+                                    onclick="document.getElementById('fileInput').click();">
+                                Загрузить
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+                <script>
+                    document.getElementById('fileInput').addEventListener('change', function() {
+                        if (this.files[0]) document.getElementById('avatar-form').submit();
+                    });
+                </script>
+
                 <form action="{{ url_for('profile') }}" method="post">
                     <input name="commit_type" value="update_data" hidden>
                     <div class="row g-3 mb-3">
