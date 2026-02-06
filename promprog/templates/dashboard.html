@@ -37,7 +37,7 @@
                 </span>
                 {% endif %}
 
-                {% if rights == 1 %}{% if abonement != "null" %}<br>Активен абонемент:<span class="fw-bold text-success">{{abonement}}</span>{% endif %}{% endif %}
+                {% if rights == 1 %}{% if abonement != "null" %}<br><br>Активен абонемент: <span class="fw-bold text-success">{{abonement}}</span>{% endif %}{% endif %}
                 {% if rights == 2 %}Учет выдачи блюд, контроль склада и закупки.{% endif %}
                 {% if rights == 3 %}Статистика, согласование закупок и отчетность.{% endif %}
             </p>
