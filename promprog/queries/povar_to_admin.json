@@ -23,7 +23,16 @@
         "volume": "16 \u043b",
         "person": "povar",
         "when": "19:36",
-        "status": 0,
+        "status": 1,
         "cost": 3000
+    },
+    {
+        "id": 3,
+        "prod": "\u041a\u0430\u0440\u0442\u043e\u0444\u0435\u043b\u044c",
+        "volume": "123 \u043a\u0433",
+        "person": "povar",
+        "when": "21:1",
+        "status": -1,
+        "cost": "123123123123123123123123123123123123 \u043a\u0433"
     }
 ]

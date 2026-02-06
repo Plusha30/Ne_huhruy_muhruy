@@ -1,9 +1,9 @@
 {
     "password": "admin",
-    "username": "admin",
-    "class": "N/A",
+    "username": "",
+    "class": "",
     "description": "empty",
-    "phone": "N/A",
+    "phone": "",
     "rights": 3,
     "money": 0,
     "allergies": [],
@@ -11,5 +11,8 @@
     "to_take": [],
     "abonement": "null",
     "last_used_day": -1,
-    "last_used_hour": -1
+    "last_used_hour": -1,
+    "last_name": "",
+    "first_name": "",
+    "middle_name": ""
 }

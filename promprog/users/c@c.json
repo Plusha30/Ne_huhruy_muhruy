@@ -7,25 +7,8 @@
     "description": "",
     "phone": "",
     "rights": 1,
-    "money": 1000000,
-    "cart": [
-        [
-            "1",
-            2
-        ],
-        [
-            "4",
-            3
-        ],
-        [
-            "2",
-            1
-        ],
-        [
-            "7",
-            2
-        ]
-    ],
+    "money": 999290,
+    "cart": [],
     "to_take": [],
     "abonement": "\u041f\u043e\u043b\u043d\u043e\u0446\u0435\u043d\u043d\u044b\u0439",
     "last_used_hour": -1,

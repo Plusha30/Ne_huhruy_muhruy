@@ -17,7 +17,26 @@
             </h1>
             <p class="text-secondary mb-0">
                 {% if rights == 0 %}Войдите, чтобы сделать заказ.{% endif %}
-                {% if rights == 1 %}Твой баланс: <span class="fw-bold text-success">{{ money }} ₽</span>{% endif %}
+                {% if rights == 1 %}
+                <span class="d-inline-flex align-items-center gap-2 flex-wrap">
+
+                <!-- ПИЛЮЛЯ С БАЛАНСОМ -->
+                    <span class="badge rounded-pill bg-light border text-dark px-3 py-2 shadow-sm"
+                          style="font-weight: 600;">
+                        <i class="bi bi-cash-coin text-success me-1"></i>
+                        Баланс:
+                        <span class="text-success fw-bold">{{ money }} ₽</span>
+                    </span>
+
+                    <!-- КНОПКА ТОГО ЖЕ РАЗМЕРА -->
+                    <a href="{{ url_for('payment') }}"
+                       class="btn btn-primary-custom btn-pill shadow-sm btn-sm px-3 py-2">
+                        <i class="bi bi-wallet2 me-1"></i>Пополнить
+                    </a>
+
+                </span>
+                {% endif %}
+
                 {% if rights == 1 %}{% if abonement != "null" %}<br>Активен абонемент: <span class="fw-bold text-success">{{abonement}}</span>{% endif %}{% endif %}
                 {% if rights == 2 %}Учет выдачи блюд, контроль склада и закупки.{% endif %}
                 {% if rights == 3 %}Статистика, согласование закупок и отчетность.{% endif %}
@@ -25,13 +44,6 @@
         </div>
 
         <!-- КНОПКИ ДЕЙСТВИЙ -->
-        {% if rights == 1 %}
-        <div class="d-flex gap-2">
-            <a href="{{ url_for('payment') }}" class="btn btn-primary-custom btn-pill shadow-sm">
-                <i class="bi bi-wallet2 me-2"></i>Пополнить
-            </a>
-        </div>
-        {% endif %}
         {% if rights == 0 %}
         <div class="d-flex gap-2">
             <a href="{{ url_for('login') }}" class="btn btn-primary-custom btn-pill shadow-sm">
