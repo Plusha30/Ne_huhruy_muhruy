@@ -11,7 +11,8 @@
         <div>
             <h1 class="fw-bold mb-1">
                 {% if rights == 0 %}Меню столовой 🍽️{% endif %}
-                {% if rights == 1 %}Привет, {{ username }}! 👋{% endif %}
+                {% if rights == 1 and first_name != "" %}Привет, {{ first_name }}! 👋{% endif %}
+                {% if rights == 1 and first_name == "" %}Привет! 👋{% endif %}
                 {% if rights == 2 %}Панель управления кухней 👨‍🍳{% endif %}
                 {% if rights == 3 %}Кабинет администратора 👔{% endif %}
             </h1>
@@ -19,7 +20,6 @@
                 {% if rights == 0 %}Войдите, чтобы сделать заказ.{% endif %}
                 {% if rights == 1 %}
                 <span class="d-inline-flex align-items-center gap-2 flex-wrap">
-
                 <!-- ПИЛЮЛЯ С БАЛАНСОМ -->
                     <span class="badge rounded-pill bg-light border text-dark px-3 py-2 shadow-sm"
                           style="font-weight: 600;">
@@ -37,7 +37,7 @@
                 </span>
                 {% endif %}
 
-                {% if rights == 1 %}{% if abonement != "null" %}<br>Активен абонемент: <span class="fw-bold text-success">{{abonement}}</span>{% endif %}{% endif %}
+                {% if rights == 1 %}{% if abonement != "null" %}<br>Активен абонемент:<span class="fw-bold text-success">{{abonement}}</span>{% endif %}{% endif %}
                 {% if rights == 2 %}Учет выдачи блюд, контроль склада и закупки.{% endif %}
                 {% if rights == 3 %}Статистика, согласование закупок и отчетность.{% endif %}
             </p>

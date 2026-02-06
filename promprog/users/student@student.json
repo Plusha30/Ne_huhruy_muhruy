@@ -1,18 +1,22 @@
 {
     "password": "student",
-    "username": "",
-    "class": "",
+    "username": "\u0410\u0440\u0442\u0438\u043c\u043e\u0432\u0438\u0447 \u041a\u0438\u0440\u0438\u043b\u043b \u041e\u043b\u0435\u0433\u043e\u0432\u0438\u0447",
+    "class": "1\u0410",
     "description": "empty",
     "phone": "",
     "rights": 1,
     "money": 9380,
-    "allergies": [],
+    "allergies": [
+        "\u042f\u0431\u043b\u043e\u043a\u0438"
+    ],
     "cart": [],
     "to_take": [],
     "abonement": "\u0417\u0430\u0432\u0442\u0440\u0430\u043a",
     "last_used_day": -1,
     "last_used_hour": -1,
-    "last_name": "",
-    "first_name": "",
-    "middle_name": ""
+    "last_name": "\u0410\u0440\u0442\u0438\u043c\u043e\u0432\u0438\u0447",
+    "first_name": "\u041a\u0438\u0440\u0438\u043b\u043b",
+    "middle_name": "\u041e\u043b\u0435\u0433\u043e\u0432\u0438\u0447",
+    "class_grade": "1",
+    "class_letter": "\u0410"
 }
