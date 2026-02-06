@@ -71,6 +71,24 @@
                         </div>
                         
                         <div class="mb-4 flex-grow-1">
+                            {% if abonement == 'Завтрак' %}
+                            <div class="check-list-item mb-2">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                Каждый день завтрак
+                            </div>
+                            <div class="check-list-item mb-2">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                Доступ после 9:00
+                            </div>
+                            <div class="check-list-item mb-2">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                1 блюдо + 1 напиток на выбор
+                            </div>
+                            <div class="check-list-item">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                Экономия 20% от разовых покупок
+                            </div>
+                            {% else %}
                             <div class="check-list-item mb-2">
                                 <i class="bi bi-check-circle-fill text-primary me-2"></i>
                                 Каждый день завтрак
@@ -87,6 +105,7 @@
                                 <i class="bi bi-check-circle-fill text-primary me-2"></i>
                                 Экономия 20% от разовых покупок
                             </div>
+                            {% endif %}
                         </div>
                         
                         <a href="/setabonement/Завтрак" class="btn {% if abonement == 'Завтрак' %}btn-outline-success{% else %}btn-primary{% endif %} btn-lg w-100 fw-bold mt-auto">
@@ -120,26 +139,49 @@
                         </div>
                         
                         <div class="mb-4 flex-grow-1">
+                            {% if abonement == 'Полноценный' %}
                             <div class="check-list-item mb-2">
-                                <i class="bi bi-check-circle-fill {% if abonement == 'Полноценный' %}text-success{% else %}text-primary{% endif %} me-2"></i>
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
                                 Полноценное питание на весь день
                             </div>
                             <div class="check-list-item mb-2">
-                                <i class="bi bi-check-circle-fill {% if abonement == 'Полноценный' %}text-success{% else %}text-primary{% endif %} me-2"></i>
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
                                 Завтрак (после 9:00) + Обед (после 12:00)
                             </div>
                             <div class="check-list-item mb-2">
-                                <i class="bi bi-check-circle-fill {% if abonement == 'Полноценный' %}text-success{% else %}text-primary{% endif %} me-2"></i>
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
                                 В каждый приём: 1 блюдо + 1 напиток
                             </div>
                             <div class="check-list-item mb-2">
-                                <i class="bi bi-check-circle-fill {% if abonement == 'Полноценный' %}text-success{% else %}text-primary{% endif %} me-2"></i>
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
                                 Можно брать раздельно
                             </div>
                             <div class="check-list-item">
-                                <i class="bi bi-check-circle-fill {% if abonement == 'Полноценный' %}text-success{% else %}text-primary{% endif %} me-2"></i>
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
                                 Экономия 20% от разовых покупок
                             </div>
+                            {% else %}
+                            <div class="check-list-item mb-2">
+                                <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                                Полноценное питание на весь день
+                            </div>
+                            <div class="check-list-item mb-2">
+                                <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                                Завтрак (после 9:00) + Обед (после 12:00)
+                            </div>
+                            <div class="check-list-item mb-2">
+                                <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                                В каждый приём: 1 блюдо + 1 напиток
+                            </div>
+                            <div class="check-list-item mb-2">
+                                <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                                Можно брать раздельно
+                            </div>
+                            <div class="check-list-item">
+                                <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                                Экономия 20% от разовых покупок
+                            </div>
+                            {% endif %}
                         </div>
                         
                         <a href="/setabonement/Полноценный" class="btn {% if abonement == 'Полноценный' %}btn-outline-success{% else %}btn-primary{% endif %} btn-lg w-100 fw-bold mt-auto">
@@ -168,6 +210,24 @@
                         </div>
                         
                         <div class="mb-4 flex-grow-1">
+                            {% if abonement == 'Льготный' %}
+                            <div class="check-list-item mb-2">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                Питание за счёт бюджета
+                            </div>
+                            <div class="check-list-item mb-2">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                По одному приёму пищи в завтрак и обед
+                            </div>
+                            <div class="check-list-item mb-2">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                Предопределённое меню
+                            </div>
+                            <div class="check-list-item">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                Для подтверждённых льготных категорий
+                            </div>
+                            {% else %}
                             <div class="check-list-item mb-2">
                                 <i class="bi bi-check-circle-fill text-primary me-2"></i>
                                 Питание за счёт бюджета
@@ -184,6 +244,7 @@
                                 <i class="bi bi-check-circle-fill text-primary me-2"></i>
                                 Для подтверждённых льготных категорий
                             </div>
+                            {% endif %}
                         </div>
                         
                         {% if abonement == 'Льготный' %}
