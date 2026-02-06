@@ -10,7 +10,7 @@
     <div class="d-flex flex-wrap justify-content-between align-items-end mb-5 gap-3">
         <div>
             <h1 class="fw-bold mb-1">
-                {% if rights == 0 %}Меню столовой 🍽️{% endif %}
+                {% if rights == 0 %}Меню столовой 🍴{% endif %}
                 {% if rights == 1 and first_name != "" %}Привет, {{ first_name }}! 👋{% endif %}
                 {% if rights == 1 and first_name == "" %}Привет! 👋{% endif %}
                 {% if rights == 2 %}Панель управления кухней 👨‍🍳{% endif %}
@@ -455,7 +455,7 @@
                                     <div class="mb-3">
                                         <label class="form-label small fw-bold text-muted">Количество (кг/л/шт)</label>
                                         <input type="number" class="form-control rounded-3" id="prodAmount"
-                                            name="volume" placeholder="Например: 50" required>
+                                            name="volume" placeholder="Например: 50" required max="1000000" min="1">
                                     </div>
                                     <button type="submit" class="btn btn-primary-custom btn-pill w-100">Отправить
                                         администратору</button>
