@@ -15,11 +15,14 @@
         <div class="col-lg-3">
             <div class="profile-sidebar sticky-top" style="top: 100px;">
                 <nav class="nav flex-column">
-                    <a class="nav-link active" href="#general">
+                    <a class="nav-link active" href="#general" data-section="general">
                         <i class="bi bi-person"></i> Личная информация
                     </a>
                     {% if rights == 1 %}
-                    <a class="nav-link" href="#health">
+                    <a class="nav-link" href="#abonement" data-section="abonement">
+                        <i class="bi bi-credit-card"></i> Абонемент
+                    </a>
+                    <a class="nav-link" href="#health" data-section="health">
                         <i class="bi bi-heart-pulse"></i> Здоровье
                     </a>
                     {% endif %}
@@ -36,15 +39,7 @@
 
         <!-- MAIN CONTENT -->
         <div class="col-lg-9">
-
-
-            <script>
-                document.getElementById('fileInput').addEventListener('change', function() {
-                    if (this.files[0]) document.getElementById('avatar-form').submit();
-                });
-            </script>
-
-            <!-- 2. Личные данные -->
+            <!-- 1. Личные данные -->
             <div id="general" class="card card-hover p-4 border-0 mb-4 shadow-sm" style="scroll-margin-top: 120px;">
                 <h5 class="fw-bold mb-4">Личная информация</h5>
                 <div class="mb-3">
@@ -53,18 +48,16 @@
                         {% if rights == 1 %}Ученик{% elif rights == 2 %}Повар{% elif rights == 3 %}Администратор{% endif %}
                     </span>
                 </div>
-                <!-- 1. Аватарка -->
-                <!-- Фото профиля (перенесено в Личную информацию) -->
+                
+                <!-- Аватарка -->
                 <form id="avatar-form" action="{{ url_for('profile') }}" method="POST" enctype="multipart/form-data" class="mb-4">
                     <input name="commit_type" type="text" value="update_photo" hidden>
-
                     <div class="d-flex align-items-center gap-4">
                         <div class="avatar-upload" id="avatarPreview"
                              style="width: 90px; height: 90px; border-radius: 50%; background-color: #f8f9fa; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid #dee2e6;">
                             <img src="{{ url_for('static', filename=userimg) }}" id="userImage"
                                  style="width: 100%; height: 100%; object-fit: cover;">
                         </div>
-
                         <div>
                             <label class="form-label small fw-bold text-muted d-block mb-2">Фото профиля</label>
                             <input type="file" id="fileInput" name="avatar" accept="image/png, image/jpeg" style="display: none;">
@@ -75,12 +68,6 @@
                         </div>
                     </div>
                 </form>
-
-                <script>
-                    document.getElementById('fileInput').addEventListener('change', function() {
-                        if (this.files[0]) document.getElementById('avatar-form').submit();
-                    });
-                </script>
 
                 <form action="{{ url_for('profile') }}" method="post">
                     <input name="commit_type" value="update_data" hidden>
@@ -142,67 +129,419 @@
                 </form>
             </div>
 
+            <!-- 2. АБОНЕМЕНТ (ТОЛЬКО ДЛЯ УЧЕНИКА rights == 1) -->
+            {% if rights == 1 %}
+            <div id="abonement" class="card card-hover p-4 border-0 shadow-sm mb-4" style="scroll-margin-top: 120px;">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <h5 class="fw-bold mb-2">Управление абонементом</h5>
+                        <p class="text-muted small mb-0">Измените или отмените ваш текущий абонемент</p>
+                    </div>
+                    <a href="/abonements" class="btn btn-outline-primary btn-sm rounded-pill">
+                        <i class="bi bi-eye me-1"></i>Подробнее об абонементах
+                    </a>
+                </div>
+
+                <!-- ТЕКУЩИЙ АБОНЕМЕНТ -->
+                <div class="mb-4">
+                    <label class="form-label small fw-bold text-muted d-block mb-2">Текущий статус</label>
+                    {% if abonement and abonement != "null" %}
+                    <div class="alert alert-success border-2 border-success border-opacity-25 bg-success bg-opacity-10 rounded-3 py-3 px-4">
+                        <div class="d-flex align-items-center gap-3">
+                            <i class="bi bi-check-circle-fill text-success fs-4"></i>
+                            <div>
+                                <h6 class="fw-bold mb-1">
+                                    Активный абонемент: 
+                                    {% if abonement == "Завтрак" %}Только Завтраки
+                                    {% elif abonement == "Полноценный" %}Завтрак + Обед
+                                    {% elif abonement == "Льготный" %}Льготный
+                                    {% else %}{{ abonement }}{% endif %}
+                                </h6>
+                                <p class="text-muted small mb-0">Действует до конца текущего месяца</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="alert alert-info border-2 border-info border-opacity-25 bg-info bg-opacity-10 rounded-3 py-3 px-4">
+                        <div class="d-flex align-items-center gap-3">
+                            <i class="bi bi-info-circle-fill text-info fs-4"></i>
+                            <div>
+                                <h6 class="fw-bold mb-1">Нет активного абонемента</h6>
+                                <p class="text-muted small mb-0">Выберите подходящий вариант ниже</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- ВЫБОР АБОНЕМЕНТА -->
+                <form id="abonement-form" action="{{ url_for('profile') }}" method="post">
+                    <input name="commit_type" value="update_abonement" hidden>
+                    
+                    <label class="form-label small fw-bold text-muted d-block mb-3">Выберите абонемент</label>
+                    
+                    <div class="row g-3 mb-4">
+                        <!-- ТОЛЬКО ЗАВТРАКИ -->
+                        <div class="col-md-4">
+                            <div class="abonement-option h-100 {% if abonement == 'Завтрак' %}active{% endif %}" onclick="selectAbonement('Завтрак')">
+                                <div class="card border h-100 {% if abonement == 'Завтрак' %}border-success border-2{% else %}border-light{% endif %} rounded-3 p-3">
+                                    <div class="d-flex align-items-start mb-2">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="abonement_type" id="abonement1" value="Завтрак" {% if abonement == 'Завтрак' %}checked{% endif %}>
+                                        </div>
+                                        <div class="ms-2">
+                                            <h6 class="fw-bold mb-1">Только Завтраки</h6>
+                                            <div class="text-primary fw-bold mb-1">9 000₽/месяц</div>
+                                            <ul class="small text-muted mb-0 ps-0" style="list-style: none;">
+                                                <li class="mb-1"><i class="bi bi-check text-success me-1"></i> Каждый день завтрак</li>
+                                                <li class="mb-1"><i class="bi bi-check text-success me-1"></i> Доступ после 9:00</li>
+                                                <li><i class="bi bi-check text-success me-1"></i> Экономия 20%</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ЗАВТРАК + ОБЕД -->
+                        <div class="col-md-4">
+                            <div class="abonement-option h-100 {% if abonement == 'Полноценный' %}active{% endif %}" onclick="selectAbonement('Полноценный')">
+                                <div class="card border h-100 {% if abonement == 'Полноценный' %}border-success border-2{% else %}border-primary border-2{% endif %} rounded-3 p-3">
+                                    <div class="d-flex align-items-start mb-2">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="abonement_type" id="abonement2" value="Полноценный" {% if abonement == 'Полноценный' %}checked{% endif %}>
+                                        </div>
+                                        <div class="ms-2">
+                                            <div class="d-flex justify-content-between align-items-start">
+                                                <h6 class="fw-bold mb-1">Завтрак + Обед</h6>
+                                                <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 rounded-pill px-2 py-1 small">Популярный</span>
+                                            </div>
+                                            <div class="text-primary fw-bold mb-1">24 000₽/месяц</div>
+                                            <ul class="small text-muted mb-0 ps-0" style="list-style: none;">
+                                                <li class="mb-1"><i class="bi bi-check text-primary me-1"></i> Полноценное питание</li>
+                                                <li class="mb-1"><i class="bi bi-check text-primary me-1"></i> Завтрак + Обед</li>
+                                                <li><i class="bi bi-check text-primary me-1"></i> Экономия 20%</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ЛЬГОТНЫЙ -->
+                        <div class="col-md-4">
+                            <div class="abonement-option h-100 {% if abonement == 'Льготный' %}active{% endif %}" onclick="selectAbonement('Льготный')">
+                                <div class="card border h-100 {% if abonement == 'Льготный' %}border-success border-2{% else %}border-light{% endif %} rounded-3 p-3">
+                                    <div class="d-flex align-items-start mb-2">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="abonement_type" id="abonement3" value="Льготный" {% if abonement == 'Льготный' %}checked{% endif %}>
+                                        </div>
+                                        <div class="ms-2">
+                                            <h6 class="fw-bold mb-1">Льготный</h6>
+                                            <div class="text-primary fw-bold mb-1">Бесплатно</div>
+                                            <ul class="small text-muted mb-0 ps-0" style="list-style: none;">
+                                                <li class="mb-1"><i class="bi bi-check text-success me-1"></i> Питание за счёт бюджета</li>
+                                                <li class="mb-1"><i class="bi bi-check text-success me-1"></i> По одному приёму пищи</li>
+                                                <li><i class="bi bi-check text-success me-1"></i> Для льготных категорий</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-3 border-top">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                            </div>
+                            <div class="d-flex gap-2">
+                                {% if abonement and abonement != "null" %}
+                                <a href="/setabonement/null" class="btn btn-outline-danger rounded-pill px-4" onclick="return confirm('Вы уверены, что хотите отменить абонемент? Это действие начнет действовать со следующего месяца.')">
+                                    <i class="bi bi-x-circle me-1"></i>Отменить абонемент
+                                </a>
+                                {% endif %}
+                                <button type="submit" class="btn btn-primary-custom btn-pill px-4">
+                                    Сохранить изменения
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            {% endif %}
+
             <!-- 3. ЗДОРОВЬЕ (ТОЛЬКО ДЛЯ УЧЕНИКА rights == 1) -->
             {% if rights == 1 %}
-            <div id="health" class="card card-hover p-4 border-0 shadow-sm" style="scroll-margin-top: 120px;">
+            <div id="health" class="card card-hover p-4 border-0 shadow-sm mb-4" style="scroll-margin-top: 120px;">
                 <div class="d-flex align-items-center gap-2 mb-4">
                     <h5 class="fw-bold mb-0">Пищевые ограничения</h5>
                     <span class="badge bg-warning text-dark bg-opacity-25 border border-warning">Важно</span>
                 </div>
-                <p class="text-muted small">Отметьте продукты, которые вам нельзя употреблять. Они будут подсвечены в меню.</p>
+                <p class="text-muted small mb-4">Отметьте продукты, которые вам нельзя употреблять. Они будут подсвечены в меню.</p>
 
                 <form action="{{ url_for('profile') }}" method="post">
                     <input name="commit_type" value="update_health" hidden>
 
                     <div class="row g-3">
-                        <div class="col-md-4">
-                            <div class="interest-checkbox-card">
-                                <label class="d-flex align-items-center gap-2 w-100 cursor-pointer">
-                                    <input type="checkbox" name="allergies" value="Лактоза" class="form-check-input mt-0"
-                                           {% if allergies and 'Лактоза' in allergies %}checked{% endif %}>
-                                    <span>Лактоза</span>
-                                </label>
+                        <!-- Группа 1: Основные блюда и гарниры -->
+                        <div class="col-md-6 mb-3">
+                            <h6 class="fw-bold mb-3 text-primary">Основные блюда и гарниры</h6>
+                            <div class="row g-2">
+                                <div class="col-12">
+                                    <div class="interest-checkbox-card">
+                                        <label class="d-flex align-items-center gap-2 w-100 cursor-pointer">
+                                            <input type="checkbox" name="allergies" value="Пшеница (Глютен)" class="form-check-input mt-0"
+                                                   {% if allergies and 'Пшеница (Глютен)' in allergies %}checked{% endif %}>
+                                            <span>Пшеница (Глютен)</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="interest-checkbox-card">
+                                        <label class="d-flex align-items-center gap-2 w-100 cursor-pointer">
+                                            <input type="checkbox" name="allergies" value="Коровье молоко" class="form-check-input mt-0"
+                                                   {% if allergies and 'Коровье молоко' in allergies %}checked{% endif %}>
+                                            <span>Коровье молоко (Лактоза)</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="interest-checkbox-card">
+                                        <label class="d-flex align-items-center gap-2 w-100 cursor-pointer">
+                                            <input type="checkbox" name="allergies" value="Куриное яйцо" class="form-check-input mt-0"
+                                                   {% if allergies and 'Куриное яйцо' in allergies %}checked{% endif %}>
+                                            <span>Куриное яйцо</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="interest-checkbox-card">
+                                        <label class="d-flex align-items-center gap-2 w-100 cursor-pointer">
+                                            <input type="checkbox" name="allergies" value="Рыба" class="form-check-input mt-0"
+                                                   {% if allergies and 'Рыба' in allergies %}checked{% endif %}>
+                                            <span>Рыба и морепродукты</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="interest-checkbox-card">
+                                        <label class="d-flex align-items-center gap-2 w-100 cursor-pointer">
+                                            <input type="checkbox" name="allergies" value="Соя" class="form-check-input mt-0"
+                                                   {% if allergies and 'Соя' in allergies %}checked{% endif %}>
+                                            <span>Соя</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="interest-checkbox-card">
+                                        <label class="d-flex align-items-center gap-2 w-100 cursor-pointer">
+                                            <input type="checkbox" name="allergies" value="Сельдерей" class="form-check-input mt-0"
+                                                   {% if allergies and 'Сельдерей' in allergies %}checked{% endif %}>
+                                            <span>Сельдерей</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="interest-checkbox-card">
+                                        <label class="d-flex align-items-center gap-2 w-100 cursor-pointer">
+                                            <input type="checkbox" name="allergies" value="Горчица" class="form-check-input mt-0"
+                                                   {% if allergies and 'Горчица' in allergies %}checked{% endif %}>
+                                            <span>Горчица</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="interest-checkbox-card">
+                                        <label class="d-flex align-items-center gap-2 w-100 cursor-pointer">
+                                            <input type="checkbox" name="allergies" value="Томаты" class="form-check-input mt-0"
+                                                   {% if allergies and 'Томаты' in allergies %}checked{% endif %}>
+                                            <span>Томаты</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="interest-checkbox-card">
+                                        <label class="d-flex align-items-center gap-2 w-100 cursor-pointer">
+                                            <input type="checkbox" name="allergies" value="Бобовые" class="form-check-input mt-0"
+                                                   {% if allergies and 'Бобовые' in allergies %}checked{% endif %}>
+                                            <span>Бобовые (горох, фасоль)</span>
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="interest-checkbox-card">
-                                <label class="d-flex align-items-center gap-2 w-100 cursor-pointer">
-                                    <input type="checkbox" name="allergies" value="Орехи" class="form-check-input mt-0"
-                                           {% if allergies and 'Орехи' in allergies %}checked{% endif %}>
-                                    <span>Орехи</span>
-                                </label>
+
+                        <!-- Группа 2: Выпечка, десерты и перекусы -->
+                        <div class="col-md-6 mb-3">
+                            <h6 class="fw-bold mb-3 text-primary">Выпечка, десерты и перекусы</h6>
+                            <div class="row g-2">
+                                <div class="col-12">
+                                    <div class="interest-checkbox-card">
+                                        <label class="d-flex align-items-center gap-2 w-100 cursor-pointer">
+                                            <input type="checkbox" name="allergies" value="Арахис" class="form-check-input mt-0"
+                                                   {% if allergies and 'Арахис' in allergies %}checked{% endif %}>
+                                            <span>Арахис</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="interest-checkbox-card">
+                                        <label class="d-flex align-items-center gap-2 w-100 cursor-pointer">
+                                            <input type="checkbox" name="allergies" value="Кунжут" class="form-check-input mt-0"
+                                                   {% if allergies and 'Кунжут' in allergies %}checked{% endif %}>
+                                            <span>Кунжут</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="interest-checkbox-card">
+                                        <label class="d-flex align-items-center gap-2 w-100 cursor-pointer">
+                                            <input type="checkbox" name="allergies" value="Древесные орехи" class="form-check-input mt-0"
+                                                   {% if allergies and 'Древесные орехи' in allergies %}checked{% endif %}>
+                                            <span>Древесные орехи (фундук, миндаль)</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="interest-checkbox-card">
+                                        <label class="d-flex align-items-center gap-2 w-100 cursor-pointer">
+                                            <input type="checkbox" name="allergies" value="Мёд" class="form-check-input mt-0"
+                                                   {% if allergies and 'Мёд' in allergies %}checked{% endif %}>
+                                            <span>Мёд</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="interest-checkbox-card">
+                                        <label class="d-flex align-items-center gap-2 w-100 cursor-pointer">
+                                            <input type="checkbox" name="allergies" value="Какао/Шоколад" class="form-check-input mt-0"
+                                                   {% if allergies and 'Какао/Шоколад' in allergies %}checked{% endif %}>
+                                            <span>Какао / Шоколад</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="interest-checkbox-card">
+                                        <label class="d-flex align-items-center gap-2 w-100 cursor-pointer">
+                                            <input type="checkbox" name="allergies" value="Сульфиты" class="form-check-input mt-0"
+                                                   {% if allergies and 'Сульфиты' in allergies %}checked{% endif %}>
+                                            <span>Сульфиты (консерванты)</span>
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="interest-checkbox-card">
-                                <label class="d-flex align-items-center gap-2 w-100 cursor-pointer">
-                                    <input type="checkbox" name="allergies" value="Глютен" class="form-check-input mt-0"
-                                           {% if allergies and 'Глютен' in allergies %}checked{% endif %}>
-                                    <span>Глютен</span>
-                                </label>
+
+                        <!-- Группа 3: Салаты и добавки -->
+                        <div class="col-md-6 mb-3">
+                            <h6 class="fw-bold mb-3 text-primary">Салаты и добавки</h6>
+                            <div class="row g-2">
+                                <div class="col-12">
+                                    <div class="interest-checkbox-card">
+                                        <label class="d-flex align-items-center gap-2 w-100 cursor-pointer">
+                                            <input type="checkbox" name="allergies" value="Растительные масла" class="form-check-input mt-0"
+                                                   {% if allergies and 'Растительные масла' in allergies %}checked{% endif %}>
+                                            <span>Растительные масла (неочищенные)</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="interest-checkbox-card">
+                                        <label class="d-flex align-items-center gap-2 w-100 cursor-pointer">
+                                            <input type="checkbox" name="allergies" value="Морковь" class="form-check-input mt-0"
+                                                   {% if allergies and 'Морковь' in allergies %}checked{% endif %}>
+                                            <span>Морковь</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="interest-checkbox-card">
+                                        <label class="d-flex align-items-center gap-2 w-100 cursor-pointer">
+                                            <input type="checkbox" name="allergies" value="Яблоки" class="form-check-input mt-0"
+                                                   {% if allergies and 'Яблоки' in allergies %}checked{% endif %}>
+                                            <span>Яблоки</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="interest-checkbox-card">
+                                        <label class="d-flex align-items-center gap-2 w-100 cursor-pointer">
+                                            <input type="checkbox" name="allergies" value="Цитрусовые" class="form-check-input mt-0"
+                                                   {% if allergies and 'Цитрусовые' in allergies %}checked{% endif %}>
+                                            <span>Цитрусовые</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="interest-checkbox-card">
+                                        <label class="d-flex align-items-center gap-2 w-100 cursor-pointer">
+                                            <input type="checkbox" name="allergies" value="Красители" class="form-check-input mt-0"
+                                                   {% if allergies and 'Красители' in allergies %}checked{% endif %}>
+                                            <span>Красители и консерванты</span>
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="interest-checkbox-card">
-                                <label class="d-flex align-items-center gap-2 w-100 cursor-pointer">
-                                    <input type="checkbox" name="allergies" value="Цитрусовые" class="form-check-input mt-0"
-                                           {% if allergies and 'Цитрусовые' in allergies %}checked{% endif %}>
-                                    <span>Цитрусовые</span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="interest-checkbox-card">
-                                <label class="d-flex align-items-center gap-2 w-100 cursor-pointer">
-                                    <input type="checkbox" name="allergies" value="Рыба" class="form-check-input mt-0"
-                                           {% if allergies and 'Рыба' in allergies %}checked{% endif %}>
-                                    <span>Рыба</span>
-                                </label>
+
+                        <!-- Группа 4: Другие аллергены -->
+                        <div class="col-md-6 mb-3">
+                            <h6 class="fw-bold mb-3 text-primary">Другие аллергены</h6>
+                            <div class="row g-2">
+                                <div class="col-12">
+                                    <div class="interest-checkbox-card">
+                                        <label class="d-flex align-items-center gap-2 w-100 cursor-pointer">
+                                            <input type="checkbox" name="allergies" value="Грибы" class="form-check-input mt-0"
+                                                   {% if allergies and 'Грибы' in allergies %}checked{% endif %}>
+                                            <span>Грибы</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="interest-checkbox-card">
+                                        <label class="d-flex align-items-center gap-2 w-100 cursor-pointer">
+                                            <input type="checkbox" name="allergies" value="Свинина" class="form-check-input mt-0"
+                                                   {% if allergies and 'Свинина' in allergies %}checked{% endif %}>
+                                            <span>Свинина</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="interest-checkbox-card">
+                                        <label class="d-flex align-items-center gap-2 w-100 cursor-pointer">
+                                            <input type="checkbox" name="allergies" value="Кукуруза" class="form-check-input mt-0"
+                                                   {% if allergies and 'Кукуруза' in allergies %}checked{% endif %}>
+                                            <span>Кукуруза</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="interest-checkbox-card">
+                                        <label class="d-flex align-items-center gap-2 w-100 cursor-pointer">
+                                            <input type="checkbox" name="allergies" value="Кофе" class="form-check-input mt-0"
+                                                   {% if allergies and 'Кофе' in allergies %}checked{% endif %}>
+                                            <span>Кофе</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="interest-checkbox-card">
+                                        <label class="d-flex align-items-center gap-2 w-100 cursor-pointer">
+                                            <input type="checkbox" name="allergies" value="Ваниль" class="form-check-input mt-0"
+                                                   {% if allergies and 'Ваниль' in allergies %}checked{% endif %}>
+                                            <span>Ваниль и пряности</span>
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
+
                     <div class="mt-3 text-end">
-                        <button type="submit" class="btn btn-primary-custom btn-pill">Обновить данные здоровья</button>
+                        <button type="submit" class="btn btn-primary-custom btn-pill px-4">
+                            <i class="bi bi-save me-1"></i>Обновить данные здоровья
+                        </button>
                     </div>
                 </form>
             </div>
@@ -212,9 +551,180 @@
     </div>
 </div>
 
+<script>
+    document.getElementById('fileInput').addEventListener('change', function() {
+        if (this.files[0]) document.getElementById('avatar-form').submit();
+    });
+
+    function selectAbonement(type) {
+        document.querySelector(`input[value="${type}"]`).checked = true;
+        
+        // Обновляем визуальное выделение
+        document.querySelectorAll('.abonement-option').forEach(option => {
+            option.classList.remove('active');
+        });
+        event.currentTarget.classList.add('active');
+    }
+
+    // Инициализация активного состояния абонемента
+    document.addEventListener('DOMContentLoaded', function() {
+        const currentAbonement = '{{ abonement }}';
+        if (currentAbonement && currentAbonement !== 'null') {
+            const activeOption = document.querySelector(`.abonement-option[onclick*="${currentAbonement}"]`);
+            if (activeOption) {
+                activeOption.classList.add('active');
+            }
+        }
+
+        // Активное меню при скролле
+        setupActiveMenuOnScroll();
+    });
+
+    function setupActiveMenuOnScroll() {
+        const sections = document.querySelectorAll('[id]');
+        const navLinks = document.querySelectorAll('.profile-sidebar .nav-link');
+        
+        function onScroll() {
+            let current = '';
+            const scrollPosition = window.scrollY + 150;
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            addActiveClass(current);
+        }
+        
+        function addActiveClass(sectionId) {
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${sectionId}`) {
+                    link.classList.add('active');
+                }
+            });
+        }
+        
+        // Обработчик клика по ссылкам в меню
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                const targetId = this.getAttribute('href').substring(1);
+                addActiveClass(targetId);
+                
+                // Плавный скролл
+                const targetSection = document.getElementById(targetId);
+                if (targetSection) {
+                    e.preventDefault();
+                    window.scrollTo({
+                        top: targetSection.offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Вешаем обработчик скролла
+        window.addEventListener('scroll', onScroll);
+        
+        // Вызываем при загрузке для начального состояния
+        setTimeout(onScroll, 100);
+        
+        // Делаем активным первый раздел при загрузке
+        if (navLinks.length > 0) {
+            setTimeout(() => addActiveClass('general'), 150);
+        }
+    }
+</script>
+
 <style>
     html {
         scroll-behavior: smooth;
+    }
+
+    .abonement-option {
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .abonement-option:hover .card {
+        border-color: #8f94fb !important;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .abonement-option.active .card {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .interest-checkbox-card {
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        padding: 12px 16px;
+        transition: all 0.2s ease;
+    }
+
+    .interest-checkbox-card:hover {
+        border-color: #8f94fb;
+        background-color: #f8f9ff;
+    }
+
+    .cursor-pointer {
+        cursor: pointer;
+    }
+
+    .btn-primary-custom {
+        background: linear-gradient(90deg, #4e54c8 0%, #8f94fb 100%);
+        border: none;
+        color: white;
+    }
+
+    .btn-primary-custom:hover {
+        background: linear-gradient(90deg, #3a3fa0 0%, #7a7fe8 100%);
+        color: white;
+    }
+
+    .btn-pill {
+        border-radius: 50px;
+        padding: 8px 24px;
+    }
+
+    .card-hover {
+        transition: transform 0.2s ease;
+    }
+
+    .card-hover:hover {
+        transform: translateY(-2px);
+    }
+
+    /* Стили для активной ссылки в меню */
+    .profile-sidebar .nav-link {
+        padding: 10px 15px;
+        margin: 2px 0;
+        border-radius: 8px;
+        color: #6c757d;
+        transition: all 0.2s ease;
+        text-decoration: none;
+    }
+
+    .profile-sidebar .nav-link:hover {
+        background-color: rgba(78, 84, 200, 0.08);
+        color: #4e54c8;
+    }
+
+    .profile-sidebar .nav-link.active {
+        background-color: rgba(78, 84, 200, 0.15);
+        color: #4e54c8;
+        font-weight: 600;
+        border-left: 3px solid #4e54c8;
+    }
+
+    .profile-sidebar .nav-link i {
+        width: 20px;
+        text-align: center;
+        margin-right: 10px;
     }
 </style>
 {% endblock %}
