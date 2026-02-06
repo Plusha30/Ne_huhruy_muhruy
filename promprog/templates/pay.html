@@ -88,23 +88,34 @@
                     <a style="margin: 5px; margin-bottom: 20px; background-color: gainsboro; max-width: 300px; margin-left:auto; margin-right: auto;"
                         href="{{ url_for('dashboard') }}" class="btn btn-sm rounded-pill">Вернуться</a>
                     {% endif %}
-                    <script>
-                        document.addEventListener('DOMContentLoaded', function () {
-                            const datepicker = document.getElementById('datepicker');
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const datepicker = document.getElementById('datepicker');
+        
+        // Получаем текущую дату и дату следующего дня
+        const today = new Date();
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        
+        // Преобразуем дату завтра в формат YYYY-MM-DD
+        const tomorrowStr = tomorrow.toISOString().split('T')[0];
+        
+        // Устанавливаем минимальную дату как завтра
+        datepicker.min = tomorrowStr;
+        datepicker.value = tomorrowStr; // Устанавливаем завтра по умолчанию
 
-                            // Устанавливаем минимальную дату как сегодня
-                            const today = new Date().toISOString().split('T')[0];
-                            datepicker.min = today;
-
-                            // Дополнительная валидация при изменении
-                            datepicker.addEventListener('change', function () {
-                                if (this.value < today) {
-                                    alert('Выберите дату не ранее сегодняшнего');
-                                    this.value = today;
-                                }
-                            });
-                        });
-                    </script>
+        // Дополнительная валидация при изменении
+        datepicker.addEventListener('change', function () {
+            const selectedDate = new Date(this.value);
+            const todayWithoutTime = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+            
+            if (selectedDate <= todayWithoutTime) {
+                alert('Выберите дату начиная с завтрашнего дня');
+                this.value = tomorrowStr; // Сбрасываем на завтра
+            }
+        });
+    });
+</script>
                 </div>
             </div>
         </div>
