@@ -74,7 +74,11 @@
                         <img src="{{ url_for('static', filename=userimg) }}" alt="User"
                             class="rounded-circle border bg-light"
                             style="width: 40px; height: 40px; object-fit: cover;">
+                        {% if username|length > 30 %}
+                        <span class="fw-bold">{{ username[:30] }}...</span>
+                        {% else %}
                         <span class="fw-bold">{{ username }}</span>
+                        {% endif %}
                     </a>
                     {% endif %}
                 </div>
