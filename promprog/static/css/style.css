@@ -561,3 +561,13 @@ a.card-link:hover .card-hover {
     object-fit: cover;
     background: #e2e8f0;
 }
+
+/* Отключаем плавный скролл для всего сайта */
+html {
+    scroll-behavior: auto;
+}
+
+/* На всякий случай, отключаем у всех элементов */
+* {
+    scroll-behavior: auto !important;
+}
