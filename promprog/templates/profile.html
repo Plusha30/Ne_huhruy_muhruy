@@ -552,19 +552,7 @@
 </div>
 
 <script>
-    document.getElementById('fileInput').addEventListener('change', function() {
-        if (this.files[0]) document.getElementById('avatar-form').submit();
-    });
-
-    function selectAbonement(type) {
-        document.querySelector(`input[value="${type}"]`).checked = true;
-        
-        // Обновляем визуальное выделение
-        document.querySelectorAll('.abonement-option').forEach(option => {
-            option.classList.remove('active');
-        });
-        event.currentTarget.classList.add('active');
-    }
+    // ... существующий код загрузки файла и выбора абонемента ...
 
     // Инициализация активного состояния абонемента
     document.addEventListener('DOMContentLoaded', function() {
@@ -578,23 +566,37 @@
 
         // Активное меню при скролле
         setupActiveMenuOnScroll();
+        
+        // Активировать первую ссылку при загрузке (когда вверху страницы)
+        activateFirstSectionOnLoad();
     });
 
     function setupActiveMenuOnScroll() {
-        const sections = document.querySelectorAll('[id]');
+        const sections = document.querySelectorAll('[id="general"], [id="abonement"], [id="health"]');
         const navLinks = document.querySelectorAll('.profile-sidebar .nav-link');
+        
+        // Проверяем, находится ли пользователь вверху страницы
+        function isAtTop() {
+            return window.scrollY < 700; // Небольшой отступ
+        }
         
         function onScroll() {
             let current = '';
-            const scrollPosition = window.scrollY + 150;
+            const scrollPosition = window.scrollY + 200; // Отступ для активации
             
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.clientHeight;
-                if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-                    current = section.getAttribute('id');
-                }
-            });
+            // Если мы в самом верху, активируем первую секцию
+            if (isAtTop()) {
+                current = 'general';
+            } else {
+                // Иначе ищем активную секцию по скроллу
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                        current = section.getAttribute('id');
+                    }
+                });
+            }
             
             addActiveClass(current);
         }
@@ -630,11 +632,17 @@
         window.addEventListener('scroll', onScroll);
         
         // Вызываем при загрузке для начального состояния
-        setTimeout(onScroll, 100);
+        onScroll();
+    }
+
+    // Новая функция для активации первой секции при загрузке
+    function activateFirstSectionOnLoad() {
+        const navLinks = document.querySelectorAll('.profile-sidebar .nav-link');
+        const firstLink = document.querySelector('.profile-sidebar .nav-link[href="#general"]');
         
-        // Делаем активным первый раздел при загрузке
-        if (navLinks.length > 0) {
-            setTimeout(() => addActiveClass('general'), 150);
+        if (firstLink && window.scrollY < 100) {
+            navLinks.forEach(link => link.classList.remove('active'));
+            firstLink.classList.add('active');
         }
     }
 </script>
