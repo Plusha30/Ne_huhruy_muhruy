@@ -427,10 +427,10 @@
                         <div class="col-md-6">
                             <div class="border rounded-3 p-3 position-relative">
                                 <div class="d-flex justify-content-between mb-2">
-                                    <span class="fw-bold">{{product}} {{productlist[product]['suffix']}}</span>
+                                    <span class="fw-bold">{{productlist[product]['name']}} {{productlist[product]['suffix']}}</span>
                                     <!-- Кнопка Изменить -->
                                     <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
-                                        data-bs-target="#editModal" data-product-name="{{product}}"
+                                        data-bs-target="#editModal" data-product-name="{{productlist[product]['name']}}"
                                         data-current-count="{{productlist[product]['cnt']}}"
                                         data-max-count="{{productlist[product]['max']}}"
                                         data-suffix="{{productlist[product]['suffix']}}">

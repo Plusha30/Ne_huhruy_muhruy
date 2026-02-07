@@ -39,9 +39,11 @@ def updateinventory():
     if (kwargs['rights'] != 2):
         return redirect(url_for('dashboard'))
     data = request.form.to_dict(flat=False)
-    nowhave = getquerylist('povar.json')
-    nowhave[data['product_name'][0]]['cnt'] = int(data['current_count'][0])
-    setquerylist(name='povar.json', to=nowhave)
+    nowhave = gettovarlist()
+    for i in nowhave:
+        if nowhave[i]['name'] == data['product_name'][0]:
+            nowhave[i]['cnt'] = int(data['current_count'][0])
+    settovarlist(to=nowhave)
     return redirect(url_for('dashboard'))
 
 def buy_to_admin():

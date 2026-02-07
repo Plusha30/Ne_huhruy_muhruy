@@ -77,8 +77,8 @@ def dashboard():
         return render_template('dashboard.html', tovarlist=gettovarlist(), takequeries=getuser(email)['to_take'], **kwargs)
     elif (kwargs['rights'] == 2):
         return render_template('dashboard.html', **kwargs, querylist=getquerylist("student_to_povar.json"),\
-                                                           productlist=getquerylist("povar.json"),
-                                                           toadmin=getquerylist("povar_to_admin.json"))                 
+                                                           productlist=gettovarlist(),
+                                                           toadmin=getquerylist("povar_to_admin.json"))
     elif (kwargs['rights'] == 3):
         glob = getquerylist('global.json')
         today = glob['today']
