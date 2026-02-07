@@ -16,8 +16,8 @@ def login():
             setlogin(input_email)
             return redirect(url_for('profile'), 302)
         else:
-            pass
-    return render_template('login.html', **commonkwargs(email))
+            return render_template('login.html', wrong=True, **commonkwargs(email))
+    return render_template('login.html', wrong=False, **commonkwargs(email))
 
 def register():
     email = getlogin()
