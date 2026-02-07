@@ -202,7 +202,7 @@ def pay():
         if (drinks > 1 or not_drinks > 1):
             canAbonement = False
             break
-    return render_template('pay.html', canAbonement=canAbonement, tovarlist=gettovarlist(), takequeries=getuser(email)['to_take'], **kwargs)
+    return render_template('pay.html', now_date=request.form.to_dict(flat=False)['date'][0], canAbonement=canAbonement, tovarlist=gettovarlist(), takequeries=getuser(email)['to_take'], **kwargs)
 
 def setabonement(id):
     email = getlogin()

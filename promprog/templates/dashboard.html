@@ -20,9 +20,9 @@
                 {% if rights == 0 %}Войдите, чтобы сделать заказ.{% endif %}
                 {% if rights == 1 %}
                 <span class="d-inline-flex align-items-center gap-2 flex-wrap">
-                <!-- ПИЛЮЛЯ С БАЛАНСОМ -->
+                    <!-- ПИЛЮЛЯ С БАЛАНСОМ -->
                     <span class="badge rounded-pill bg-light border text-dark px-3 py-2 shadow-sm"
-                          style="font-weight: 600;">
+                        style="font-weight: 600;">
                         <i class="bi bi-cash-coin text-success me-1"></i>
                         Баланс:
                         <span class="text-success fw-bold">{{ money }} ₽</span>
@@ -30,14 +30,15 @@
 
                     <!-- КНОПКА ТОГО ЖЕ РАЗМЕРА -->
                     <a href="{{ url_for('payment') }}"
-                       class="btn btn-primary-custom btn-pill shadow-sm btn-sm px-3 py-2">
+                        class="btn btn-primary-custom btn-pill shadow-sm btn-sm px-3 py-2">
                         <i class="bi bi-wallet2 me-1"></i>Пополнить
                     </a>
 
                 </span>
                 {% endif %}
 
-                {% if rights == 1 %}{% if abonement != "null" %}<br><br>Активен абонемент: <span class="fw-bold text-success">{{abonement}}</span>{% endif %}{% endif %}
+                {% if rights == 1 %}{% if abonement != "null" %}<br><br>Активен абонемент: <span
+                    class="fw-bold text-success">{{abonement}}</span>{% endif %}{% endif %}
                 {% if rights == 2 %}Учет выдачи блюд, контроль склада и закупки.{% endif %}
                 {% if rights == 3 %}Статистика, согласование закупок и отчетность.{% endif %}
             </p>
@@ -155,63 +156,69 @@
                         {% endif %}
                     </div>
 
-<!-- 2.2 КОРЗИНА (ВАШ ЗАКАЗ) -->
-{% if rights == 1 %}
-<div class="p-3">
-    <div class="d-flex align-items-center gap-2 mb-3 border-bottom pb-2">
-        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center"
-            style="width: 32px; height: 32px;"><i class="bi bi-basket2"></i></div>
-        <h5 class="fw-bold mb-0">Ваш заказ</h5>
-    </div>
+                    <!-- 2.2 КОРЗИНА (ВАШ ЗАКАЗ) -->
+                    {% if rights == 1 %}
+                    <div class="p-3">
+                        <div class="d-flex align-items-center gap-2 mb-3 border-bottom pb-2">
+                            <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center"
+                                style="width: 32px; height: 32px;"><i class="bi bi-basket2"></i></div>
+                            <h5 class="fw-bold mb-0">Ваш заказ</h5>
+                        </div>
 
-    {% if cart_items %}
-    <div class="d-flex flex-column gap-2 mb-3" style="max-height: 200px; overflow-y: auto;">
-        <!-- Заголовки колонок -->
-        <div class="d-flex justify-content-between align-items-center small text-muted border-bottom pb-1">
-            <span class="flex-grow-1">Товар</span>
-            <span class="text-end" style="min-width: 100px;">Кол-во и цена</span>
-        </div>
-        
-        {% for item in cart_items %}
-        {% if item[1] == 1 %}
-        <div class="d-flex justify-content-between align-items-center small">
-            <span class="flex-grow-1">{{ item[0].name }}</span>
-            <div class="d-flex align-items-center justify-content-end" style="min-width: 100px; gap: 8px;">
-                <span>{{ item[1] }}</span>
-                <span class="fw-bold">×</span>
-                <span>{{ item[0].price }} ₽</span>
-            </div>
-        </div>
-        {% else %}
-        <div class="d-flex justify-content-between align-items-center small" style="color: red;">
-            <span class="flex-grow-1" style="color: blue;">{{ item[0].name }}</span>
-            <div class="d-flex align-items-center justify-content-end" style="min-width: 100px; gap: 8px; color: blue;">
-                <span>{{ item[1] }}</span>
-                <span class="fw-bold">×</span>
-                <span>{{ item[0].price }} ₽</span>
-            </div>
-        </div>
-        {% endif %}
-        {% endfor %}
-    </div>
+                        {% if cart_items %}
+                        <div class="d-flex flex-column gap-2 mb-3" style="max-height: 200px; overflow-y: auto;">
+                            <!-- Заголовки колонок -->
+                            <div
+                                class="d-flex justify-content-between align-items-center small text-muted border-bottom pb-1">
+                                <span class="flex-grow-1">Товар</span>
+                                <span class="text-end" style="min-width: 100px;">Кол-во и цена</span>
+                            </div>
 
-    <div class="d-flex justify-content-between align-items-center border-top pt-2 mb-3">
-        <span class="text-muted">Итого:</span>
-        <span class="fw-bold fs-5 text-primary">{{ cart_total }} ₽</span>
-    </div>
+                            {% for item in cart_items %}
+                            {% if item[1] == 1 %}
+                            <div class="d-flex justify-content-between align-items-center small">
+                                <span class="flex-grow-1">{{ item[0].name }}</span>
+                                <div class="d-flex align-items-center justify-content-end"
+                                    style="min-width: 100px; gap: 8px;">
+                                    <span>{{ item[1] }}</span>
+                                    <span class="fw-bold">×</span>
+                                    <span>{{ item[0].price }} ₽</span>
+                                </div>
+                            </div>
+                            {% else %}
+                            <div class="d-flex justify-content-between align-items-center small" style="color: red;">
+                                <span class="flex-grow-1" style="color: blue;">{{ item[0].name }}</span>
+                                <div class="d-flex align-items-center justify-content-end"
+                                    style="min-width: 100px; gap: 8px; color: blue;">
+                                    <span>{{ item[1] }}</span>
+                                    <span class="fw-bold">×</span>
+                                    <span>{{ item[0].price }} ₽</span>
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
 
-    <div class="d-grid gap-2">
-        <a href="{{ url_for('pay') }}" class="btn btn-success btn-sm rounded-pill">Оплатить</a>
-        <a href="{{ url_for('clear_cart') }}"
-            class="btn btn-light border btn-sm rounded-pill text-danger">Очистить</a>
-    </div>
-    {% else %}
-    <div class="text-center py-3 text-muted small">
-        Корзина пуста.<br>Добавьте что-нибудь вкусное!
-    </div>
-    {% endif %}
-</div>
-{% endif %}
+                        <div class="d-flex justify-content-between align-items-center border-top pt-2 mb-3">
+                            <span class="text-muted">Итого:</span>
+                            <span class="fw-bold fs-5 text-primary">{{ cart_total }} ₽</span>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <form action="{{ url_for('pay') }}" method="post">
+                                <input required type="date" id="datepicker" name="date" class="form-control rounded-3"
+                                    style="margin-left: auto; margin-right: auto; margin-bottom: 10px;" value="{{ now_date }}"></input>
+                                <button type="submit" class="btn btn-success btn-sm rounded-pill" style="width: 100%;">Оплатить</button>
+                            </form>
+                            <a href="{{ url_for('clear_cart') }}"
+                                class="btn btn-light border btn-sm rounded-pill text-danger">Очистить</a>
+                        </div>
+                        {% else %}
+                        <div class="text-center py-3 text-muted small">
+                            Корзина пуста.<br>Добавьте что-нибудь вкусное!
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
                 </div>
                 <!-- КОНЕЦ ОБЪЕДИНЕННОГО БЛОКА -->
 
@@ -259,7 +266,8 @@
                                     class="product-badge text-white position-absolute top-0 start-0 m-3 px-2 py-1 rounded-pill small"
                                     style="background-color: {{ item.color }};">{{ item.badge }}</span>
                                 {% endif %}
-                                <image src="{{ url_for('static', filename='images/tovars/' + id|string + '.png') }}" style="width: 120px;"></image>
+                                <image src="{{ url_for('static', filename='images/tovars/' + id|string + '.png') }}"
+                                    style="width: 120px;"></image>
                             </div>
                         </a>
 
@@ -427,7 +435,8 @@
                         <div class="col-md-6">
                             <div class="border rounded-3 p-3 position-relative">
                                 <div class="d-flex justify-content-between mb-2">
-                                    <span class="fw-bold">{{productlist[product]['name']}} {{productlist[product]['suffix']}}</span>
+                                    <span class="fw-bold">{{productlist[product]['name']}}
+                                        {{productlist[product]['suffix']}}</span>
                                     <!-- Кнопка Изменить -->
                                     <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
                                         data-bs-target="#editModal" data-product-name="{{productlist[product]['name']}}"
@@ -906,31 +915,58 @@
     // Для роли админа (rights == 3) - те же обработчики, но для другой структуры
     // (используем ту же логику, так как структура аналогична)
 
-// Минимальный код для сохранения позиции без анимации
-(function() {
-    // Сохраняем позицию перед обновлением
-    window.addEventListener('beforeunload', () => {
-        sessionStorage.setItem('scrollY', window.pageYOffset);
-    });
-
-    // Сохраняем при скролле (с задержкой)
-    let scrollTimer;
-    window.addEventListener('scroll', () => {
-        clearTimeout(scrollTimer);
-        scrollTimer = setTimeout(() => {
+    // Минимальный код для сохранения позиции без анимации
+    (function () {
+        // Сохраняем позицию перед обновлением
+        window.addEventListener('beforeunload', () => {
             sessionStorage.setItem('scrollY', window.pageYOffset);
-        }, 150);
-    });
+        });
 
-    // Восстанавливаем позицию (строго без анимации)
-    document.addEventListener('DOMContentLoaded', () => {
-        const savedY = sessionStorage.getItem('scrollY');
-        if (savedY) {
-            // Ключевой момент: behavior: 'auto' или просто число
-            window.scrollTo(0, parseInt(savedY, 10)); // Без анимации
-        }
+        // Сохраняем при скролле (с задержкой)
+        let scrollTimer;
+        window.addEventListener('scroll', () => {
+            clearTimeout(scrollTimer);
+            scrollTimer = setTimeout(() => {
+                sessionStorage.setItem('scrollY', window.pageYOffset);
+            }, 150);
+        });
+
+        // Восстанавливаем позицию (строго без анимации)
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedY = sessionStorage.getItem('scrollY');
+            if (savedY) {
+                // Ключевой момент: behavior: 'auto' или просто число
+                window.scrollTo(0, parseInt(savedY, 10)); // Без анимации
+            }
+        });
+    })();
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const datepicker = document.getElementById('datepicker');
+        
+        // Получаем текущую дату и дату следующего дня
+        const today = new Date();
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        
+        // Преобразуем дату завтра в формат YYYY-MM-DD
+        const tomorrowStr = tomorrow.toISOString().split('T')[0];
+        
+        // Устанавливаем минимальную дату как завтра
+        datepicker.min = tomorrowStr;
+        datepicker.value = tomorrowStr; // Устанавливаем завтра по умолчанию
+
+        // Дополнительная валидация при изменении
+        datepicker.addEventListener('change', function () {
+            const selectedDate = new Date(this.value);
+            const todayWithoutTime = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+            
+            if (selectedDate <= todayWithoutTime) {
+                alert('Выберите дату начиная с завтрашнего дня');
+                this.value = tomorrowStr; // Сбрасываем на завтра
+            }
+        });
     });
-})();
 
 </script>
 
