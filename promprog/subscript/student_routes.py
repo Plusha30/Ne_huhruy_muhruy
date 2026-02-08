@@ -139,6 +139,13 @@ def buy_from_cart():
         glob = getquerylist('global.json')
         glob['today_money'] += sum
         setquerylist(name='global.json', to=glob)
+    user['history'].append({
+        "products": names,
+        "time": f'{str(datetime.now())[11:16]}',
+        "order_date": f'{datetime.now().date()}',
+        "date": f'{request.form.get("date", "Не указано")}',
+        "money": sum
+    })
     setuser(email, user)
     return redirect(url_for('clear_cart'))
 
