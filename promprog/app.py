@@ -16,14 +16,14 @@ from datetime import datetime
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(32)
 app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024
-app.config['SESSION_TYPE'] = 'filesystem'  # or 'redis', 'mongodb', etc.
+app.config['SESSION_TYPE'] = 'filesystem'
 app.config['SESSION_FILE_DIR'] = SESSION_PATH
 app.config['SESSION_PERMANENT'] = False
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 app.config.update(
-    SESSION_COOKIE_SECURE=True,    # HTTPS only
-    SESSION_COOKIE_HTTPONLY=True,  # No JavaScript access
-    SESSION_COOKIE_SAMESITE='Lax'  # CSRF protection
+    SESSION_COOKIE_SECURE=True,
+    SESSION_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SAMESITE='Lax'
 )
 Session(app)
 
