@@ -33,8 +33,6 @@ def generate_student_buys_report(json_path):
         False: 'Нет',
         True: 'Да'
     }
-
-    print(users_list)
     
     if 'isCooked' in df.columns:
         df['Приготовлен'] = df['isCooked'].map(complete_map)
@@ -126,8 +124,6 @@ def generate_product_report(json_path):
         0: "Не согласовано",
         1: "Принято"
     }
-
-    print(users_list)
     
     if 'status' in df.columns:
         df['Результат'] = df['status'].map(complete_map)

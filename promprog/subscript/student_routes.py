@@ -90,7 +90,7 @@ def buy_from_cart():
     if email == 'placeholder' or user['rights'] != 1:
         return redirect(url_for('login'))
     sum = 0
-    if (not request.form.get('abonement', False)):
+    if (request.form.get('abon', 'False') == 'False'):
         for i in user['cart']:
             sum += gettovar(int(i[0]))['price'] * i[1]
         if (sum > user['money']):
@@ -139,6 +139,13 @@ def buy_from_cart():
         glob = getquerylist('global.json')
         glob['today_money'] += sum
         setquerylist(name='global.json', to=glob)
+    user['history'].append({
+        "products": names,
+        "time": f'{str(datetime.now())[11:16]}',
+        "order_date": f'{datetime.now().date()}',
+        "date": f'{request.form.get("date", "Не указано")}',
+        "money": sum
+    })
     setuser(email, user)
     return redirect(url_for('clear_cart'))
 
