@@ -64,10 +64,6 @@ def four04(error):
 def fatal_error(error):
     return render_template('404.html', **commonkwargs(getlogin(reset_auth=False)))
 
-@app.route('/godia')
-def godia():
-    return render_template('payment_service.html', **commonkwargs(getlogin()))
-
 @app.route('/dashboard')
 def dashboard():
     email = getlogin()
