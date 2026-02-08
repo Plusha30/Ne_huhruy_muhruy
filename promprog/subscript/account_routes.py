@@ -78,7 +78,8 @@ def confirm_mail():
             'to_take': [],
             'abonement': 'null',
             'last_used_hour': -1,
-            'last_used_day': -1
+            'last_used_day': -1,
+            'history': []
         })
         session['temp_password'] = False
         email = session['temp_email']

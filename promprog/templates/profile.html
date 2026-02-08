@@ -22,6 +22,9 @@
                     <a class="nav-link" href="#balance" data-section="balance">
                         <i class="bi bi-cash"></i> Баланс
                     </a>
+                    <a class="nav-link" href="#bought" data-section="bought">
+                        <i class="bi bi-cart"></i> История покупок
+                    </a>
                     <a class="nav-link" href="#abonement" data-section="abonement">
                         <i class="bi bi-credit-card"></i> Абонемент
                     </a>
@@ -140,6 +143,26 @@
 
             <div id="balance" class="card card-hover p-4 border-0 shadow-sm mb-4" style="scroll-margin-top: 120px;">
                 <h5 class="fw-bold mb-2">Баланс</h5>
+                <div class="card-body p-3">
+                    <div class="bg-light rounded-3 p-4 mb-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <small class="text-muted d-block mb-1">Текущий баланс</small>
+                                <h3 class="fw-bold mb-0 text-success">{{ money }} ₽</h3>
+                            </div>
+                            <div class="text-end">
+                                <a href="{{ url_for('payment') }}"
+                                    class="btn btn-primary-custom btn-pill shadow-sm btn-sm px-3 py-2">
+                                    <i class="bi bi-wallet2 me-1"></i>Пополнить
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="bought" class="card card-hover p-4 border-0 shadow-sm mb-4" style="scroll-margin-top: 120px;">
+                <h5 class="fw-bold mb-2">История покупок</h5>
                 <div class="card-body p-3">
                     <div class="bg-light rounded-3 p-4 mb-4">
                         <div class="d-flex justify-content-between align-items-center">
@@ -651,7 +674,7 @@
     });
 
     function setupActiveMenuOnScroll() {
-        const sections = document.querySelectorAll('[id="general"], [id="abonement"], [id="health"], [id="balance"]');
+        const sections = document.querySelectorAll('[id="general"], [id="abonement"], [id="health"], [id="balance"], [id="bought"]');
         const navLinks = document.querySelectorAll('.profile-sidebar .nav-link');
 
         // Проверяем, находится ли пользователь вверху страницы

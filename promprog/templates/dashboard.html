@@ -469,7 +469,7 @@
                                         <label class="form-label small fw-bold text-muted">Продукт</label>
                                         <select class="form-select rounded-3" id="prod" name="prod" required>
                                             {% for product in productlist %}
-                                            <option value="{{product}}">{{product}}</option>
+                                            <option value="{{product}}">{{productlist[product]['name']}}</option>
                                             {% endfor %}
                                         </select>
                                     </div>

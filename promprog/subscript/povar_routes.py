@@ -56,17 +56,17 @@ def buy_to_admin():
     nowid = dt['total_povar_queries']
     dt['total_povar_queries'] += 1
     setquerylist(name="global.json", to=dt)
-    suffix = getquerylist('povar.json')[data['prod'][0]]['suffix']
-    price = getquerylist('povar.json')[data['prod'][0]]['price']
+    suffix = gettovarlist()[data['prod'][0]]['suffix']
+    price = gettovarlist()[data['prod'][0]]['povar_price']
     qu = getquerylist("povar_to_admin.json")
     qu.append({
         "id": nowid,
-        "prod": data['prod'][0],
+        "prod": gettovarlist()[data['prod'][0]]['name'],
         "volume": f'{data['volume'][0]} {suffix}',
         "person": user['username'],
         "when": f'{datetime.now().hour}:{datetime.now().minute}',
         "status": 0,
-        "cost": f'{data['volume'][0] * price} {suffix}'
+        "cost": f'{int(data['volume'][0]) * price} руб.'
     })
     setquerylist(name="povar_to_admin.json", to=qu)
     setuser(email, user)
