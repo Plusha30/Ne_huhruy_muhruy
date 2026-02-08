@@ -90,7 +90,7 @@ def buy_from_cart():
     if email == 'placeholder' or user['rights'] != 1:
         return redirect(url_for('login'))
     sum = 0
-    if (not request.form.get('abonement', False)):
+    if (not request.form.get('abon', False)):
         for i in user['cart']:
             sum += gettovar(int(i[0]))['price'] * i[1]
         if (sum > user['money']):
