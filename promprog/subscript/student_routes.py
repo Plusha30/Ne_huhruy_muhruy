@@ -159,7 +159,7 @@ def payment():
         data = request.form.to_dict(flat=False)
         usernow['money'] += int(data['money'][0])
         setuser(email, usernow)
-        return redirect(url_for('dashboard'))
+        return redirect(session.get('pre_previous_page', '/dashboard'))
     return render_template('payment.html', **kwargs)
 
 def pay():
@@ -209,7 +209,11 @@ def pay():
         if (drinks > 1 or not_drinks > 1):
             canAbonement = False
             break
-    return render_template('pay.html', now_date=request.form.to_dict(flat=False)['date'][0], canAbonement=canAbonement, tovarlist=gettovarlist(), takequeries=getuser(email)['to_take'], **kwargs)
+    if (request.method == 'POST'):
+        session['cart_date'] = request.form.to_dict(flat=False)['date'][0]
+        return render_template('pay.html', now_date=request.form.to_dict(flat=False)['date'][0], canAbonement=canAbonement, tovarlist=gettovarlist(), takequeries=getuser(email)['to_take'], **kwargs)
+    else:
+        return render_template('pay.html', now_date=session.get('cart_date', '2000-01-01'), canAbonement=canAbonement, tovarlist=gettovarlist(), takequeries=getuser(email)['to_take'], **kwargs)
 
 def setabonement(id):
     email = getlogin()

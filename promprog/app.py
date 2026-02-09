@@ -42,7 +42,7 @@ app.add_url_rule('/clear_cart', view_func=student_r.clear_cart)
 app.add_url_rule('/buy_from_cart', view_func=student_r.buy_from_cart, methods=['POST'])
 app.add_url_rule('/remove_from_cart/<id>', view_func=student_r.remove_from_cart)
 app.add_url_rule('/payment', view_func=student_r.payment, methods=['GET', 'POST'])
-app.add_url_rule('/pay', view_func=student_r.pay, methods=['POST'])
+app.add_url_rule('/pay', view_func=student_r.pay, methods=['GET', 'POST'])
 app.add_url_rule('/setabonement/<id>', view_func=student_r.setabonement)
 #product_routes.py
 app.add_url_rule('/product/setcommentary/<id>', view_func=product_r.sendcommentary, methods=['POST'])
@@ -63,6 +63,17 @@ def four04(error):
 @app.errorhandler(Exception)
 def fatal_error(error):
     return render_template('404.html', **commonkwargs(getlogin(reset_auth=False)))
+
+@app.before_request
+def store_current_page():
+    if request.endpoint and request.endpoint != 'static':
+        session['pre_previous_page'] = session.get('previous_page', '/dashboard')
+        session['previous_page'] = session.get('now_page', '/dashboard')
+        session['now_page'] = request.url
+
+@app.route('/godia')
+def godia():
+    return render_template('payment_service.html', **commonkwargs(getlogin(reset_auth=False)))
 
 @app.route('/dashboard')
 def dashboard():
