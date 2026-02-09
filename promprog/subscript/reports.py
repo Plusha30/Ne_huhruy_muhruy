@@ -135,14 +135,15 @@ def generate_product_report(json_path):
         'volume': 'Объём',
         'person': 'Повар',
         'when': 'Время',
-        'cost': 'Цена'
+        'cost': 'Цена',
+        'desc': 'Описание'
     }
     
     # Применяем переименование, если колонки существуют
     df = df.rename(columns={k: v for k, v in column_mapping.items() if k in df.columns})
     
     # Определяем порядок колонок для отчета
-    desired_columns = ['ID', 'Продукт', 'Объём', 'Повар', 'Время', 'Цена', 'Результат']
+    desired_columns = ['ID', 'Продукт', 'Объём', 'Повар', 'Время', 'Цена', 'Результат', 'Описание']
     report_columns = [col for col in desired_columns if col in df.columns]
     
     # Создаем финальный DataFrame с нужными колонками

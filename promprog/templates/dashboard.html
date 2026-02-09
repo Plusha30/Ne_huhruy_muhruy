@@ -610,9 +610,9 @@
                             <div>
                                 <h6 class="fw-bold mb-0">{{ toadmin[i]["prod"] }} ({{ toadmin[i]["volume"] }})</h6>
                                 <small class="text-muted">{{ toadmin[i]["when"] }}</small>
-                                {% if toadmin[i].reason %}
+                                {% if toadmin[i]['desc'] %}
                                 <div class="mt-1">
-                                    <small class="text-muted">Причина: {{ toadmin[i].reason }}</small>
+                                    <small class="text-muted">Причина: {{ toadmin[i]['desc'] }}</small>
                                 </div>
                                 {% endif %}
                             </div>

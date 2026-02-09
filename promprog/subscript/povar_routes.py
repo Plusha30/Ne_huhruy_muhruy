@@ -50,11 +50,11 @@ def buy_to_admin():
         "id": nowid,
         "prod": gettovarlist()[data['prod'][0]]['name'],
         "volume": f'{data['volume'][0]} {suffix}',
-        "volumeint": data['volume'][0],
+        "volumeint": float(data['volume'][0]),
         "person": user['username'],
         "when": f'{str(datetime.now())[11:16]}',
         "status": 0,
-        "cost": f'{int(data['volume'][0]) * price} руб.',
+        "cost": f'{float(data['volume'][0]) * price} руб.',
         "desc": data['reason'][0]
     })
     setquerylist(name="povar_to_admin.json", to=qu)
