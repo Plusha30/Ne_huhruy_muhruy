@@ -8,7 +8,7 @@
         "allergens": [],
         "suffix": "л",
         "cnt": 57,
-        "max": 200,
+        "max": 400,
         "povar_price": 30
     },
     "2": {
@@ -47,7 +47,7 @@
         "allergens": [],
         "suffix": "кг",
         "cnt": 57,
-        "max": 200,
+        "max": 100,
         "povar_price": 30
     },
     "5": {
@@ -61,7 +61,7 @@
         ],
         "suffix": "кг",
         "cnt": 57,
-        "max": 200,
+        "max": 150,
         "povar_price": 30
     },
     "6": {
@@ -90,7 +90,7 @@
         ],
         "suffix": "шт",
         "cnt": 57,
-        "max": 200,
+        "max": 125,
         "povar_price": 30
     },
     "8": {
@@ -105,7 +105,7 @@
         ],
         "suffix": "шт",
         "cnt": 57,
-        "max": 200,
+        "max": 75,
         "povar_price": 30
     },
     "9": {
@@ -117,7 +117,7 @@
         "allergens": [],
         "suffix": "л",
         "cnt": 57,
-        "max": 200,
+        "max": 150,
         "povar_price": 30
     },
     "10": {
@@ -132,7 +132,7 @@
         ],
         "suffix": "кг",
         "cnt": 57,
-        "max": 200,
+        "max": 150,
         "povar_price": 30
     },
     "11": {
@@ -144,7 +144,7 @@
         "allergens": [],
         "suffix": "кг",
         "cnt": 57,
-        "max": 200,
+        "max": 400,
         "povar_price": 30
     },
     "12": {
@@ -158,7 +158,7 @@
         ],
         "suffix": "кг",
         "cnt": 57,
-        "max": 200,
+        "max": 300,
         "povar_price": 30
     },
     "13": {
@@ -172,7 +172,7 @@
         ],
         "suffix": "л",
         "cnt": 57,
-        "max": 200,
+        "max": 100,
         "povar_price": 30
     },
     "14": {
@@ -201,7 +201,7 @@
         ],
         "suffix": "шт",
         "cnt": 57,
-        "max": 200,
+        "max": 100,
         "povar_price": 30
     },
     "16": {
