@@ -13,7 +13,7 @@
             Абонементы на <span class="text-gradient">Питание</span>
         </h1>
         <p class="text-secondary lead mb-5">
-            Экономьте при покупке питания на месяц. Стоимость за день: завтрак 300₽ • обед 500₽
+            Экономьте при покупке питания на месяц.
         </p>
         
         <!-- БЛОК С ТЕКУЩИМ АБОНЕМЕНТОМ -->
@@ -44,6 +44,21 @@
             </div>
         </div>
         {% endif %}
+        
+        <!-- БЛОК С БАЛАНСОМ -->
+        {% if rights == 1 %}
+        <div class="alert alert-primary border-2 border-primary border-opacity-25 bg-primary bg-opacity-10 rounded-3 py-3 px-4 d-inline-block mt-3">
+            <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-cash-coin text-primary fs-4"></i>
+                <div>
+                    <h6 class="fw-bold mb-0">Ваш баланс: {{ money }} ₽</h6>
+                    <p class="text-muted small mb-0">
+                        <a href="{{ url_for('payment') }}" class="text-decoration-none">Пополнить баланс</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        {% endif %}
     </div>
 </section>
 
@@ -65,7 +80,7 @@
                         <div class="text-center mb-4">
                             <h4 class="fw-bold text-dark mb-3">Только Завтраки</h4>
                             <div class="price-display">
-                                <span class="h1 fw-bold">9 000₽</span>
+                                <span class="h1 fw-bold">{{prices['Завтрак']}}₽</span>
                                 <span class="text-muted">/месяц</span>
                             </div>
                         </div>
@@ -108,9 +123,25 @@
                             {% endif %}
                         </div>
                         
-                        <a href="/setabonement/Завтрак" class="btn {% if abonement == 'Завтрак' %}btn-outline-success{% else %}btn-primary{% endif %} btn-lg w-100 fw-bold mt-auto">
-                            {% if abonement == 'Завтрак' %}<i class="bi bi-check-circle me-2"></i>Активен{% else %}Купить абонемент{% endif %}
+                        {% if abonement == 'Завтрак' %}
+                        <a href="/setabonement/Завтрак" class="btn btn-outline-success btn-lg w-100 fw-bold mt-auto">
+                            <i class="bi bi-check-circle me-2"></i>Активен
                         </a>
+                        {% else %}
+                            {% if rights == 1 and money >= 9000 %}
+                            <a href="/setabonement/Завтрак" class="btn btn-primary btn-lg w-100 fw-bold mt-auto">
+                                Купить абонемент
+                            </a>
+                            {% elif rights == 1 and money < 9000 %}
+                            <button class="btn btn-secondary btn-lg w-100 fw-bold mt-auto" disabled>
+                                <i class="bi bi-x-circle me-2"></i>Недостаточно средств
+                            </button>
+                            {% else %}
+                            <a href="/setabonement/Завтрак" class="btn btn-primary btn-lg w-100 fw-bold mt-auto">
+                                Купить абонемент
+                            </a>
+                            {% endif %}
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -133,7 +164,7 @@
                             </div>
                             <h4 class="fw-bold text-dark mb-3">Завтрак + Обед</h4>
                             <div class="price-display">
-                                <span class="h1 fw-bold">24 000₽</span>
+                                <span class="h1 fw-bold">{{prices['Полноценный']}}₽</span>
                                 <span class="text-muted">/месяц</span>
                             </div>
                         </div>
@@ -184,9 +215,25 @@
                             {% endif %}
                         </div>
                         
-                        <a href="/setabonement/Полноценный" class="btn {% if abonement == 'Полноценный' %}btn-outline-success{% else %}btn-primary{% endif %} btn-lg w-100 fw-bold mt-auto">
-                            {% if abonement == 'Полноценный' %}<i class="bi bi-check-circle me-2"></i>Активен{% else %}Купить абонемент{% endif %}
+                        {% if abonement == 'Полноценный' %}
+                        <a href="/setabonement/Полноценный" class="btn btn-outline-success btn-lg w-100 fw-bold mt-auto">
+                            <i class="bi bi-check-circle me-2"></i>Активен
                         </a>
+                        {% else %}
+                            {% if rights == 1 and money >= 24000 %}
+                            <a href="/setabonement/Полноценный" class="btn btn-primary btn-lg w-100 fw-bold mt-auto">
+                                Купить абонемент
+                            </a>
+                            {% elif rights == 1 and money < 24000 %}
+                            <button class="btn btn-secondary btn-lg w-100 fw-bold mt-auto" disabled>
+                                <i class="bi bi-x-circle me-2"></i>Недостаточно средств
+                            </button>
+                            {% else %}
+                            <a href="/setabonement/Полноценный" class="btn btn-primary btn-lg w-100 fw-bold mt-auto">
+                                Купить абонемент
+                            </a>
+                            {% endif %}
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -329,6 +376,12 @@
 /* Уведомление */
 .alert {
     border-radius: 15px;
+}
+
+/* Стиль для заблокированных кнопок */
+.btn-secondary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 </style>
 

@@ -229,5 +229,9 @@ def setabonement(id):
         user['abonement'] = id
         user['last_used_day'] = -1
         user['last_used_hour'] = -1
+        user['money'] -= getquerylist('abonement_price.json')[id]
         setuser(email, user)
     return redirect(url_for('pricing'))
+
+def returnback():
+    return redirect(session.get('pre_previous_page', '/dashboard'))

@@ -44,6 +44,7 @@ app.add_url_rule('/remove_from_cart/<id>', view_func=student_r.remove_from_cart)
 app.add_url_rule('/payment', view_func=student_r.payment, methods=['GET', 'POST'])
 app.add_url_rule('/pay', view_func=student_r.pay, methods=['GET', 'POST'])
 app.add_url_rule('/setabonement/<id>', view_func=student_r.setabonement)
+app.add_url_rule('/returnback', view_func=student_r.returnback)
 #product_routes.py
 app.add_url_rule('/product/setcommentary/<id>', view_func=product_r.sendcommentary, methods=['POST'])
 app.add_url_rule('/product/<id>', view_func=product_r.product_detail, methods=['GET'])
@@ -69,9 +70,10 @@ app.add_url_rule('/decline_balance_req/<id>', view_func=admin_r.decline_balance_
 @app.before_request
 def store_current_page():
     if request.endpoint and request.endpoint != 'static':
-        session['pre_previous_page'] = session.get('previous_page', '/dashboard')
-        session['previous_page'] = session.get('now_page', '/dashboard')
-        session['now_page'] = request.url
+        if (session['now_page'] != request.url):
+            session['pre_previous_page'] = session.get('previous_page', '/dashboard')
+            session['previous_page'] = session.get('now_page', '/dashboard')
+            session['now_page'] = request.url
 
 @app.route('/dashboard')
 def dashboard():
