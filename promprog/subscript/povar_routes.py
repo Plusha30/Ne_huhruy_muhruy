@@ -54,7 +54,8 @@ def buy_to_admin():
         "person": user['username'],
         "when": f'{str(datetime.now())[11:16]}',
         "status": 0,
-        "cost": f'{int(data['volume'][0]) * price} руб.'
+        "cost": f'{int(data['volume'][0]) * price} руб.',
+        "desc": data['reason'][0]
     })
     setquerylist(name="povar_to_admin.json", to=qu)
     setuser(email, user)

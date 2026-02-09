@@ -601,42 +601,51 @@
                 <!-- 4.2 СОГЛАСОВАНИЕ ЗАКУПОК -->
                 <div class="tab-pane fade" id="admin-requests">
                     <h5 class="fw-bold mb-3">Заявки от кухни</h5>
-                    <div class="table-modern-container">
-                        <table class="table-modern">
-                            <thead>
-                                <tr>
-                                    <th class="ps-4">Продукт</th>
-                                    <th>Количество</th>
-                                    <th>Повар</th>
-                                    <th>Дата</th>
-                                    <th class="text-end pe-4">Решение</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for item in toadmin %}
-                                {% if item['status'] == 0 %}
-                                <tr id="req-{{item['id']}}">
-                                    <form id="req-form-{{item['id']}}" action="{{ url_for('set_admin_query') }}"
-                                        method="post">
-                                        <input value="{{item['id']}}" type="text" name="id" id="id{{item['id']}}"
-                                            hidden>
-                                        <td class="ps-4 fw-bold">{{item['prod']}}</td>
-                                        <td>{{item['volume']}}</td>
-                                        <td>{{item['person']}}</td>
-                                        <td class="text-muted small">{{item['when']}}</td>
-                                        <td class="text-end pe-4">
-                                            <button name="result" value=1 type="submit"
-                                                class="btn btn-sm btn-success rounded-pill px-3 me-2">Согласовать</button>
-                                            <button name="result" value=-1 type="submit"
-                                                class="btn btn-sm btn-outline-danger rounded-pill px-3">Откл.</button>
-                                        </td>
-                                    </form>
-                                </tr>
+
+                    <!-- История заявок -->
+                    <div class="list-group list-group-flush" id="adminRequestsList">
+                        {% for i in range(toadmin|length - 1, -1, -1) %}
+                        <div
+                            class="list-group-item px-0 border-bottom d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="fw-bold mb-0">{{ toadmin[i]["prod"] }} ({{ toadmin[i]["volume"] }})</h6>
+                                <small class="text-muted">{{ toadmin[i]["when"] }}</small>
+                                {% if toadmin[i].reason %}
+                                <div class="mt-1">
+                                    <small class="text-muted">Причина: {{ toadmin[i].reason }}</small>
+                                </div>
                                 {% endif %}
-                                {% endfor %}
-                            </tbody>
-                        </table>
+                            </div>
+
+                            {% if toadmin[i]['status'] == 0 %}
+                            <!-- Форма с кнопками для не согласованных заявок -->
+                            <form id="req-form-{{toadmin[i]['id']}}" action="{{ url_for('set_admin_query') }}"
+                                method="post">
+                                <input value="{{toadmin[i]['id']}}" type="hidden" name="id">
+                                <div class="d-flex gap-2">
+                                    <button name="result" value="1" type="submit"
+                                        class="btn btn-sm btn-success rounded-pill px-3">Согласовать</button>
+                                    <button name="result" value="-1" type="submit"
+                                        class="btn btn-sm btn-outline-danger rounded-pill px-3">Отклонить</button>
+                                </div>
+                            </form>
+                            {% elif toadmin[i]['status'] == 1 %}
+                            <span class="badge bg-success bg-opacity-10 text-success">Одобрено</span>
+                            {% elif toadmin[i]['status'] == -1 %}
+                            <span class="badge bg-danger bg-opacity-10 text-danger">Отклонено</span>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
                     </div>
+
+                    {% if toadmin|length == 0 %}
+                    <div class="text-center py-5">
+                        <div class="bg-light rounded-3 p-5">
+                            <i class="bi bi-inbox fs-1 text-muted opacity-25 mb-3"></i>
+                            <h5 class="text-muted mb-2">Нет заявок</h5>
+                        </div>
+                    </div>
+                    {% endif %}
                 </div>
 
                 <!-- 4.3 ЗАПРОСЫ НА ПОПОЛНЕНИЕ БАЛАНСА -->

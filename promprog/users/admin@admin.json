@@ -1,20 +1,18 @@
 {
     "password": "admin",
-    "username": "\u0423\u0448\u0430\u043a\u043e\u0432111 \u0414\u0435\u043d\u0438\u0441111 \u041f\u0430\u0432\u043b\u043e\u0432\u0438\u0447111",
-    "last_name": "\u0423\u0448\u0430\u043a\u043e\u0432111",
-    "first_name": "\u0414\u0435\u043d\u0438\u0441111",
-    "middle_name": "\u041f\u0430\u0432\u043b\u043e\u0432\u0438\u0447111",
-    "class": "1\u0410",
+    "username": "\u0414\u0430\u0432\u044b\u0434\u043e\u0432 \u0414\u043c\u0438\u0442\u0440\u0438\u0439 \u0414\u0435\u043d\u0438\u0441\u043e\u0432\u0438\u0447",
+    "last_name": "\u0414\u0430\u0432\u044b\u0434\u043e\u0432",
+    "first_name": "\u0414\u043c\u0438\u0442\u0440\u0438\u0439",
+    "middle_name": "\u0414\u0435\u043d\u0438\u0441\u043e\u0432\u0438\u0447",
+    "class": "",
     "description": "",
     "phone": "",
-    "rights": 1,
+    "rights": 3,
     "money": 0,
     "cart": [],
     "to_take": [],
     "abonement": "null",
     "last_used_hour": -1,
     "last_used_day": -1,
-    "history": [],
-    "class_grade": "1",
-    "class_letter": "\u0410"
+    "history": []
 }
