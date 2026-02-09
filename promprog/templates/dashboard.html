@@ -205,8 +205,10 @@
                         <div class="d-grid gap-2">
                             <form action="{{ url_for('pay') }}" method="post">
                                 <input required type="date" id="datepicker" name="date" class="form-control rounded-3"
-                                    style="margin-left: auto; margin-right: auto; margin-bottom: 10px;" value="{{ now_date }}"></input>
-                                <button type="submit" class="btn btn-success btn-sm rounded-pill" style="width: 100%;">Оплатить</button>
+                                    style="margin-left: auto; margin-right: auto; margin-bottom: 10px;"
+                                    value="{{ now_date }}"></input>
+                                <button type="submit" class="btn btn-success btn-sm rounded-pill"
+                                    style="width: 100%;">Оплатить</button>
                             </form>
                             <a href="{{ url_for('clear_cart') }}"
                                 class="btn btn-light border btn-sm rounded-pill text-danger">Очистить</a>
@@ -520,6 +522,11 @@
     <!-- ============================================== -->
     {% if rights == 3 %}
 
+    <!-- ============================================== -->
+    <!-- 4. РОЛЬ 3: АДМИНИСТРАТОР                   -->
+    <!-- ============================================== -->
+    {% if rights == 3 %}
+
     <!-- ТАБЫ АДМИНА -->
     <div class="card border-0 shadow-sm">
         <div class="card-header bg-white border-bottom pt-3 px-4">
@@ -532,6 +539,11 @@
                 <li class="nav-item">
                     <button class="nav-link text-secondary" data-bs-toggle="tab" data-bs-target="#admin-requests">
                         <i class="bi bi-inbox-fill me-2"></i>Заявки на закупку
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link text-secondary" data-bs-toggle="tab" data-bs-target="#balance-requests">
+                        <i class="bi bi-cash-stack me-2"></i>Запросы на пополнение
                     </button>
                 </li>
                 <li class="nav-item">
@@ -621,7 +633,100 @@
                     </div>
                 </div>
 
-                <!-- 4.3 ОТЧЕТЫ -->
+                <!-- 4.3 ЗАПРОСЫ НА ПОПОЛНЕНИЕ БАЛАНСА -->
+                <div class="tab-pane fade" id="balance-requests">
+                    <h5 class="fw-bold mb-4">Запросы на пополнение баланса</h5>
+
+                    {% if balance_requests and balance_requests|length > 0 %}
+                    <div class="d-flex flex-column gap-4">
+                        {% for i in range(balance_requests|length - 1, -1, -1) %}
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body p-4">
+                                <div class="row g-4">
+                                    <!-- Левая колонка: Большая картинка для скриншотов -->
+                                    <div class="col-md-5 col-lg-4">
+                                        <div class="d-flex align-items-center justify-content-center h-100">
+                                            <img src="{{ url_for('static', filename='images/screenshots/' + i|string + '.jpg') }}"
+                                                alt="Скриншот телефона" class="img-fluid rounded-3"
+                                                style="max-width: 100%; max-height: 500px; object-fit: contain; border: 1px solid #dee2e6;">
+                                        </div>
+                                    </div>
+
+                                    <!-- Правая колонка: Информация -->
+                                    <div class="col-md-7 col-lg-8">
+                                        <div class="d-flex flex-column h-100">
+                                            <h5 class="fw-bold mb-4">Запрос #{{ i + 1 }}</h5>
+
+                                            <div class="mb-3">
+                                                <small class="text-muted d-block">Почта:</small>
+                                                <span class="fw-medium fs-6">{{ balance_requests[i].email }}</span>
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <small class="text-muted d-block">ФИО:</small>
+                                                <span class="fw-medium fs-6">{{ balance_requests[i].name }}</span>
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <small class="text-muted d-block">Телефон:</small>
+                                                <span class="fw-medium fs-6">{{ balance_requests[i].phone }}</span>
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <small class="text-muted d-block">Класс обучения:</small>
+                                                <span class="fw-medium fs-6">{{ balance_requests[i].grade }}</span>
+                                            </div>
+
+                                            <div class="mb-4">
+                                                <small class="text-muted d-block">Сумма пополнения:</small>
+                                                <span class="fw-bold text-primary fs-4">{{ balance_requests[i].amount }}
+                                                    ₽</span>
+                                            </div>
+
+                                            <!-- Кнопки действий -->
+                                            {% if balance_requests[i].approved == 0 %}
+                                            <div class="d-flex gap-3 mt-auto">
+                                                <form action="{{ url_for('approve_balance_req', id=i) }}"
+                                                    method="get" class="flex-fill">
+                                                    <button type="submit" class="btn btn-success btn-lg w-100 py-2">
+                                                        <i class="bi bi-check-lg me-2"></i>Одобрить
+                                                    </button>
+                                                </form>
+                                                <form action="{{ url_for('decline_balance_req', id=i) }}"
+                                                    method="get" class="flex-fill">
+                                                    <button type="submit"
+                                                        class="btn btn-outline-danger btn-lg w-100 py-2">
+                                                        <i class="bi bi-x-lg me-2"></i>Отклонить
+                                                    </button>
+                                                </form>
+                                            </div>
+                                            {% elif balance_requests[i].approved == 1 %}
+                                            <div class="d-flex gap-3 mt-auto">
+                                                <h4 class="text-success">Одобрено</h4>
+                                            </div>
+                                            {% else %}
+                                            <div class="d-flex gap-3 mt-auto">
+                                                <h4 class="text-danger">Отклонено</h4>
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="text-center py-5">
+                        <div class="bg-light rounded-3 p-5">
+                            <i class="bi bi-cash-stack fs-1 text-muted opacity-25 mb-3"></i>
+                            <h5 class="text-muted mb-2">Нет запросов на пополнение</h5>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- 4.4 ОТЧЕТЫ -->
                 <div class="tab-pane fade" id="reports">
                     <h5 class="fw-bold mb-4">Формирование отчетов</h5>
                     <div class="row g-4">
@@ -668,6 +773,7 @@
             </div>
         </div>
     </div>
+    {%endif%}
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
@@ -941,15 +1047,15 @@
 
     document.addEventListener('DOMContentLoaded', function () {
         const datepicker = document.getElementById('datepicker');
-        
+
         // Получаем текущую дату и дату следующего дня
         const today = new Date();
         const tomorrow = new Date(today);
         tomorrow.setDate(tomorrow.getDate() + 1);
-        
+
         // Преобразуем дату завтра в формат YYYY-MM-DD
         const tomorrowStr = tomorrow.toISOString().split('T')[0];
-        
+
         // Устанавливаем минимальную дату как завтра
         datepicker.min = tomorrowStr;
         datepicker.value = tomorrowStr; // Устанавливаем завтра по умолчанию
@@ -958,7 +1064,7 @@
         datepicker.addEventListener('change', function () {
             const selectedDate = new Date(this.value);
             const todayWithoutTime = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-            
+
             if (selectedDate <= todayWithoutTime) {
                 alert('Выберите дату начиная с завтрашнего дня');
                 this.value = tomorrowStr; // Сбрасываем на завтра

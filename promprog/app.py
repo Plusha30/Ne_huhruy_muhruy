@@ -55,14 +55,16 @@ app.add_url_rule('/buy_to_admin', view_func=povar_r.buy_to_admin, methods=['POST
 app.add_url_rule('/set_admin_query', view_func=admin_r.set_admin_query, methods=['POST'])
 app.add_url_rule('/download_student_report', view_func=admin_r.download_student_report)
 app.add_url_rule('/download_product_report', view_func=admin_r.download_product_report)
+app.add_url_rule('/approve_balance_req/<id>', view_func=admin_r.approve_balance_req)
+app.add_url_rule('/decline_balance_req/<id>', view_func=admin_r.decline_balance_req)
 
-@app.errorhandler(404)
-def four04(error):
-    return render_template('404.html', **commonkwargs(getlogin(reset_auth=False)))
+#@app.errorhandler(404)
+#def four04(error):
+#    return render_template('404.html', **commonkwargs(getlogin(reset_auth=False)))
 
-@app.errorhandler(Exception)
-def fatal_error(error):
-    return render_template('404.html', **commonkwargs(getlogin(reset_auth=False)))
+#@app.errorhandler(Exception)
+#def fatal_error(error):
+#    return render_template('404.html', **commonkwargs(getlogin(reset_auth=False)))
 
 @app.before_request
 def store_current_page():
@@ -87,15 +89,25 @@ def dashboard():
                                                            productlist=gettovarlist(),
                                                            toadmin=getquerylist("povar_to_admin.json"))
     elif (kwargs['rights'] == 3):
+        balance_q = getquerylist('payment.json')
+        balance_requests = []
+        for i in balance_q:
+            us = getuser(i['email'])
+            balance_requests.append({
+                "approved": i['approved'],
+                "email": i['email'],
+                "name": us['username'],
+                "amount": i['amount'],
+                "phone": us['phone'],
+                "grade": us['class']
+            })
         glob = getquerylist('global.json')
         today = glob['today']
-        if (today == today_days()):
-            return render_template('dashboard.html', admin_money=glob['today_money'], **kwargs, toadmin=getquerylist("povar_to_admin.json"))
-        else:
+        if (today != today_days()):
             glob['today'] = today_days()
             glob['today_money'] = 0
             setquerylist(name="global.json", to=glob)
-            return render_template('dashboard.html', admin_money=glob['today_money'], **kwargs, toadmin=getquerylist("povar_to_admin.json"))
+        return render_template('dashboard.html', admin_money=glob['today_money'], **kwargs, toadmin=getquerylist("povar_to_admin.json"), balance_requests=balance_requests)
 
 
 #start

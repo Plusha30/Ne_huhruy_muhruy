@@ -155,9 +155,17 @@ def payment():
     if (kwargs['rights'] != 1):
         return redirect(url_for('dashboard'))
     if (request.method == 'POST'):
-        usernow = getuser(email)
-        data = request.form.to_dict(flat=False)
-        
+        photo = request.files['screenshot']
+        if (photo.filename != ''):
+            photos = getquerylist('payment.json')
+            path = f"{base_path}/static/images/screenshots/{len(photos)}.jpg"
+            photo.save(path)
+            photos.append({
+                "approved": 0,
+                "email": email,
+                "amount": int(request.form.get('money', 0))
+            })
+            setquerylist(name="payment.json", to=photos)
         return redirect(session.get('pre_previous_page', '/dashboard'))
     return render_template('payment.html', **kwargs)
 

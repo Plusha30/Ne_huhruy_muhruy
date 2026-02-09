@@ -76,3 +76,30 @@ def download_product_report():
         download_name=filename,
         mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     )
+
+def approve_balance_req(id):
+    email = getlogin()
+    user = getuser(email)
+    if email == 'placeholder' or user['rights'] != 3:
+        return redirect(url_for('login'))
+    qu = getquerylist("payment.json")
+    id = int(id)
+    if (id < len(qu)):
+        qu[id]['approved'] = 1
+        us = getuser(qu[id]['email'])
+        us['money'] += qu[id]['amount']
+        setuser(qu[id]['email'], us)
+    setquerylist(name="payment.json", to=qu)
+    return redirect(url_for('dashboard'), 302)
+
+def decline_balance_req(id):
+    email = getlogin()
+    user = getuser(email)
+    if email == 'placeholder' or user['rights'] != 3:
+        return redirect(url_for('login'))
+    qu = getquerylist("payment.json")
+    id = int(id)
+    if (id < len(qu)):
+        qu[id]['approved'] = -1
+    setquerylist(name="payment.json", to=qu)
+    return redirect(url_for('dashboard'), 302)

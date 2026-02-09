@@ -1,14 +1,27 @@
 [
     {
         "approved": 1,
-        "email": "student@student"
+        "email": "student@student",
+        "amount": 400
     },
     {
         "approved": -1,
-        "email": "student@student"
+        "email": "student@student",
+        "amount": 700
     },
     {
         "approved": 0,
-        "email": "student@student"
+        "email": "student@student",
+        "amount": 2000
+    },
+    {
+        "approved": -1,
+        "email": "student@student",
+        "amount": 50
+    },
+    {
+        "approved": 1,
+        "email": "student@student",
+        "amount": 200
     }
 ]

@@ -1,9 +1,9 @@
 {
     "password": "povar",
-    "username": "povar",
-    "class": "N/A",
-    "description": "empty",
-    "phone": "N/A",
+    "username": "\u0412\u0430\u0441\u0438\u043b\u044c\u0435\u0432 \u0412\u0430\u0441\u0438\u043b\u0438\u0439 \u0412\u0430\u0441\u0438\u043b\u044c\u0435\u0432\u0438\u0447",
+    "class": "",
+    "description": "\u0428\u0435\u0444-\u043f\u043e\u0432\u0430\u0440 \u0441\u0442\u043e\u043b\u043e\u0432\u043e\u0439.",
+    "phone": "+7 821 603 27 43",
     "rights": 2,
     "money": 0,
     "allergies": [],
@@ -11,5 +11,8 @@
     "to_take": [],
     "abonement": "null",
     "last_used_day": -1,
-    "last_used_hour": -1
+    "last_used_hour": -1,
+    "last_name": "\u0412\u0430\u0441\u0438\u043b\u044c\u0435\u0432",
+    "first_name": "\u0412\u0430\u0441\u0438\u043b\u0438\u0439",
+    "middle_name": "\u0412\u0430\u0441\u0438\u043b\u044c\u0435\u0432\u0438\u0447"
 }

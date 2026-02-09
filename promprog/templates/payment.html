@@ -22,7 +22,7 @@
 
                 <!-- Тело карточки -->
                 <div class="card-body p-5">
-                    <form action="{{url_for('payment')}}" method="post">
+                    <form action="{{url_for('payment')}}" method="post" enctype="multipart/form-data">
                         <!-- Текущий баланс -->
                         <div class="bg-light rounded-3 p-4 mb-4">
                             <div class="d-flex justify-content-between align-items-center">
@@ -112,8 +112,8 @@
                             <!-- Поле для загрузки файла -->
                             <div class="file-upload-container">
                                 <!-- Скрытый файловый инпут -->
-                                <input type="file" id="fileInput" name="file" class="hidden-input"
-                                    accept=".jpg,.jpeg,.png,.pdf">
+                                <input type="file" id="fileInput" name="screenshot" class="hidden-input"
+                                    accept=".jpg,.jpeg,.png,.pdf" required>
 
                                 <!-- Состояние 1: Файл не выбран -->
                                 <div id="emptyState" class="upload-area">
