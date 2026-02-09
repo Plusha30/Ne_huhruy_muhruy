@@ -33,19 +33,6 @@ def sendfood(id):
             return redirect(url_for('dashboard'))
     return redirect(url_for('dashboard'))
 
-def updateinventory():
-    email = getlogin()
-    kwargs = commonkwargs(email)
-    if (kwargs['rights'] != 2):
-        return redirect(url_for('dashboard'))
-    data = request.form.to_dict(flat=False)
-    nowhave = gettovarlist()
-    for i in nowhave:
-        if nowhave[i]['name'] == data['product_name'][0]:
-            nowhave[i]['cnt'] = int(data['current_count'][0])
-    settovarlist(to=nowhave)
-    return redirect(url_for('dashboard'))
-
 def buy_to_admin():
     email = getlogin()
     user = getuser(email)
@@ -63,6 +50,7 @@ def buy_to_admin():
         "id": nowid,
         "prod": gettovarlist()[data['prod'][0]]['name'],
         "volume": f'{data['volume'][0]} {suffix}',
+        "volumeint": data['volume'][0],
         "person": user['username'],
         "when": f'{str(datetime.now())[11:16]}',
         "status": 0,
