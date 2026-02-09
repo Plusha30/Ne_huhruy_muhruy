@@ -81,6 +81,9 @@
 
                 <form action="{{ url_for('profile') }}" method="post">
                     <input name="commit_type" value="update_data" hidden>
+                    {% if show_corr %}
+                        <p class="text-success">Информация была успешно обновлена!</p>
+                    {% endif %}
                     <div class="row g-3 mb-3">
                         <div class="col-md-4">
                             <label class="form-label small fw-bold text-muted">Фамилия</label>

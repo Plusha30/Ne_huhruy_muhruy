@@ -153,14 +153,6 @@ def profile():
             changes = getuser(email)
             changes['allergies'] = data.get('allergies', [])
             setuser(email, changes)
-        
-        if (data['commit_type'][0] == 'update_abonement'):
-            user = getuser(email)
-            user['abonement'] = data['abonement_type'][0]
-            user['last_used_day'] = -1
-            user['last_used_hour'] = -1
-            setuser(email, user)
-            return redirect(url_for('profile'))
 
     user = getuser(email)  # или как у тебя принято
     kwargs = commonkwargs(email)
@@ -171,4 +163,8 @@ def profile():
     kwargs['class_grade'] = user.get('class_grade', '')
     kwargs['class_letter'] = user.get('class_letter', '')
 
-    return render_template('profile.html', **kwargs)
+    show_corr = False
+    if request.method == 'POST':
+        show_corr = True
+
+    return render_template('profile.html', **kwargs, show_corr=show_corr)
