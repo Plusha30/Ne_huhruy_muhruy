@@ -438,14 +438,6 @@
                                 <div class="d-flex justify-content-between mb-2">
                                     <span class="fw-bold">{{productlist[product]['name']}}
                                         {{productlist[product]['suffix']}}</span>
-                                    <!-- Кнопка Изменить -->
-                                    <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
-                                        data-bs-target="#editModal" data-product-name="{{productlist[product]['name']}}"
-                                        data-current-count="{{productlist[product]['cnt']}}"
-                                        data-max-count="{{productlist[product]['max']}}"
-                                        data-suffix="{{productlist[product]['suffix']}}">
-                                        Изменить
-                                    </button>
                                 </div>
                                 <div class="progress mb-2" style="height: 8px;">
                                     <div class="progress-bar bg-success"
@@ -477,8 +469,17 @@
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label small fw-bold text-muted">Количество (кг/л/шт)</label>
-                                        <input type="number" class="form-control rounded-3" id="prodAmount"
-                                            name="volume" placeholder="Например: 50" required max="1000000" min="1">
+                                        <input type="number" step="any" class="form-control rounded-3" id="prodAmount"
+                                            name="volume" placeholder="Например: 50, -10 или 2.5" required>
+                                        <small class="text-muted">Можно вводить отрицательные и дробные числа (через
+                                            точку)</small>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label small fw-bold text-muted">Причина запроса</label>
+                                        <textarea class="form-control rounded-3" id="reason" name="reason" rows="1"
+                                            placeholder="Укажите причину запроса..."
+                                            style="resize: none; overflow: hidden; min-height: 40px;"
+                                            oninput="autoResize(this)"></textarea>
                                     </div>
                                     <button type="submit" class="btn btn-primary-custom btn-pill w-100">Отправить
                                         администратору</button>
@@ -489,13 +490,18 @@
                         <div class="col-lg-7">
                             <h5 class="fw-bold mb-3">История заявок</h5>
                             <div class="list-group list-group-flush" id="requestsList">
-                                {% for i in range(toadmin|length - 1, -1, -1) %}
+                                {% for i in range(toadmin|length - 1, [-1, toadmin|length - 7]|max, -1) %}
                                 <div
                                     class="list-group-item px-0 border-bottom d-flex justify-content-between align-items-center">
                                     <div>
                                         <h6 class="fw-bold mb-0">{{ toadmin[i]["prod"] }} ({{ toadmin[i]["volume"] }})
-                                        </h6><small class="text-muted">{{ toadmin[i]["when"] }}
-                                        </small>
+                                        </h6>
+                                        <small class="text-muted">{{ toadmin[i]["when"] }}</small>
+                                        {% if toadmin[i].reason %}
+                                        <div class="mt-1">
+                                            <small class="text-muted">Причина: {{ toadmin[i].reason }}</small>
+                                        </div>
+                                        {% endif %}
                                     </div>
                                     {% if toadmin[i]['status'] == 0 %}
                                     <span class="badge bg-secondary bg-opacity-10 text-secondary">На рассмотрении</span>
@@ -686,14 +692,14 @@
                                             <!-- Кнопки действий -->
                                             {% if balance_requests[i].approved == 0 %}
                                             <div class="d-flex gap-3 mt-auto">
-                                                <form action="{{ url_for('approve_balance_req', id=i) }}"
-                                                    method="get" class="flex-fill">
+                                                <form action="{{ url_for('approve_balance_req', id=i) }}" method="get"
+                                                    class="flex-fill">
                                                     <button type="submit" class="btn btn-success btn-lg w-100 py-2">
                                                         <i class="bi bi-check-lg me-2"></i>Одобрить
                                                     </button>
                                                 </form>
-                                                <form action="{{ url_for('decline_balance_req', id=i) }}"
-                                                    method="get" class="flex-fill">
+                                                <form action="{{ url_for('decline_balance_req', id=i) }}" method="get"
+                                                    class="flex-fill">
                                                     <button type="submit"
                                                         class="btn btn-outline-danger btn-lg w-100 py-2">
                                                         <i class="bi bi-x-lg me-2"></i>Отклонить
@@ -1070,6 +1076,28 @@
                 this.value = tomorrowStr; // Сбрасываем на завтра
             }
         });
+    });
+
+    // Функция для автоматического расширения текстового поля
+    function autoResize(textarea) {
+        // Сбрасываем высоту чтобы получить правильный scrollHeight
+        textarea.style.height = 'auto';
+        // Устанавливаем новую высоту
+        textarea.style.height = (textarea.scrollHeight) + 'px';
+    }
+
+    // Инициализация авторазмера при загрузке страницы
+    document.addEventListener('DOMContentLoaded', function () {
+        const reasonTextarea = document.getElementById('reason');
+        if (reasonTextarea) {
+            // При загрузке страницы устанавливаем правильную высоту
+            autoResize(reasonTextarea);
+
+            // Обработчик для изменения высоты при вводе
+            reasonTextarea.addEventListener('input', function () {
+                autoResize(this);
+            });
+        }
     });
 
 </script>
