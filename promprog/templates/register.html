@@ -3,60 +3,69 @@
 
 {% block content %}
 <div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
-    <div class="card auth-card border-0 rounded-4 w-100" style="max-width: 900px;">
+    <div class="card auth-card border-0 rounded-4 w-100" style="max-width: 1100px;">
         <div class="row g-0">
 
             <!-- ЛЕВАЯ ЧАСТЬ: ФОРМА -->
-            <div class="col-md-6 bg-white p-5">
+            <div class="col-lg-7 bg-white p-5">
                 <div class="mb-4">
                     <h2 class="fw-bold mb-1">Создать аккаунт</h2>
                     <p class="text-muted small">Заполните данные для входа в систему.</p>
                 </div>
 
                 <form action="{{ url_for('register') }}" method="post">
-                    <div class="row g-3 mb-3">
-                        <div class="col-md-4">
+                    <!-- ФИО - более широкие поля -->
+                    <div class="row mb-4">
+                        <div class="col-12 mb-3">
                             <label class="form-label small fw-bold text-muted">Фамилия</label>
-                            <input name="last_name" type="text" class="form-control rounded-3 py-2 bg-light border-light"
-                                   placeholder="Иванов" required>
+                            <input name="last_name" type="text" class="form-control rounded-3 py-3 bg-light border-light"
+                                   placeholder="Иванов" required style="font-size: 1.05rem; height: 50px;">
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-12 mb-3">
                             <label class="form-label small fw-bold text-muted">Имя</label>
-                            <input name="first_name" type="text" class="form-control rounded-3 py-2 bg-light border-light"
-                                   placeholder="Иван" required>
+                            <input name="first_name" type="text" class="form-control rounded-3 py-3 bg-light border-light"
+                                   placeholder="Иван" required style="font-size: 1.05rem; height: 50px;">
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-12 mb-4">
                             <label class="form-label small fw-bold text-muted">Отчество</label>
-                            <input name="middle_name" type="text" class="form-control rounded-3 py-2 bg-light border-light"
-                                   placeholder="Иванович">
+                            <input name="middle_name" type="text" class="form-control rounded-3 py-3 bg-light border-light"
+                                   placeholder="Иванович (необязательно)" style="font-size: 1.05rem; height: 50px;">
                         </div>
                     </div>
-                    <div class="mb-3">
+
+                    <div class="mb-4">
                         <label class="form-label small fw-bold text-muted">Email</label>
-                        <input name="email" type="email" class="form-control rounded-3 py-2 bg-light border-light" placeholder="name@school.ru" required>
+                        <input name="email" type="email" class="form-control rounded-3 py-3 bg-light border-light"
+                               placeholder="name@school.ru" required style="font-size: 1.05rem; height: 50px;">
                     </div>
+
                     <div class="mb-4">
                         <label class="form-label small fw-bold text-muted">Пароль</label>
-                        <input name="password" type="password" class="form-control rounded-3 py-2 bg-light border-light" placeholder="Придумайте пароль" required>
+                        <input name="password" type="password" class="form-control rounded-3 py-3 bg-light border-light"
+                               placeholder="Придумайте пароль" required style="font-size: 1.05rem; height: 50px;">
                     </div>
 
-                    <div class="mb-4">
-                        <label class="form-label small fw-bold text-muted d-block">Выберите роль:</label>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" id="school" type="radio" name="rights" value="1" checked>
-                            <label class="form-check-label" for="school">Ученик</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" id="povar" type="radio" name="rights" value="2">
-                            <label class="form-check-label" for="povar">Повар</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" id="admin" type="radio" name="rights" value="3">
-                            <label class="form-check-label" for="admin">Админ</label>
+                    <div class="mb-5">
+                        <label class="form-label small fw-bold text-muted d-block mb-3">Выберите роль:</label>
+                        <div class="d-flex flex-wrap gap-4">
+                            <div class="form-check">
+                                <input class="form-check-input" id="school" type="radio" name="rights" value="1" checked>
+                                <label class="form-check-label ms-2" for="school">Ученик</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" id="povar" type="radio" name="rights" value="2">
+                                <label class="form-check-label ms-2" for="povar">Повар</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" id="admin" type="radio" name="rights" value="3">
+                                <label class="form-check-label ms-2" for="admin">Админ</label>
+                            </div>
                         </div>
                     </div>
 
-                    <button class="btn btn-primary-custom btn-pill w-100 mb-3">Зарегистрироваться</button>
+                    <button class="btn btn-primary-custom btn-pill w-100 py-3 mb-3" style="font-size: 1.1rem; height: 52px;">
+                        Зарегистрироваться
+                    </button>
                 </form>
 
                 <div class="text-center mt-4 small">
@@ -65,17 +74,36 @@
                 </div>
             </div>
 
-            <!-- ПРАВАЯ ЧАСТЬ: КАРТИНКА (ТЕМА ЕДЫ) -->
-            <div class="col-md-6 auth-bg-side d-none d-md-flex flex-column text-center" style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);">
-                <div class="z-1">
-                    <div class="mb-4 text-warning opacity-75">
-                        <!-- Иконка яблока вместо ракеты -->
-                        <i class="bi bi-apple" style="font-size: 4rem;"></i>
+            <!-- ПРАВАЯ ЧАСТЬ: ТЕКСТ -->
+            <div class="col-lg-5 d-none d-lg-flex flex-column justify-content-center align-items-center text-white"
+                 style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);">
+                <div class="text-center px-5">
+                    <div class="mb-4">
+                        <i class="bi bi-egg-fried text-warning" style="font-size: 3.5rem;"></i>
                     </div>
-                    <h3 class="fw-bold mb-3">Вкусное будущее</h3>
-                    <p class="opacity-75 small px-4">
-                        Присоединяйтесь к цифровой системе школьного питания. Быстро, удобно и полезно.
+
+                    <h3 class="fw-bold mb-3 text-warning">Вкусное будущее</h3>
+                    <p class="opacity-75 px-4" style="font-size: 1.1rem; line-height: 1.6;">
+                        Присоединяйтесь к цифровой системе школьного питания.
+                        Быстро, удобно и полезно для здоровья.
                     </p>
+
+                    <div class="mt-5 pt-3">
+                        <div class="d-flex justify-content-center gap-5">
+                            <div class="text-center">
+                                <i class="bi bi-lightning-fill text-warning" style="font-size: 1.8rem;"></i>
+                                <p class="small mt-2 opacity-75">Быстрый заказ</p>
+                            </div>
+                            <div class="text-center">
+                                <i class="bi bi-shield-check text-warning" style="font-size: 1.8rem;"></i>
+                                <p class="small mt-2 opacity-75">Безопасно</p>
+                            </div>
+                            <div class="text-center">
+                                <i class="bi bi-heart-fill text-warning" style="font-size: 1.8rem;"></i>
+                                <p class="small mt-2 opacity-75">Полезно</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 

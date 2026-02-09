@@ -1,0 +1,18 @@
+{
+    "password": "ddd",
+    "username": "\u0423\u0448\u0430\u043a\u043e\u04321 \u0414\u0435\u043d\u0438\u04411 \u041f\u0430\u0432\u043b\u043e\u0432\u0438\u04471",
+    "last_name": "\u0423\u0448\u0430\u043a\u043e\u04321",
+    "first_name": "\u0414\u0435\u043d\u0438\u04411",
+    "middle_name": "\u041f\u0430\u0432\u043b\u043e\u0432\u0438\u04471",
+    "class": "",
+    "description": "",
+    "phone": "",
+    "rights": 1,
+    "money": 0,
+    "cart": [],
+    "to_take": [],
+    "abonement": "null",
+    "last_used_hour": -1,
+    "last_used_day": -1,
+    "history": []
+}
