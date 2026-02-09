@@ -125,8 +125,8 @@ def buy_from_cart():
         'phone': user['phone'],
         "money": sum,
         "what": names,
-        "time": f'{datetime.now().hour}:{datetime.now().minute}',
-        "order_date": f'{datetime.now().date()}',
+        "time": f'{str(datetime.now())[11:16]}',
+        "order_date": f'{datetime.now().date().day}.{datetime.now().date().month}.{datetime.now().date().year}',
         "date": f'{request.form.get("date", "Не указано")}',
         "isCooked": False,
         'isComplete': False
@@ -142,7 +142,7 @@ def buy_from_cart():
     user['history'].append({
         "products": names,
         "time": f'{str(datetime.now())[11:16]}',
-        "order_date": f'{datetime.now().date()}',
+        "order_date": f'{datetime.now().date().day}.{datetime.now().date().month}.{datetime.now().date().year}',
         "date": f'{request.form.get("date", "Не указано")}',
         "money": sum
     })

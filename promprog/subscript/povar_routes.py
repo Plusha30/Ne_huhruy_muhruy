@@ -64,7 +64,7 @@ def buy_to_admin():
         "prod": gettovarlist()[data['prod'][0]]['name'],
         "volume": f'{data['volume'][0]} {suffix}',
         "person": user['username'],
-        "when": f'{datetime.now().hour}:{datetime.now().minute}',
+        "when": f'{str(datetime.now())[11:16]}',
         "status": 0,
         "cost": f'{int(data['volume'][0]) * price} руб.'
     })
