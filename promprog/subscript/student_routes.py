@@ -157,8 +157,7 @@ def payment():
     if (request.method == 'POST'):
         usernow = getuser(email)
         data = request.form.to_dict(flat=False)
-        usernow['money'] += int(data['money'][0])
-        setuser(email, usernow)
+        
         return redirect(session.get('pre_previous_page', '/dashboard'))
     return render_template('payment.html', **kwargs)
 

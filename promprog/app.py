@@ -71,10 +71,6 @@ def store_current_page():
         session['previous_page'] = session.get('now_page', '/dashboard')
         session['now_page'] = request.url
 
-@app.route('/godia')
-def godia():
-    return render_template('payment_service.html', **commonkwargs(getlogin(reset_auth=False)))
-
 @app.route('/dashboard')
 def dashboard():
     email = getlogin()

@@ -65,11 +65,9 @@
                         </div>
                     </div>
                     <form action="{{ url_for('buy_from_cart') }}" method="post">
-                        {% if canAbonement or money >= cart_total %}
                         <input disabled type="date" id="datepicker" class="form-control rounded-3"
                             style="width: 300px; margin-left: auto; margin-right: auto;" value="{{ now_date }}">
                         <input type="date" name="date" hidden value="{{ now_date }}">
-                        {% endif %}
                         <div style="margin-top: 5px;"></div>
                         {% if money >= cart_total %}
                         <div style="margin-left: auto; margin-right: auto;">

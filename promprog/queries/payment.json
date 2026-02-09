@@ -1,0 +1,14 @@
+[
+    {
+        "approved": 1,
+        "email": "student@student"
+    },
+    {
+        "approved": -1,
+        "email": "student@student"
+    },
+    {
+        "approved": 0,
+        "email": "student@student"
+    }
+]
