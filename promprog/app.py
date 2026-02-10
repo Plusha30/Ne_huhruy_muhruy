@@ -58,13 +58,13 @@ app.add_url_rule('/download_product_report', view_func=admin_r.download_product_
 app.add_url_rule('/approve_balance_req/<id>', view_func=admin_r.approve_balance_req)
 app.add_url_rule('/decline_balance_req/<id>', view_func=admin_r.decline_balance_req)
 
-@app.errorhandler(404)
-def four04(error):
-    return render_template('404.html', **commonkwargs(getlogin(reset_auth=False)))
+#@app.errorhandler(404)
+#def four04(error):
+#    return render_template('404.html', **commonkwargs(getlogin(reset_auth=False)))
 
-@app.errorhandler(Exception)
-def fatal_error(error):
-    return render_template('404.html', **commonkwargs(getlogin(reset_auth=False)))
+#@app.errorhandler(Exception)
+#def fatal_error(error):
+#    return render_template('404.html', **commonkwargs(getlogin(reset_auth=False)))
 
 @app.before_request
 def store_current_page():
@@ -73,6 +73,10 @@ def store_current_page():
             session['pre_previous_page'] = session.get('previous_page', '/dashboard')
             session['previous_page'] = session.get('now_page', '/dashboard')
             session['now_page'] = request.url
+
+@app.route('/choose')
+def choose():
+    return render_template('choose.html', **commonkwargs(getlogin()))
 
 @app.route('/dashboard')
 def dashboard():
