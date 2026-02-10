@@ -5,7 +5,7 @@
     "description": "empty",
     "phone": "+7 702 604 44 12",
     "rights": 1,
-    "money": 9380,
+    "money": 380,
     "allergies": [
         "\u042f\u0431\u043b\u043e\u043a\u0438"
     ],
@@ -20,7 +20,7 @@
         ]
     ],
     "to_take": [],
-    "abonement": "\u041f\u043e\u043b\u043d\u043e\u0446\u0435\u043d\u043d\u044b\u0439",
+    "abonement": "\u0417\u0430\u0432\u0442\u0440\u0430\u043a",
     "last_used_day": -1,
     "last_used_hour": -1,
     "last_name": "\u0410\u0440\u0442\u0438\u043c\u043e\u0432\u0438\u0447",

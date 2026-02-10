@@ -13,5 +13,23 @@
         "approved": 0,
         "email": "student@student",
         "amount": 2000
+<<<<<<< Updated upstream
+=======
+    },
+    {
+        "approved": -1,
+        "email": "student@student",
+        "amount": 50
+    },
+    {
+        "approved": 1,
+        "email": "student@student",
+        "amount": 200
+    },
+    {
+        "approved": 0,
+        "email": "admin@admin",
+        "amount": 10000
+>>>>>>> Stashed changes
     }
 ]
