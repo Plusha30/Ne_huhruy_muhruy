@@ -186,9 +186,15 @@
                                     {% endfor %}
                                 </div>
                             </div>
+                            {% if i['money'] == 0 %}
+                            <h3 class="fw-bold mb-0 text-success text-bold text-nowrap" style="min-width: 60px;">
+                                по абонементу
+                            </h3>
+                            {% else %}
                             <h3 class="fw-bold mb-0 text-success text-bold text-nowrap" style="min-width: 60px;">
                                 {{ i['money'] }} ₽
                             </h3>
+                            {% endif %}
                         </div>
                     </div>
                     {% endfor %}
