@@ -6,7 +6,7 @@ from email.mime.text import MIMEText
 from flask import session
 from subscript.filework import does_user_exist
 
-Debug_mode = False #эта переменная при состоянии True вместо отправки кода на почту выводит его в print()
+Debug_mode = True #эта переменная при состоянии True вместо отправки кода на почту выводит его в print()
                    #вызвано тем, что слишком много писем с mail.ru почты приводит к блокировке почты из-за спама
                    #(может уже нет, так как я написал в поддержку, но это не факт)
 
@@ -24,7 +24,7 @@ def setlogin(email):
 
 def sendmail(mail, code):
     if (Debug_mode):
-        print(code)
+        print(f"Ваш код: {code}")
         return
     fromaddr = "school_dining@mail.ru"
     toaddr = mail

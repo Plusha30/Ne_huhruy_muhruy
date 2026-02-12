@@ -37,7 +37,7 @@ def register():
         return redirect(url_for('confirm_mail'), 302)
     return render_template('register.html', **commonkwargs(email))
 
-def confirm_mail():
+def confirm_mail(): # for registration
     email = getlogin(reset_auth=False)
     if (email != 'placeholder' or session['auth'] == False):
         return redirect(url_for('profile'), 302)
@@ -52,7 +52,7 @@ def confirm_mail():
             print(f'Ваш код: {scode}')
         else:
             sendmail(session['temp_email'], scode)
-        return render_template('confirm_mail.html', **commonkwargs(email))
+        return render_template('confirm_mail.html', **commonkwargs(email), redirectto='confirm_mail')
     if (request.method == 'POST'):
         data = request.form.to_dict(flat=False)
         for i in range(4):
@@ -83,6 +83,44 @@ def confirm_mail():
         })
         session['temp_password'] = False
         email = session['temp_email']
+        setlogin(email)
+        return redirect(url_for('profile'), 302)
+    return redirect(url_for('register'), 302)
+
+def login_wout_pass():
+    email = getlogin(reset_auth=False)
+    if (email != 'placeholder'):
+        return redirect(url_for('profile'), 302)
+    if (request.method == 'POST'):
+        data = request.form.to_dict(flat=False)
+        input_email = data['email'][0]
+        if len(data['email']) > 0 and getuser(data['email'][0]) != False:
+            session['temp_mail'] = input_email
+            session['auth'] = True
+            return redirect(url_for('confirm_login_mail'), 302)
+        else:
+            return render_template('login_wout_pass.html', wrong=True, **commonkwargs(email))
+    return render_template('login_wout_pass.html', wrong=False, **commonkwargs(email))
+
+def confirm_login_mail():
+    email = getlogin(reset_auth=False)
+    if (email != 'placeholder' or session['auth'] == False):
+        return redirect(url_for('profile'), 302)
+    if (request.method == 'GET'):
+        code = []
+        scode = ""
+        for i in range(4):
+            code.append(randint(0, 9))
+            scode += str(code[i])
+        session['auth_code'] = code
+        sendmail(session['temp_mail'], scode)
+        return render_template('confirm_mail.html', **commonkwargs(email), redirectto='confirm_login_mail')
+    if (request.method == 'POST'):
+        data = request.form.to_dict(flat=False)
+        for i in range(4):
+            if session['auth_code'][i] != int(data[f'code{i}'][0]):
+                return redirect(url_for('confirm_login_mail'), 302)
+        email = session['temp_mail']
         setlogin(email)
         return redirect(url_for('profile'), 302)
     return redirect(url_for('register'), 302)

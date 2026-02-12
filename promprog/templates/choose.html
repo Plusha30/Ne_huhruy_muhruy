@@ -2,7 +2,7 @@
 {% block title %}Выбор способа входа{% endblock %}
 
 {% block content %}
-<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh; margin-bottom: 20px;">
     <div class="card auth-card border-0 rounded-4 w-100" style="max-width: 900px;">
         <div class="row g-0">
 
@@ -18,7 +18,7 @@
                 <div class="mb-5">
                     <!-- Вариант 1: По паролю -->
                     <a href="{{ url_for('login') }}" class="text-decoration-none">
-                        <div class="login-choice-card rounded-4 p-4 mb-4 border cursor-pointer" style="transition: all 0.3s;">
+                        <div class="login-choice-card rounded-4 p-4 mb-4 border cursor-pointer">
                             <div class="d-flex align-items-center gap-4">
                                 <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" 
                                      style="width: 80px; height: 80px; background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);">
@@ -37,12 +37,12 @@
                         </div>
                     </a>
 
-                    <!-- Вариант 2: По коду на почту -->
-                    <a href="{{ url_for('pay') }}" class="text-decoration-none">
-                        <div class="login-choice-card rounded-4 p-4 mb-4 border cursor-pointer" style="transition: all 0.3s;">
+                    <!-- Вариант 2: По коду на почту (иконка теперь синяя) -->
+                    <a href="{{ url_for('login_wout_pass') }}" class="text-decoration-none">
+                        <div class="login-choice-card rounded-4 p-4 mb-4 border cursor-pointer">
                             <div class="d-flex align-items-center gap-4">
-                                <div class="bg-warning rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" 
-                                     style="width: 80px; height: 80px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+                                <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" 
+                                     style="width: 80px; height: 80px; background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);">
                                     <i class="bi bi-envelope-fill text-white" style="font-size: 2.5rem;"></i>
                                 </div>
                                 <div class="flex-grow-1">
@@ -113,14 +113,10 @@
     .login-choice-card {
         border: 1px solid #e2e8f0;
         background: #f8fafc;
-        transition: all 0.3s ease;
     }
     
     .login-choice-card:hover {
-        border-color: #3b82f6;
-        background: white;
-        box-shadow: 0 12px 30px rgba(59, 130, 246, 0.2);
-        transform: translateY(-4px);
+        border-color: #3b82f6; /* только синяя обводка */
     }
     
     .cursor-pointer {
@@ -152,22 +148,5 @@
     }
 </style>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Добавляем анимацию при наведении на карточки
-        const cards = document.querySelectorAll('.login-choice-card');
-        
-        cards.forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-6px)';
-                this.style.boxShadow = '0 16px 40px rgba(59, 130, 246, 0.25)';
-            });
-            
-            card.addEventListener('mouseleave', function() {
-                this.style.transform = 'translateY(-2px)';
-                this.style.boxShadow = '0 12px 30px rgba(59, 130, 246, 0.2)';
-            });
-        });
-    });
-</script>
+<!-- JavaScript, отвечавший за дополнительные hover-эффекты, удалён -->
 {% endblock %}

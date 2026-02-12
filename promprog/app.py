@@ -35,6 +35,8 @@ app.add_url_rule('/login', view_func=account_r.login, methods=['GET', 'POST'])
 app.add_url_rule('/register', view_func=account_r.register, methods=['GET', 'POST'])
 app.add_url_rule('/confirm_mail', view_func=account_r.confirm_mail, methods=['GET', 'POST'])
 app.add_url_rule('/profile', view_func=account_r.profile, methods=['GET', 'POST'])
+app.add_url_rule('/login_wout_pass', view_func=account_r.login_wout_pass, methods=['GET', 'POST'])
+app.add_url_rule('/confirm_login_mail', view_func=account_r.confirm_login_mail, methods=['GET', 'POST'])
 #student_routes.py
 app.add_url_rule("/got_food/<id>", view_func=student_r.gotfood, methods=['POST'])
 app.add_url_rule('/add_to_cart/<id>', view_func=student_r.add_to_cart)
