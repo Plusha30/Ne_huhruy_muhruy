@@ -5,6 +5,9 @@ from subscript.filework import *
 from subscript.account_system import *
 from random import randint
 
+def choose():
+    return render_template('choose.html', **commonkwargs(getlogin()))
+
 def login():
     email = getlogin()
     if (email != 'placeholder'):
