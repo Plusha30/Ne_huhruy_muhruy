@@ -226,10 +226,11 @@ def setabonement(id):
     email = getlogin()
     if email != 'placeholder':
         user = getuser(email)
-        user['abonement'] = id
         user['last_used_day'] = -1
         user['last_used_hour'] = -1
-        user['money'] -= getquerylist('abonement_price.json')[id]
+        prices = getquerylist('abonement_price.json')
+        user['money'] -= max(0, prices[id] - prices[user['abonement']])
+        user['abonement'] = id
         setuser(email, user)
     return redirect(url_for('pricing'))
 

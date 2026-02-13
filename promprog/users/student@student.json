@@ -5,13 +5,13 @@
     "description": "empty",
     "phone": "+7 702 604 44 12",
     "rights": 1,
-    "money": 380,
+    "money": 1380,
     "allergies": [
         "\u042f\u0431\u043b\u043e\u043a\u0438"
     ],
     "cart": [],
     "to_take": [],
-    "abonement": "\u0417\u0430\u0432\u0442\u0440\u0430\u043a",
+    "abonement": "null",
     "last_used_day": -1,
     "last_used_hour": -1,
     "last_name": "\u0410\u0440\u0442\u0438\u043c\u043e\u0432\u0438\u0447",
