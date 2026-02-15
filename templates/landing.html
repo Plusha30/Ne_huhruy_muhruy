@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+{% block title %}ШколПит - Главная{% endblock %}
+
+{% block content %}
+
+<style>
+    /* Окно просмотра карусели (скрывает лишнее) */
+    .carousel-wrapper {
+        position: relative;
+        max-width: 900px;
+        margin: 0 auto;
+        overflow: hidden; /* Важно: скрываем то, что вылезает */
+        padding: 20px 0;
+    }
+
+    /* Лента с карточками */
+    .carousel-track {
+        display: flex;
+        gap: 20px; /* Отступ между карточками */
+        width: max-content;
+        transition: transform 0.3s ease-in-out; /* Плавность движения */
+        will-change: transform;
+    }
+
+    /* Карточка еды */
+    .food-visual-card {
+        min-width: 220px; /* Фиксированная ширина */
+        height: 260px;
+        background: white;
+        border-radius: 24px;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem;
+        user-select: none;
+    }
+
+    .food-visual-card:hover {
+        border-color: #3b82f6;
+    }
+
+    /* Кнопки навигации */
+    .nav-btn {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: white;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 20;
+        color: #0f172a;
+        transition: all 0.2s;
+    }
+
+    .nav-btn:hover {
+        background: #f8fafc;
+        color: #3b82f6;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+    }
+
+    .nav-btn:active {
+        transform: translateY(-50%) scale(0.95);
+    }
+
+    .nav-prev { left: 10px; }
+    .nav-next { right: 10px; }
+
+</style>
+
+<!-- HERO SECTION -->
+<section class="hero-section text-center">
+    <div class="container">
+
+        <h1 class="display-title display-3 mb-4">
+            Вкусное и полезное<br>
+            <span class="text-gradient">школьное питание</span>
+        </h1>
+        <p class="lead text-secondary mx-auto mb-5" style="max-width: 600px;">
+            Больше никаких очередей и бумажных талонов. Заказывайте еду онлайн,
+            следите за рационом и оплачивайте картой.
+        </p>
+
+        <!-- БЛОК С КАРТОЧКАМИ В РЯД -->
+        <div class="mt-5" style="max-width: 1200px; margin: 0 auto;">
+            <div class="row g-4 justify-content-center">
+                <!-- Карточка 1 -->
+                <div class="col-md-4 col-sm-6">
+                    <div class="food-visual-card h-100 p-4" style="min-height: 260px;">
+                        <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center mb-4" style="width: 80px; height: 80px;">
+                            <i class="bi bi-clock-history fs-4"></i>
+                        </div>
+                        <h5>Без очередей</h5>
+                        <p class="text-muted small" style="overflow-wrap: break-word;">
+                            Заказывайте заранее и забирайте еду сразу на перемене.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Карточка 2 -->
+                <div class="col-md-4 col-sm-6">
+                    <div class="food-visual-card h-100 p-4" style="min-height: 260px;">
+                        <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center mb-4" style="width: 80px; height: 80px;">
+                            <i class="bi bi-heart-pulse fs-4"></i>
+                        </div>
+                        <h5>Здоровое питание</h5>
+                        <p class="text-muted small" style="overflow-wrap: break-word;">
+                            Полный контроль КБЖУ и учет аллергенов в профиле ученика.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Карточка 3 -->
+                <div class="col-md-4 col-sm-6">
+                    <div class="food-visual-card h-100 p-4" style="min-height: 260px;">
+                        <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center mb-4" style="width: 80px; height: 80px;">
+                            <i class="bi bi-credit-card fs-4"></i>
+                        </div>
+                        <h5>Удобная оплата</h5>
+                        <p class="text-muted small" style="overflow-wrap: break-word;">
+                            Оплата картой школьника или онлайн через личный кабинет.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- JS Script для бесконечной прокрутки -->
+<script>
+    const track = document.getElementById('track');
+    const cardWidth = 439; // Ширина карточки
+    const gap = 20;        // Отступ
+    const step = cardWidth + gap; // Шаг сдвига (240px)
+    let isAnimating = false;
+
+    function moveSlide(direction) {
+        if (isAnimating) return; // Защита от быстрого клика
+        isAnimating = true;
+
+        if (direction === 1) {
+            // === ДВИЖЕНИЕ ВПРАВО ===
+            // 1. Сдвигаем ленту влево
+            track.style.transition = 'transform 0.5s ease-in-out';
+            track.style.transform = `translateX(-${step}px)`;
+
+            // 2. После анимации переносим ПЕРВЫЙ элемент в КОНЕЦ
+            setTimeout(() => {
+                track.style.transition = 'none'; // Отключаем анимацию для мгновенного переноса
+                track.appendChild(track.firstElementChild); // Перенос
+                track.style.transform = 'translateX(0)'; // Сброс позиции
+                isAnimating = false;
+            }, 500); // 500мс совпадает с transition в CSS
+
+        } else {
+            // === ДВИЖЕНИЕ ВЛЕВО (Хитрость) ===
+            // 1. Сначала мгновенно берем ПОСЛЕДНИЙ элемент и ставим в НАЧАЛО
+            // Но сдвигаем ленту так, чтобы пользователь не заметил подмены
+            track.style.transition = 'none';
+            track.prepend(track.lastElementChild);
+            track.style.transform = `translateX(-${step}px)`;
+
+            // 2. С небольшой задержкой включаем анимацию и едем в 0
+            setTimeout(() => {
+                track.style.transition = 'transform 0.5s ease-in-out';
+                track.style.transform = 'translateX(0)';
+                setTimeout(() => { isAnimating = false; }, 500);
+            }, 10);
+        }
+    }
+</script>
+
+{% endblock %}

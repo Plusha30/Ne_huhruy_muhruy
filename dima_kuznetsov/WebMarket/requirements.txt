@@ -1,2 +1,0 @@
-python >= 3.10,
-flask python library (install via pip)

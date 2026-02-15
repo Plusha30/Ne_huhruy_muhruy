@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}404 - Страница не найдена{% endblock %}
+
+{% block content %}
+<section class="d-flex align-items-center justify-content-center" style="min-height: 70vh;">
+    <div class="container text-center">
+        <!-- Анимированная иконка или большой текст -->
+        <div class="mb-4">
+            <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 rounded-pill px-3 py-2 mb-3">
+                Ошибка 404
+            </span>
+            <h1 class="display-title display-1 fw-bold mb-3">
+                Упс! Вы <span class="text-gradient">потерялись</span>?
+            </h1>
+            <p class="text-secondary lead mb-5 mx-auto" style="max-width: 600px;">
+                Страница, которую вы ищете, возможно, была удалена, её название изменено или она временно недоступна.
+            </p>
+        </div>
+
+        <!-- Центральная карточка в стиле Pricing -->
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-4">
+                <div class="card card-hover border-0 shadow-sm p-4 mb-4">
+                    <div class="mb-4 text-primary">
+                        <i class="bi bi-exclamation-triangle" style="font-size: 4rem;"></i>
+                    </div>
+                    <h5 class="fw-bold mb-3">Что случилось?</h5>
+                    <ul class="list-unstyled text-start mb-4">
+                        <li class="mb-2 small text-muted"><i class="bi bi-dot text-primary"></i> Неисправная ссылка</li>
+                        <li class="mb-2 small text-muted"><i class="bi bi-dot text-primary"></i> Опечатка в адресе</li>
+                        <li class="mb-2 small text-muted"><i class="bi bi-dot text-primary"></i> Удалённое содержимое</li>
+                    </ul>
+                    <div class="d-grid gap-2">
+                        <a href="{{ url_for('landing') }}" class="btn btn-primary-custom btn-pill py-2 fw-bold">
+                            На главную
+                        </a>
+                        <a href="javascript:history.back()" class="btn btn-white border btn-pill py-2 fw-bold">
+                            Назад
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
