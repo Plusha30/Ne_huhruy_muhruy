@@ -8,10 +8,23 @@ RU:
 
 Веб-приложение написано на языке программирования Python 3 из-за своей гибкости и популярности, на фреймворке Flask по аналогичным причинам.
 
-Инструкции к установке и запуску:
+Инструкции к установке и запуску на Linux:
 - Поставьте интерпретатор Python 3.14.2 и менеджер пакетов pip
-- Поставьте требуемые библиотеки для работы веб-приложения через pip (см. список в requirements.txt)
-- Запустите через Python программу app.py
+- Откройте в терминале папку проекта (командой cd path/to/project или, если стоит подходящий DE, правой кнопкой по мыши и "Открыть в терминале")
+- Создайте виртуальную среду: python3 -m venv venv
+- Активируйте её: source venv/bin/activate
+- Загрузите необходимые библиотеки: pip install -r requirements.txt
+- Запустите проект: python3 app.py
+- Откройте [http:](http://127.0.0.1:5237/) в браузере.
+
+Инструкции к установке и запуску на Windows:
+- Поставьте интерпретатор Python 3.14.2 и менеджер пакетов pip
+- Откройте powershell
+- Перейдите в папку проекта: cd path/to/project
+- Создайте виртуальную среду: python -m venv venv
+- Активируйте её: source .\venv\Scripts\Activate.ps1
+- Загрузите необходимые библиотеки: pip install -r requirements.txt
+- Запустите проект: python app.py
 - Откройте [http:](http://127.0.0.1:5237/) в браузере.
 
 ENG:
@@ -24,9 +37,21 @@ The "SchoolPit" project is a web application that allows students, cooks, and ad
 
 The web application is written in the Python 3 programming language due to its flexibility and popularity, using the Flask framework for similar reasons.
 
-Installation and launch instructions:
-
+Instructions for installation and launch on Linux:
 - Install the Python 3.14.2 interpreter and the pip package manager.
-- Install the required libraries for the web application via pip (see the list in requirements.txt).
-- Launch the app.py program via Python.
+- Open the project folder in the terminal (using the command cd path/to/project or, if you have a suitable DE, right-click and select "Open in Terminal").
+- Create a virtual environment: python3 -m venv venv
+- Activate it: source venv/bin/activate
+- Download the required libraries: pip install -r requirements.txt
+- Launch the project: python3 app.py
+- Open [http:](http://127.0.0.1:5237/) in your browser.
+
+Instructions for installation and launch on Windows:
+- Install the Python 3.14.2 interpreter and the pip package manager.
+- Open PowerShell.
+- Navigate to the project folder: cd path/to/project
+- Create a virtual environment: python -m venv venv
+- Activate it: .\venv\Scripts\Activate.ps1
+- Download the required libraries: pip install -r requirements.txt
+- Launch the project: python app.py
 - Open [http:](http://127.0.0.1:5237/) in your browser.
