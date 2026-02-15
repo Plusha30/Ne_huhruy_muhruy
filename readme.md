@@ -15,7 +15,7 @@ RU:
 - Активируйте её: source venv/bin/activate
 - Загрузите необходимые библиотеки: pip install -r requirements.txt
 - Запустите проект: python3 app.py
-- Откройте [http:](http://127.0.0.1:5237/) в браузере.
+- Откройте [http://127.0.0.1:5237/](http://127.0.0.1:5237/) в браузере.
 
 Инструкции к установке и запуску на Windows:
 - Поставьте интерпретатор Python 3.14.2 и менеджер пакетов pip
@@ -25,7 +25,7 @@ RU:
 - Активируйте её: source .\venv\Scripts\Activate.ps1
 - Загрузите необходимые библиотеки: pip install -r requirements.txt
 - Запустите проект: python app.py
-- Откройте [http:](http://127.0.0.1:5237/) в браузере.
+- Откройте [http://127.0.0.1:5237/](http://127.0.0.1:5237/) в браузере.
 
 ENG:
 
@@ -44,7 +44,7 @@ Instructions for installation and launch on Linux:
 - Activate it: source venv/bin/activate
 - Download the required libraries: pip install -r requirements.txt
 - Launch the project: python3 app.py
-- Open [http:](http://127.0.0.1:5237/) in your browser.
+- Open [http://127.0.0.1:5237/](http://127.0.0.1:5237/) in your browser.
 
 Instructions for installation and launch on Windows:
 - Install the Python 3.14.2 interpreter and the pip package manager.
@@ -54,4 +54,4 @@ Instructions for installation and launch on Windows:
 - Activate it: .\venv\Scripts\Activate.ps1
 - Download the required libraries: pip install -r requirements.txt
 - Launch the project: python app.py
-- Open [http:](http://127.0.0.1:5237/) in your browser.
+- Open [http://127.0.0.1:5237/](http://127.0.0.1:5237/) in your browser.
