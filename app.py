@@ -73,7 +73,6 @@ def fatal_error(error):
 def store_current_page():
     if request.endpoint and request.endpoint != 'static':
         if (session.get('now_page', '/') != request.url):
-            session['pre_previous_page'] = session.get('previous_page', '/dashboard')
             session['previous_page'] = session.get('now_page', '/dashboard')
             session['now_page'] = request.url
 

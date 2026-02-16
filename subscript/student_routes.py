@@ -166,7 +166,7 @@ def payment():
                 "amount": int(request.form.get('money', 0))
             })
             setquerylist(name="payment.json", to=photos)
-        return redirect(session.get('pre_previous_page', '/dashboard'))
+        return redirect(session.get('previous_page', '/dashboard'))
     return render_template('payment.html', **kwargs)
 
 def pay():

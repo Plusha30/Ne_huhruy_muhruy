@@ -19,7 +19,7 @@ def set_admin_query():
                 tovars = gettovarlist()
                 for j in tovars:
                     if (tovars[j]['name'] == qu[i]['prod']):
-                        tovars[j]['cnt'] += qu[i]['volumeint']
+                        tovars[j]['cnt'] = int(qu[i]['volumeint'] + tovars[j]['cnt'])
                         settovarlist(tovars)
             break
     setquerylist(name="povar_to_admin.json", to=qu)
