@@ -8,6 +8,10 @@ RU:
 
 Веб-приложение написано на языке программирования Python 3 из-за своей гибкости и популярности, на фреймворке Flask по аналогичным причинам.
 
+Ссылка на Github репозиторий: [https://github.com/Plusha30/Ne_huhruy_muhruy](https://github.com/Plusha30/Ne_huhruy_muhruy)
+
+Ссылка на видеопрезентацию: [https://vkvideo.ru/video-235863632_456239021?list=ln-z3DUKpVJAS0DQTkKuC](https://vkvideo.ru/video-235863632_456239021?list=ln-z3DUKpVJAS0DQTkKuC)
+
 Инструкции к установке и запуску на Linux:
 - Поставьте интерпретатор Python 3.14.2 и менеджер пакетов pip
 - Откройте в терминале папку проекта (командой cd path/to/project или, если стоит подходящий DE, правой кнопкой по мыши и "Открыть в терминале")
@@ -36,6 +40,10 @@ Case #2 "Cafeteria Management"
 The "SchoolPit" project is a web application that allows students, cooks, and administrators to organize work in school cafeterias.
 
 The web application is written in the Python 3 programming language due to its flexibility and popularity, using the Flask framework for similar reasons.
+
+Link to github repo: [https://github.com/Plusha30/Ne_huhruy_muhruy](https://github.com/Plusha30/Ne_huhruy_muhruy)
+
+Link to videopresentation: [https://vkvideo.ru/video-235863632_456239021?list=ln-z3DUKpVJAS0DQTkKuC](https://vkvideo.ru/video-235863632_456239021?list=ln-z3DUKpVJAS0DQTkKuC)
 
 Instructions for installation and launch on Linux:
 - Install the Python 3.14.2 interpreter and the pip package manager.
